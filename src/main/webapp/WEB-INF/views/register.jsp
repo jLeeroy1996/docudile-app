@@ -67,18 +67,18 @@
             </div>
             <div class="col-sm-5">
                 <h4>Create an account</h4>
-                <form>
+                <form action="register" method="post">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="inputFirstname" placeholder="First name">
+                        <input type="text" class="form-control" id="inputFirstname" name="firstname" placeholder="First name">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="inputLastname" placeholder="Last name">
+                        <input type="text" class="form-control" id="inputLastname" name="lastname" placeholder="Last name">
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                        <input type="text" class="form-control" id="inputEmail" name="username" placeholder="Username">
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                        <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
                     </div>
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-1">

@@ -10,4 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository("userDao")
 @Transactional
 public interface UserDao extends GenericDao<User> {
+
+    public User show(String username);
+
 }

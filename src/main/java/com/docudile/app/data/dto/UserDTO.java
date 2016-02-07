@@ -5,13 +5,12 @@ import java.io.Serializable;
 /**
  * Created by franc on 2/7/2016.
  */
-public class UserDTO {
+public class UserDTO implements Serializable {
 
     private String username;
     private String password;
     private String firstname;
     private String lastname;
-    private String dropboxAccessToken;
 
     public String getUsername() {
         return username;
@@ -43,14 +42,6 @@ public class UserDTO {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
-    }
-
-    public String getDropboxAccessToken() {
-        return dropboxAccessToken;
-    }
-
-    public void setDropboxAccessToken(String dropboxAccessToken) {
-        this.dropboxAccessToken = dropboxAccessToken;
     }
 
 }

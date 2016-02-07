@@ -35,10 +35,6 @@ public class HomeController {
         return dropboxService.linkDropbox(request);
     }
 
-    @RequestMapping(value = "/dropbox-auth-finish")
-    public ModelAndView dropboxFinish(HttpServletRequest request) {
-        String token = dropboxService.finishAuth(request);
-        return new ModelAndView("home").addObject("token", token);
-    }
+
 
 }
