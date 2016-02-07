@@ -27,7 +27,7 @@
                 <a href="#" class="dd-home-navbar-logo pull-left"><img src="${"/resources/img/logo-inverted.png"}"></a>
                 <a class="navbar-brand dd-brand" href="#">docu dile</a></div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                <form class="navbar-form navbar-left" role="search">
+                <form class="navbar-form navbar-left dd-search" role="search">
                     <div class="form-search search-only">
                         <i class="search-icon glyphicon glyphicon-search"></i>
                         <input type="text" class="form-control search-query">
