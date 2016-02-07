@@ -10,14 +10,6 @@ import javax.servlet.ServletRegistration;
  */
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    private static final String LOCATION = "C:/temp/";
-
-    private static final long MAX_FILE_SIZE = 5242880;
-
-    private static final long MAX_REQUEST_SIZE = 20971520;
-
-    private static final int FILE_SIZE_THRESHOLD = 0;
-
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[] {SpringConfig.class, PersistenceConfig.class};

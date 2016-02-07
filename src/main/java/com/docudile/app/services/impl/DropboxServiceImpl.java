@@ -1,16 +1,15 @@
 package com.docudile.app.services.impl;
 
 import com.docudile.app.services.DropboxService;
-import com.dropbox.core.DbxAppInfo;
-import com.dropbox.core.DbxAuthFinish;
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.DbxWebAuthNoRedirect;
+import com.dropbox.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Locale;
@@ -26,16 +25,27 @@ public class DropboxServiceImpl implements DropboxService {
     @Autowired
     private Environment environment;
 
-    public String linkDropbox() {
+    public String linkDropbox(HttpServletRequest request) {
         DbxAppInfo appInfo = new DbxAppInfo(environment.getProperty("dropbox.appkey"), environment.getProperty("dropbox.appsecret"));
         DbxRequestConfig config = new DbxRequestConfig("Docudi.le/1.0", Locale.getDefault().toString());
-        DbxWebAuthNoRedirect webAuth = new DbxWebAuthNoRedirect(config, appInfo);
+        HttpSession session = request.getSession();
+        String sessionKey = "dropbox-auth-csrf-token";
+        DbxSessionStore sessionStore = new DbxStandardSessionStore(session, sessionKey);
+        String redirectUri = "http://localhost:8080/dropbox-auth-finish";
+        DbxWebAuth webAuth = new DbxWebAuth(config, appInfo, redirectUri, sessionStore);
+        return "redirect:" + webAuth.start();
+    }
 
-        String authUrl = webAuth.start();
+    public String finishAuth(HttpServletRequest request) {
+        DbxAppInfo appInfo = new DbxAppInfo(environment.getProperty("dropbox.appkey"), environment.getProperty("dropbox.appsecret"));
+        DbxRequestConfig config = new DbxRequestConfig("Docudi.le/1.0", Locale.getDefault().toString());
+        HttpSession session = request.getSession();
+        String sessionKey = "dropbox-auth-csrf-token";
+        DbxSessionStore sessionStore = new DbxStandardSessionStore(session, sessionKey);
+        String redirectUri = "http://localhost:8080/dropbox-auth-finish";
+        DbxWebAuth webAuth = new DbxWebAuth(config, appInfo, redirectUri, sessionStore);
         try {
-            String code = new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-            DbxAuthFinish authFinish = webAuth.finish(code);
-            return authFinish.accessToken;
+            return webAuth.finish(request.getParameterMap()).accessToken;
         } catch (Exception ex) {
             return null;
         }

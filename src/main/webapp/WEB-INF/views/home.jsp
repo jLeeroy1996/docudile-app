@@ -10,6 +10,8 @@
             <input type="file" name="file">
             <input type="submit" value="Submit">
         </form>
+        <a href="dropbox">Dropbox</a>
         <p>${filename}</p>
+        <p>${token}</p>
     </body>
 </html>
