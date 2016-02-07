@@ -29,7 +29,7 @@ public class PersistenceConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"ph.edu.usjr.itrace.data"});
+        sessionFactory.setPackagesToScan(new String[]{"com.docudile.app.data"});
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }

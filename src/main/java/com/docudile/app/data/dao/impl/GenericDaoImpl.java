@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 
 /**
  * Created by franc on 2/7/2016.
