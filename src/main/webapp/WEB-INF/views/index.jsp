@@ -14,7 +14,7 @@
     <title>Docudile - Home</title>
 
     <link rel="stylesheet" href="${"/resources/css/bootstrap.min.css"}">
-    <link rel="stylesheet" href="${"/resources/css/index.css"}" />">
+    <link rel="stylesheet" href="${"/resources/css/index.css"}">
 
     <link rel="icon"
           type="image/png"
