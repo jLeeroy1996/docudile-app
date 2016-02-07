@@ -1,0 +1,121 @@
+@font-face {
+    font-family: Nilland;
+    src: url('../fonts/Nilland.ttf');
+}
+@font-face {
+    font-family: Work sans;
+    src: url('../fonts/WorkSans-Regular.otf');
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: Work sans;
+    src: url('../fonts/WorkSans-Bold.otf');
+    font-style: normal;
+    font-weight: bold;
+}
+@font-face {
+    font-family: Work sans;
+    src: url('../fonts/WorkSans-Light.otf');
+    font-style: normal;
+    font-weight: lighter;
+}
+
+body {
+    font-family: "Work sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding-top: 10px;
+}
+
+.dd-home-navbar-logo img {
+    height: 50px;
+}
+
+.dd-home-navbar {
+    margin-bottom: 0;
+    border-bottom: 1px solid #d0d4d9;
+    box-shadow: 0px 1px 1px #d0d4d9;
+}
+
+.dd-nav-links p {
+    padding: 15px;
+    line-height: 20px;
+}
+
+.dd-nav-links li a {
+    font-size: 20px;
+    color: #ccc;
+}
+
+.dd-nav-links>li>a:hover,
+.dd-nav-links>li>a:focus {
+    background-color: #fff;
+    color: #2d3238;
+}
+
+.dd-brand {
+    color: #2d3238;
+}
+
+.breadcrumb>li+li:before {
+    content: ">";
+}
+
+.dd-breadcrumbs {
+    background: #F5F7FA;
+    border-bottom: 1px solid #d0d4d9;
+    box-shadow: 0px 1px 1px #d0d4d9;
+}
+
+.dd-breadcrumbs .breadcrumb {
+    background-color: #F5F7FA !important;
+    font-size: 15px;
+    margin-bottom: 12px;
+    margin-top: 10px;
+}
+
+.dd-navtree {
+    height: 82vh;
+    padding: 0;
+    background: #F5F7FA;
+    border-right: 1px solid #d0d4d9;
+    box-shadow: 0px 1px 1px #d0d4d9;
+}
+
+.dd-filebox {
+    padding: 0;
+    height: 82vh;
+    overflow-y: scroll;
+}
+
+.dd-filebox table tr {
+    font-size: 15px;
+}
+
+ul.nav-tree {
+    margin: 0
+}
+
+ul.nav-tree li span.opener {
+    top: 10px;
+}
+
+ul.nav-tree li {
+    margin-left: 0;
+}
+
+ul.nav-tree ul.nav-tree {
+    padding-left: 20px;
+    margin-left: 0;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    color: #2d3238;
+    background-color: #e6e9ed;
+    border-left: 4px solid #3bafda;
+    border-radius: 0;
+}
+
+.nav-pills > li > a:hover {
+    border-left: 4px solid #3bafda;
+    border-radius: 0;
+}

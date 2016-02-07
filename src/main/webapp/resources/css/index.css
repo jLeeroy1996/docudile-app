@@ -1,0 +1,173 @@
+@font-face {
+    font-family: Nilland;
+    src: url('../fonts/Nilland.ttf');
+}
+@font-face {
+    font-family: Work sans;
+    src: url('../fonts/WorkSans-Regular.otf');
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: Work sans;
+    src: url('../fonts/WorkSans-Bold.otf');
+    font-style: normal;
+    font-weight: bold;
+}
+@font-face {
+    font-family: Work sans;
+    src: url('../fonts/WorkSans-Light.otf');
+    font-style: normal;
+    font-weight: lighter;
+}
+
+body {
+    font-family: "Work sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.dd-frontpage {
+    padding: 40px 0 40px 0;
+    border-bottom: 5px solid #2196f3;
+}
+
+.dd-wallpaper {
+    background-image: url('../img/wallpaper.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.dd-navbar-logo img {
+    height: 50px;
+}
+
+.navbar-inner {
+    background:transparent;
+}
+
+.navbar {
+    letter-spacing: 0.05em;
+    font-weight: 500;
+}
+
+.dd-brand {
+    font-size: 24px;
+    color: #2d3238;
+}
+
+.dd-nav-links {
+    font-size: 15px;
+}
+
+.dd-frontpage-welcome {
+    padding: 100px 30px 0 30px;
+    color: #2d3238;
+}
+
+.dd-frontpage-welcome h1 {
+    font-size: 42px;
+}
+
+.dd-frontpage-welcome p {
+    font-size: 21px;
+    font-weight: lighter;
+}
+
+.dd-try-btn {
+    margin-top: 25px;
+}
+
+.dd-about {
+    height: 768px;
+    padding-top: 213px;
+}
+
+.dd-about-text {
+    padding-top: 100px;
+}
+
+.dd-about-text h6 {
+    color: #bec8ce;
+    letter-spacing: .15em;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.dd-about-text h3 {
+    line-height: 1.2;
+    font-size: 28px;
+    margin-top: 0;
+}
+
+.dd-about-text p {
+    font-size: 19px;
+    line-height: 1.6;
+    letter-spacing: -0.02em;
+    color: #6c6f73;
+}
+
+.dd-about-supp {
+    margin-top: 30px;
+}
+
+.dd-about-supp h5 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 15px;
+    font-weight: 500;
+    font-height: 1.2;
+    color: #2d3238;
+}
+
+.dd-about-supp p {
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-size: 15px;
+}
+
+.footer {
+    background: #262F36;
+    padding: 100px 0 100px 0;
+}
+
+.dd-footer {
+    padding: 0 30px 0 30px;
+}
+
+.dd-footer h6 {
+    letter-spacing: .15em;
+    color: #ffffff;
+    font-size: 13px;
+    letter-spacing: .15em;
+}
+
+.dd-footer p {
+    color: rgba(255, 255, 255, .7);
+}
+
+.dd-footer p a {
+    color: #fff;
+}
+
+.dd-footer ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.dd-footer ul li {
+    color: rgba(255, 255, 255, .7);
+    margin-bottom: 3px;
+}
+
+.dd-border {
+    border-bottom: 1px solid #d0d4d9;
+    box-shadow: 0px 1px 1px #d0d4d9;
+}
+
+.dd-onepage {
+    height: 768px;
+}
+
+.dd-register {
+    padding-top: 100px;
+}
