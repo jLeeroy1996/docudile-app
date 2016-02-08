@@ -27,11 +27,6 @@ public class UserController {
         return "register";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String goLogin() {
-        return "login";
-    }
-
     @RequestMapping(value = "/register", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
     public String submitRegistration(
             @ModelAttribute UserDTO user,

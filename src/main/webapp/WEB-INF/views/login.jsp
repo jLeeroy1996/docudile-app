@@ -67,12 +67,12 @@
             </div>
             <div class="col-sm-5">
                 <h4>Sign in</h4>
-                <form>
+                <form action="login" method="post">
                     <div class="form-group">
-                        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                        <input type="text" class="form-control" id="inputEmail" name="username" placeholder="Username">
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                        <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
                     </div>
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-1">
