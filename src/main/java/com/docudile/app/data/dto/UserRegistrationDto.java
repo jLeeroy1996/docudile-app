@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by franc on 2/7/2016.
  */
-public class UserDTO implements Serializable {
+public class UserRegistrationDto implements Serializable {
 
     private String username;
     private String password;

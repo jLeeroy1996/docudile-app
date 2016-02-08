@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: PaulRyan
@@ -67,6 +68,9 @@
             </div>
             <div class="col-sm-5">
                 <h4>Sign in</h4>
+                <c:if test="${not empty error}">
+                    <p>${error}</p>
+                </c:if>
                 <form action="login" method="post">
                     <div class="form-group">
                         <input type="text" class="form-control" id="inputEmail" name="username" placeholder="Username">
@@ -74,6 +78,7 @@
                     <div class="form-group">
                         <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
                     </div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-1">
                             <div class="checkbox">

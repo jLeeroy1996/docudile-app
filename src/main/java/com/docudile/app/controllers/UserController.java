@@ -1,15 +1,12 @@
 package com.docudile.app.controllers;
 
-import com.docudile.app.data.dto.UserDTO;
-import com.docudile.app.services.UserService;
+import com.docudile.app.data.dto.UserRegistrationDto;
+import com.docudile.app.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private RegistrationService registrationService;
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String goRegister() {
@@ -29,14 +26,14 @@ public class UserController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
     public String submitRegistration(
-            @ModelAttribute UserDTO user,
+            @ModelAttribute UserRegistrationDto user,
             HttpServletRequest request) {
-        return userService.registerStart(user, request);
+        return registrationService.registerStart(user, request);
     }
 
     @RequestMapping(value = "/dropbox-auth-finish")
     public String dropboxFinish(HttpServletRequest request) {
-        return userService.registerFinish(request);
+        return registrationService.registerFinish(request);
     }
 
 }

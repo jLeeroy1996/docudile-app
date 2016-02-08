@@ -12,7 +12,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[] {SpringConfig.class, PersistenceConfig.class};
+        return new Class<?>[] {SpringConfig.class, PersistenceConfig.class, SecurityConfig.class};
     }
 
     @Override

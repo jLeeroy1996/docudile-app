@@ -1,23 +1,20 @@
 package com.docudile.app.services;
 
-import com.docudile.app.data.dto.UserDTO;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
+import com.docudile.app.data.dto.UserRegistrationDto;
+import com.docudile.app.data.dto.UserShowDto;
+import com.docudile.app.data.dto.UserUpdateDto;
 
 /**
- * Created by franc on 2/7/2016.
+ * Created by franc on 2/8/2016.
  */
 public interface UserService {
 
-    public String registerStart(UserDTO user, HttpServletRequest request);
+    public UserShowDto show(Integer id);
 
-    public String registerFinish(HttpServletRequest request);
+    public UserShowDto show(String username);
 
-    public ModelAndView show(Integer id);
+    public boolean update(Integer id, UserUpdateDto userUpdateDto);
 
-    public ModelAndView update(UserDTO user, Integer id);
-
-    public ModelAndView delete(Integer id);
+    public boolean delete(Integer id);
 
 }
