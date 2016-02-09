@@ -35,16 +35,29 @@
                 </form>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right dd-nav-links">
-                        <li><p>Paul Ryan</p></li>
+                        <li><button class="btn navbar-btn" data-toggle="modal" data-target="#uploadModal"><i class="fa fa-upload"></i> Upload</button></li>
+                        <li><a href="#"><i class="fa fa-user"></i><small> Paul Ryan</small></a></li>
                         <li><a href="#"><i class="fa fa-cog"></i></a></li>
-                        <li><a href="#"><i class="fa fa-user"></i></a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </nav>
 </header>
-
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadTitle">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="uploadTitle">Upload Document</h4>
+            </div>
+            <form>
+                <div class="modal-body"></div>
+                <div class="modal-footer"></div>
+            </form>
+        </div>
+    </div>
+</div>
 <main>
     <div class="container-fluid dd-breadcrumbs">
         <div class="row">
