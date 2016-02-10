@@ -3,6 +3,15 @@
  */
 $(document).on('ready', function() {
     var token = $("input[name='_csrf']").val();
-    var url = "./upload-documents?_csrf=" + token;
-    $("#uploadDoc").fileinput({showCaption: false, uploadUrl: url});
+    var doc_url = "./home/upload-documents?_csrf=" + token;
+    var type_url = "./home/new-type?_csrf=" + token;
+    $("#uploadDoc").fileinput({showCaption: false, uploadUrl: doc_url});
+    $("#uploadSample").fileinput({
+        showCaption: false,
+        uploadExtraData: {
+            typeName: $("input:text #inputTypeName").val()
+        },
+        uploadUrl: doc_url,
+        uploadAsync: false
+    });
 });

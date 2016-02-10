@@ -38,6 +38,7 @@
                     <ul class="nav navbar-nav navbar-right dd-nav-links">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <li><button class="btn navbar-btn" data-toggle="modal" data-target="#uploadModal"><i class="fa fa-upload"></i> Upload</button></li>
+                        <li><a href="#" data-toggle="modal" data-target="#createTypeModal"><i class="fa fa-folder"></i><small> New Type</small></a></li>
                         <li><a href="#"><i class="fa fa-user"></i><small> Paul Ryan</small></a></li>
                         <li><a href="#"><i class="fa fa-cog"></i></a></li>
                     </ul>
@@ -54,10 +55,29 @@
                 <h4 class="modal-title" id="uploadModalTitle">Upload Document(s)</h4>
             </div>
             <div class="modal-body">
-                <label class="control-label">Select File</label>
+                <label class="control-label">Select File(s)</label>
                 <input id="uploadDoc" name="document" type="file" multiple class="file-loading">
             </div>
             <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="createTypeModal" tabindex="-1" role="dialog" aria-labelledby="createTypeModalTitle">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="createTypeModalTitle">Create Document Type Folder</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="inputTypeName" name="typename" placeholder="Name">
+                </div>
+                <label class="control-label">Select File(s)</label>
+                <input id="uploadSample" name="sampleDocuments" type="file" multiple class="file-loading">
+            </div>
+            <div class="modal-footer">
+            </div>
         </div>
     </div>
 </div>

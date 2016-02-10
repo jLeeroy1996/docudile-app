@@ -17,7 +17,7 @@ public class Folder implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "parent_folder_id")
-    private Folder folder;
+    private Folder parentFolder;
 
     @Column(name = "name")
     private String name;
@@ -25,6 +25,12 @@ public class Folder implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "parentFolder", fetch = FetchType.LAZY)
+    private Set<Folder> childFolders;
+
+    @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
+    private Set<File> files;
 
     public Integer getId() {
         return id;
@@ -34,12 +40,12 @@ public class Folder implements Serializable {
         this.id = id;
     }
 
-    public Folder getFolder() {
-        return folder;
+    public Folder getParentFolder() {
+        return parentFolder;
     }
 
-    public void setFolder(Folder folder) {
-        this.folder = folder;
+    public void setParentFolder(Folder parentFolder) {
+        this.parentFolder = parentFolder;
     }
 
     public String getName() {
@@ -56,6 +62,22 @@ public class Folder implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<Folder> getChildFolders() {
+        return childFolders;
+    }
+
+    public void setChildFolders(Set<Folder> childFolders) {
+        this.childFolders = childFolders;
+    }
+
+    public Set<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(Set<File> files) {
+        this.files = files;
     }
 
 }

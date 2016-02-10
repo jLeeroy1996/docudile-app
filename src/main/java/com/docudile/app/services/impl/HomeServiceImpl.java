@@ -1,8 +1,9 @@
 package com.docudile.app.services.impl;
 
+import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.UploadResponseDto;
-import com.docudile.app.services.DocumentService;
-import com.docudile.app.services.DropboxService;
+import com.docudile.app.services.HomeService;
+import com.docudile.app.services.FileSystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +16,28 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service("documentService")
 @Transactional
-public class DocumentServiceImpl implements DocumentService {
+public class HomeServiceImpl implements HomeService {
 
     @Autowired
-    private DropboxService dropboxService;
+    private FileSystemService fileSystemService;
 
-    public ResponseEntity<UploadResponseDto> upload(MultipartFile document) {
+    @Autowired
+    private UserDao userDao;
+
+    public ResponseEntity<UploadResponseDto> uploadDoc(MultipartFile document, String username) {
         UploadResponseDto response = new UploadResponseDto();
         if (!document.isEmpty()) {
+            fileSystemService.storeFile(document, "Memo/Hello", userDao.show(username).getId());
             response.setMessage("document_uploaded_successfully");
             return new ResponseEntity<UploadResponseDto>(response, HttpStatus.OK);
         }
         response.setMessage("document_empty");
         return new ResponseEntity<UploadResponseDto>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<UploadResponseDto> submitNewType(MultipartFile[] document, String typeName, String username) {
+        UploadResponseDto response = new UploadResponseDto();
+
     }
 
 }
