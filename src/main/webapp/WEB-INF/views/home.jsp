@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="${"/resources/css/bootstrap-treenav.css"}">
     <link rel="stylesheet" href="${"/resources/fonts/font-awesome/css/font-awesome.min.css"}">
     <link rel="stylesheet" href="${"/resources/css/site.css"}">
+    <link rel="stylesheet" href="${"/resources/bootstrap-fileinput/css/fileinput.min.css"}">
 
     <link rel="icon"
           type="image/png"
@@ -35,6 +36,7 @@
                 </form>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right dd-nav-links">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <li><button class="btn navbar-btn" data-toggle="modal" data-target="#uploadModal"><i class="fa fa-upload"></i> Upload</button></li>
                         <li><a href="#"><i class="fa fa-user"></i><small> Paul Ryan</small></a></li>
                         <li><a href="#"><i class="fa fa-cog"></i></a></li>
@@ -44,17 +46,18 @@
         </div>
     </nav>
 </header>
-<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadTitle">
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalTitle">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="uploadTitle">Upload Document</h4>
+                <h4 class="modal-title" id="uploadModalTitle">Upload Document(s)</h4>
             </div>
-            <form>
-                <div class="modal-body"></div>
-                <div class="modal-footer"></div>
-            </form>
+            <div class="modal-body">
+                <label class="control-label">Select File</label>
+                <input id="uploadDoc" name="document" type="file" multiple class="file-loading">
+            </div>
+            <div class="modal-footer"></div>
         </div>
     </div>
 </div>
@@ -168,5 +171,8 @@
 <script rel="script" src="${"/resources/js/jquery-2.1.3.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap-treenav.js"}"></script>
+<script rel="script" src="${"/resources/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"}"></script>
+<script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
+<script rel="script" src="${"/resources/js/custom.js"}"></script>
 </body>
 </html>
