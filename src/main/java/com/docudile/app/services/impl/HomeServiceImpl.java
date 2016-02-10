@@ -35,9 +35,9 @@ public class HomeServiceImpl implements HomeService {
         return new ResponseEntity<UploadResponseDto>(response, HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<UploadResponseDto> submitNewType(MultipartFile[] document, String typeName, String username) {
-        UploadResponseDto response = new UploadResponseDto();
-
-    }
+//    public ResponseEntity<UploadResponseDto> submitNewType(MultipartFile[] document, String typeName, String username) {
+//        UploadResponseDto response = new UploadResponseDto();
+//
+//    }
 
 }

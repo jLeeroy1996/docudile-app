@@ -15,7 +15,7 @@ public interface FileSystemService {
 
     public boolean storeFile(MultipartFile file, String path, Integer userId);
 
-    public Set<Folder> getRootFolders(Integer userId);
+    public List<Folder> getRootFolders(Integer userId);
 
     public Folder getFolder(Integer id, Integer userId);
 

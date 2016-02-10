@@ -26,10 +26,10 @@ public class Folder implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "parentFolder", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parentFolder", fetch = FetchType.EAGER)
     private Set<Folder> childFolders;
 
-    @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "folder", fetch = FetchType.EAGER)
     private Set<File> files;
 
     public Integer getId() {

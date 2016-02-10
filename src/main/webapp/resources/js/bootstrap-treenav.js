@@ -75,7 +75,7 @@ if (!jQuery) { throw new Error("Bootstrap Tree Nav requires jQuery"); }
       $childUl.hide();
       $(element).prepend('<span class="opener closed"><span class="tree-icon-closed"><i class="' + options.navTreeCollapsed + '"></i></span><span class="tree-icon-opened"><i class="' + options.navTreeExpanded + '"></i></span></span>');
       $(element).children('a').first().on('click.bs.tree', function(e) {
-        e.preventDefault();
+        //e.preventDefault();
         var $opener = $(this).siblings('span.opener');
         if ($opener.hasClass('closed')) {
           expand(element);

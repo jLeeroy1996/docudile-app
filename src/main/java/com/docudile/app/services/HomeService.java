@@ -11,6 +11,6 @@ public interface HomeService {
 
     public ResponseEntity<UploadResponseDto> uploadDoc(MultipartFile document, String username);
 
-    public ResponseEntity<UploadResponseDto> submitNewType(MultipartFile[] document, String typeName, String username);
+//    public ResponseEntity<UploadResponseDto> submitNewType(MultipartFile[] document, String typeName, String username);
 
 }

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -103,42 +104,54 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2 dd-navtree">
+
+                <%--<ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree" data-nav-tree-expanded="fa fa-folder-open-o" data-nav-tree-collapsed="fa fa-folder-o">--%>
+                    <%--<li>--%>
+                        <%--<a href="#">Docudile</a>--%>
+                        <%--<ul class="nav nav-pills nav-stacked nav-tree">--%>
+                            <%--<li>--%>
+                                <%--<a href="#">Memo</a>--%>
+                                <%--<ul class="nav nav-pills nav-stacked nav-tree">--%>
+                                    <%--<li>--%>
+                                        <%--<a href="#">2015</a>--%>
+                                        <%--<ul class="nav nav-pills nav-stacked nav-tree">--%>
+                                            <%--<li>--%>
+                                                <%--<a href="#">MOA</a>--%>
+                                            <%--</li>--%>
+                                        <%--</ul>--%>
+                                    <%--</li>--%>
+                                    <%--<li>--%>
+                                        <%--<a href="#">2016</a>--%>
+                                        <%--<ul class="nav nav-pills nav-stacked nav-tree">--%>
+                                            <%--<li class="active">--%>
+                                                <%--<a href="#">MOA</a>--%>
+                                            <%--</li>--%>
+                                        <%--</ul>--%>
+                                    <%--</li>--%>
+                                <%--</ul>--%>
+                            <%--</li>--%>
+                            <%--<li>--%>
+                                <%--<a href="#">Letter</a>--%>
+                                <%--<ul class="nav nav-pills nav-stacked nav-tree">--%>
+                                    <%--<li>--%>
+                                        <%--<a href="#">2015</a>--%>
+                                    <%--</li>--%>
+                                    <%--<li>--%>
+                                        <%--<a href="#">2016</a>--%>
+                                    <%--</li>--%>
+                                <%--</ul>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
                 <ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree" data-nav-tree-expanded="fa fa-folder-open-o" data-nav-tree-collapsed="fa fa-folder-o">
                     <li>
-                        <a href="#">Docudile</a>
+                        <a href="google.com">Docudile</a>
                         <ul class="nav nav-pills nav-stacked nav-tree">
-                            <li>
-                                <a href="#">Memo</a>
-                                <ul class="nav nav-pills nav-stacked nav-tree">
-                                    <li>
-                                        <a href="#">2015</a>
-                                        <ul class="nav nav-pills nav-stacked nav-tree">
-                                            <li>
-                                                <a href="#">MOA</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#">2016</a>
-                                        <ul class="nav nav-pills nav-stacked nav-tree">
-                                            <li class="active">
-                                                <a href="#">MOA</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Letter</a>
-                                <ul class="nav nav-pills nav-stacked nav-tree">
-                                    <li>
-                                        <a href="#">2015</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">2016</a>
-                                    </li>
-                                </ul>
-                            </li>
+                            <c:forEach items="${nodes}" var="node" >
+                                <c:set var="node" value="${node}" scope="request"/>
+                                <jsp:include page="get-files.jsp" />
+                            </c:forEach>
                         </ul>
                     </li>
                 </ul>

@@ -69,8 +69,8 @@ public class FileSystemServiceImpl implements FileSystemService {
         return false;
     }
 
-    public Set<Folder> getRootFolders(Integer userId) {
-        return null;
+    public List<Folder> getRootFolders(Integer userId) {
+        return folderDao.root(userId);
     }
 
     public Folder getFolder(Integer id, Integer userId) {
