@@ -146,10 +146,11 @@
                 <%--</ul>--%>
                 <ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree" data-nav-tree-expanded="fa fa-folder-open-o" data-nav-tree-collapsed="fa fa-folder-o">
                     <li>
-                        <a href="google.com">Docudile</a>
+                        <a href="#">Docudile</a>
                         <ul class="nav nav-pills nav-stacked nav-tree">
                             <c:forEach items="${nodes}" var="node" >
                                 <c:set var="node" value="${node}" scope="request"/>
+                                <c:set var="link" value="home/${node.name}" scope="request"/>
                                 <jsp:include page="get-files.jsp" />
                             </c:forEach>
                         </ul>

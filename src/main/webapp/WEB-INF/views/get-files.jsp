@@ -8,12 +8,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <li>
-    <a href="#">${node.name}</a>
+    <a href="${link}">${node.name}</a>
 
     <c:if test="${fn:length(node.childFolders) gt 0}">
         <ul class="nav nav-pills nav-stacked nav-tree">
             <c:forEach var="node" items="${node.childFolders}">
                 <c:set var="node" value="${node}" scope="request"/>
+                <c:set var="link" value="${link}/${node.name}" scope="request"/>
                 <jsp:include page="get-files.jsp" />
             </c:forEach>
         </ul>
