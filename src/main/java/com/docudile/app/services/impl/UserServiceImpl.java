@@ -23,12 +23,12 @@ public class UserServiceImpl implements UserService {
 
     public UserShowDto show(Integer id) {
         User user = userDao.show(id);
-        return createData(user);
+        return convert(user);
     }
 
     public UserShowDto show(String username) {
         User user = userDao.show(username);
-        return createData(user);
+        return convert(user);
     }
 
     public boolean update(Integer id, UserUpdateDto userUpdateDto) {
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         return userDao.delete(userDao.show(id));
     }
 
-    private UserShowDto createData(User user) {
+    public UserShowDto convert(User user) {
         UserShowDto dto = new UserShowDto();
         dto.setUsername(user.getUsername());
         dto.setFirstname(user.getFirstname());

@@ -1,5 +1,6 @@
 package com.docudile.app.services;
 
+import com.docudile.app.data.dto.FolderShowDto;
 import com.docudile.app.data.entities.Folder;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,10 +16,10 @@ public interface FileSystemService {
 
     public boolean storeFile(MultipartFile file, String path, Integer userId);
 
-    public List<Folder> getRootFolders(Integer userId);
+    public boolean storeFileNotMapped(MultipartFile file, String path, Integer userId);
 
-    public Folder getFolder(Integer id, Integer userId);
+    public List<FolderShowDto> getRootFolders(Integer userId);
 
-    public List<Folder> getFolders(String name, Integer userId);
+    public FolderShowDto getFolder(Integer id, Integer userId);
 
 }

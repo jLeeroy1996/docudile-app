@@ -3,12 +3,14 @@ package com.docudile.app.services.impl;
 import com.docudile.app.data.dao.FileDao;
 import com.docudile.app.data.dao.FolderDao;
 import com.docudile.app.data.dao.UserDao;
+import com.docudile.app.data.dto.FileShowDto;
+import com.docudile.app.data.dto.FolderShowDto;
 import com.docudile.app.data.entities.File;
 import com.docudile.app.data.entities.Folder;
 import com.docudile.app.data.entities.User;
 import com.docudile.app.services.DropboxService;
 import com.docudile.app.services.FileSystemService;
-import org.apache.commons.lang3.StringUtils;
+import com.docudile.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,9 @@ public class FileSystemServiceImpl implements FileSystemService {
 
     @Autowired
     private DropboxService dropboxService;
+
+    @Autowired
+    private UserService userService;
 
     public boolean createFolder(String name, Integer parentId, Integer userId) {
         Folder folder = new Folder();
@@ -69,15 +74,29 @@ public class FileSystemServiceImpl implements FileSystemService {
         return false;
     }
 
-    public List<Folder> getRootFolders(Integer userId) {
-        return folderDao.root(userId);
+    public boolean storeFileNotMapped(MultipartFile file, String path, Integer userId) {
+        String filepath = path + file.getOriginalFilename();
+        try {
+            return dropboxService.uploadFile(filepath, file.getInputStream(), userDao.show(userId).getDropboxAccessToken());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    public Folder getFolder(Integer id, Integer userId) {
-        return null;
+    public List<FolderShowDto> getRootFolders(Integer userId) {
+        List<FolderShowDto> folders = new ArrayList<FolderShowDto>();
+        for (Folder folder : folderDao.root(userId)) {
+            folders.add(convertToDto(folder));
+        }
+        return folders;
     }
 
-    public List<Folder> getFolders(String name, Integer userId) {
+    public FolderShowDto getFolder(Integer id, Integer userId) {
+        Folder folder = folderDao.show(id);
+        if (folder.getUser().getId() == userId) {
+            return convertToDto(folder);
+        }
         return null;
     }
 
@@ -113,6 +132,34 @@ public class FileSystemServiceImpl implements FileSystemService {
             }
         }
         return base;
+    }
+
+    private FolderShowDto convertToDto(Folder folder) {
+        FolderShowDto dto = new FolderShowDto();
+        dto.setId(folder.getId());
+        dto.setName(folder.getName());
+        dto.setUser(userService.convert(folder.getUser()));
+        List<FolderShowDto> childFolders = new ArrayList<FolderShowDto>();
+        for (Folder childFolder : folder.getChildFolders()) {
+            childFolders.add(convertToDto(childFolder));
+        }
+        dto.setChildFolders(childFolders);
+        List<FileShowDto> files = new ArrayList<FileShowDto>();
+        for (File file : folder.getFiles()) {
+            files.add(convertToDto(file));
+        }
+        dto.setFiles(files);
+        return dto;
+    }
+
+    private FileShowDto convertToDto(File file) {
+        FileShowDto dto = new FileShowDto();
+        dto.setId(file.getId());
+        dto.setFilename(file.getFilename());
+        dto.setPath(getPath(file.getFolder()));
+        dto.setDateUploaded(file.getDateUploaded());
+        dto.setUser(userService.convert(file.getUser()));
+        return dto;
     }
 
 }
