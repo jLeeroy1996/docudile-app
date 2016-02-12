@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="${"/resources/fonts/font-awesome/css/font-awesome.min.css"}">
     <link rel="stylesheet" href="${"/resources/css/site.css"}">
     <link rel="stylesheet" href="${"/resources/bootstrap-fileinput/css/fileinput.min.css"}">
+    <link rel="stylesheet" href="${"/resources/bootstrap-select/css/bootstrap-select.min.css"}">
 
     <link rel="icon"
           type="image/png"
@@ -39,7 +40,7 @@
                     <ul class="nav navbar-nav navbar-right dd-nav-links">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <li><button class="btn navbar-btn" data-toggle="modal" data-target="#uploadModal"><i class="fa fa-upload"></i> Upload</button></li>
-                        <li><a href="#" data-toggle="modal" data-target="#createTypeModal"><i class="fa fa-folder"></i><small> New Type</small></a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#createTypeModal"><i class="fa fa-archive"></i><small> Training</small></a></li>
                         <li><a href="#"><i class="fa fa-user"></i><small> Paul Ryan</small></a></li>
                         <li><a href="#"><i class="fa fa-cog"></i></a></li>
                     </ul>
@@ -68,14 +69,52 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="createTypeModalTitle">Create Document Type Folder</h4>
+                <h4 class="modal-title" id="createTypeModalTitle">Training</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <input type="text" class="form-control" id="inputTypeName" name="typename" placeholder="Name">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#structureTraining" aria-controls="structureTraining" role="tab" data-toggle="tab">Structure-based</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#contentTraining" aria-controls="contentTraining" role="tab" data-toggle="tab">Content-based</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="structureTraining">
+                        <div class="form-group">
+                            <select class="selectpicker">
+                                <option>New</option>
+                                <option>Retrain</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="structureName" name="typename" placeholder="Structure Type Name">
+                        </div>
+                        <label class="control-label">Select File(s)</label>
+                        <input id="uploadSampleStruct" name="documents" type="file" multiple class="file-loading">
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="contentTraining">
+                        <div class="form-group">
+                            <select class="selectpicker">
+                                <option>New</option>
+                                <option>Retrain</option>
+                            </select>
+                        </div>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="newContent">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="contentName" name="typename" placeholder="Content Type Name">
+                                </div>
+                                <label class="control-label">Select File(s)</label>
+                                <input id="uploadSampleCont" name="documents" type="file" multiple class="file-loading">
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="retrainContent">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <label class="control-label">Select File(s)</label>
-                <input id="uploadSample" name="sampleDocuments" type="file" multiple class="file-loading">
             </div>
             <div class="modal-footer">
             </div>
@@ -104,46 +143,6 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2 dd-navtree">
-
-                <%--<ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree" data-nav-tree-expanded="fa fa-folder-open-o" data-nav-tree-collapsed="fa fa-folder-o">--%>
-                    <%--<li>--%>
-                        <%--<a href="#">Docudile</a>--%>
-                        <%--<ul class="nav nav-pills nav-stacked nav-tree">--%>
-                            <%--<li>--%>
-                                <%--<a href="#">Memo</a>--%>
-                                <%--<ul class="nav nav-pills nav-stacked nav-tree">--%>
-                                    <%--<li>--%>
-                                        <%--<a href="#">2015</a>--%>
-                                        <%--<ul class="nav nav-pills nav-stacked nav-tree">--%>
-                                            <%--<li>--%>
-                                                <%--<a href="#">MOA</a>--%>
-                                            <%--</li>--%>
-                                        <%--</ul>--%>
-                                    <%--</li>--%>
-                                    <%--<li>--%>
-                                        <%--<a href="#">2016</a>--%>
-                                        <%--<ul class="nav nav-pills nav-stacked nav-tree">--%>
-                                            <%--<li class="active">--%>
-                                                <%--<a href="#">MOA</a>--%>
-                                            <%--</li>--%>
-                                        <%--</ul>--%>
-                                    <%--</li>--%>
-                                <%--</ul>--%>
-                            <%--</li>--%>
-                            <%--<li>--%>
-                                <%--<a href="#">Letter</a>--%>
-                                <%--<ul class="nav nav-pills nav-stacked nav-tree">--%>
-                                    <%--<li>--%>
-                                        <%--<a href="#">2015</a>--%>
-                                    <%--</li>--%>
-                                    <%--<li>--%>
-                                        <%--<a href="#">2016</a>--%>
-                                    <%--</li>--%>
-                                <%--</ul>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</li>--%>
-                <%--</ul>--%>
                 <ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree" data-nav-tree-expanded="fa fa-folder-open-o" data-nav-tree-collapsed="fa fa-folder-o">
                     <li>
                         <a href="#">Docudile</a>
@@ -208,5 +207,6 @@
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
 <script rel="script" src="${"/resources/js/custom.js"}"></script>
+<script rel="script" src="${"/resources/bootstrap-select/js/bootstrap-select.min.js"}"></script>
 </body>
 </html>

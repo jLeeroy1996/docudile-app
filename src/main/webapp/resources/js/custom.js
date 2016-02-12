@@ -6,10 +6,18 @@ $(document).on('ready', function() {
     var doc_url = "./upload-documents?_csrf=" + token;
     var type_url = "./new-type?_csrf=" + token;
     $("#uploadDoc").fileinput({showCaption: false, uploadUrl: doc_url});
-    $("#uploadSample").fileinput({
+    $("#uploadSampleStruct").fileinput({
         showCaption: false,
         uploadExtraData: {
-            typeName: $("input:text #inputTypeName").val()
+            name: $("input:text #structureName").val()
+        },
+        uploadUrl: doc_url,
+        uploadAsync: false
+    });
+    $("#uploadSampleCont").fileinput({
+        showCaption: false,
+        uploadExtraData: {
+            name: $("input:text #contentName").val()
         },
         uploadUrl: doc_url,
         uploadAsync: false
