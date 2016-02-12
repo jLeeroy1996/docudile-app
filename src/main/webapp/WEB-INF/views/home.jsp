@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${"/resources/fonts/font-awesome/css/font-awesome.min.css"}">
     <link rel="stylesheet" href="${"/resources/css/site.css"}">
     <link rel="stylesheet" href="${"/resources/bootstrap-fileinput/css/fileinput.min.css"}">
-    <link rel="stylesheet" href="${"/resources/bootstrap-select/css/bootstrap-select.min.css"}">
+    <link rel="stylesheet" href="${"/resources/select2/css/select2.min.css"}">
 
     <link rel="icon"
           type="image/png"
@@ -82,35 +82,88 @@
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="structureTraining">
-                        <div class="form-group">
-                            <select class="selectpicker">
-                                <option>New</option>
-                                <option>Retrain</option>
-                            </select>
+                        <ul class="nav nav-pills nav-justified" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#newStructure" aria-controls="newStructure" role="tab" data-toggle="tab">New</a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#retainStructure" aria-controls="retrainStructure" role="tab" data-toggle="tab">Retrain</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="newStructure">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="structureName" name="typename" placeholder="Structure Type Name">
+                                </div>
+                                <label class="control-label">Select File(s)</label>
+                                <input id="uploadSampleStructNew" name="documents" type="file" multiple class="file-loading">
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="retainStructure">
+                                <div class="form-group">
+                                    <select id="train-structure" style="width: 100%;"></select>
+                                </div>
+                                <label>Files</label>
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td><i class="fa fa-file-image-o"></i> 021416 Moa.docx</td>
+                                        <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-file-image-o"></i> 021416 Moa.docx</td>
+                                        <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fa fa-file-image-o"></i> 021416 Moa.docx</td>
+                                        <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <label class="control-label">Select File(s)</label>
+                                <input id="uploadSampleStructRe" name="documents" type="file" multiple class="file-loading">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="structureName" name="typename" placeholder="Structure Type Name">
-                        </div>
-                        <label class="control-label">Select File(s)</label>
-                        <input id="uploadSampleStruct" name="documents" type="file" multiple class="file-loading">
                     </div>
                     <div role="tabpanel" class="tab-pane" id="contentTraining">
-                        <div class="form-group">
-                            <select class="selectpicker">
-                                <option>New</option>
-                                <option>Retrain</option>
-                            </select>
-                        </div>
+                        <ul class="nav nav-pills nav-justified" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#newContent" aria-controls="newContent" role="tab" data-toggle="tab">New</a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#retrainContent" aria-controls="retrainContent" role="tab" data-toggle="tab">Retrain</a>
+                            </li>
+                        </ul>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="newContent">
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="contentName" name="typename" placeholder="Content Type Name">
                                 </div>
                                 <label class="control-label">Select File(s)</label>
-                                <input id="uploadSampleCont" name="documents" type="file" multiple class="file-loading">
+                                <input id="uploadSampleContNew" name="documents" type="file" multiple class="file-loading">
                             </div>
                             <div role="tabpanel" class="tab-pane" id="retrainContent">
-
+                                <div class="form-group">
+                                    <select id="train-content" style="width: 100%;"></select>
+                                </div>
+                                <label>Files</label>
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td><i class="fa fa-file-image-o"></i> 021416 Moa.docx</td>
+                                            <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-file-image-o"></i> 021416 Moa.docx</td>
+                                            <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-file-image-o"></i> 021416 Moa.docx</td>
+                                            <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <label class="control-label">Select File(s)</label>
+                                <input id="uploadSampleContRe" name="documents" type="file" multiple class="file-loading">
                             </div>
                         </div>
                     </div>
@@ -200,13 +253,12 @@
         </div>
     </div>
 </main>
-
 <script rel="script" src="${"/resources/js/jquery-2.1.3.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap-treenav.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
+<script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
 <script rel="script" src="${"/resources/js/custom.js"}"></script>
-<script rel="script" src="${"/resources/bootstrap-select/js/bootstrap-select.min.js"}"></script>
 </body>
 </html>
