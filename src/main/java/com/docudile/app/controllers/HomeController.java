@@ -40,6 +40,13 @@ public class HomeController {
         return mv;
     }
 
+    @RequestMapping("/home/**")
+    public ModelAndView navigateHomeFolders(Principal principal) {
+        ModelAndView mv = new ModelAndView("home");
+        mv.addObject("nodes", fileSystemService.getRootFolders(userDao.show(principal.getName()).getId()));
+        return mv;
+    }
+
     @RequestMapping(value = "/upload-documents", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<UploadResponseDto> uploadDoc(@RequestParam("document") MultipartFile document, Principal principal) {
         return homeService.uploadDoc(document, principal.getName());

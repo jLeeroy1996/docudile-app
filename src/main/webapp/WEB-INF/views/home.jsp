@@ -198,11 +198,11 @@
             <div class="col-sm-2 dd-navtree">
                 <ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree" data-nav-tree-expanded="fa fa-folder-open-o" data-nav-tree-collapsed="fa fa-folder-o">
                     <li>
-                        <a href="#">Docudile</a>
+                        <a href="!#" data-name="">Docudile</a>
                         <ul class="nav nav-pills nav-stacked nav-tree">
                             <c:forEach items="${nodes}" var="node" >
                                 <c:set var="node" value="${node}" scope="request"/>
-                                <c:set var="link" value="home/${node.name}" scope="request"/>
+                                <c:set var="link" value="" scope="request"/>
                                 <jsp:include page="get-files.jsp" />
                             </c:forEach>
                         </ul>
@@ -260,5 +260,6 @@
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
 <script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
 <script rel="script" src="${"/resources/js/custom.js"}"></script>
+<script rel="script" src="${"/resources/js/history.js"}"></script>
 </body>
 </html>
