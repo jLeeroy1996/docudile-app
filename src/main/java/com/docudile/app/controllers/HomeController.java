@@ -34,9 +34,6 @@ public class HomeController {
     @Autowired
     FileSystemService fileSystemService;
 
-    @Autowired
-    TesseractService tesseractService;
-
     @RequestMapping("/home")
     public ModelAndView goHome(Principal principal) {
         ModelAndView mv = new ModelAndView("home");

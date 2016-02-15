@@ -8,6 +8,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.FileOutputStream;
 
 /**
@@ -17,18 +18,21 @@ import java.io.FileOutputStream;
 @Transactional
 public class DocxServiceImpl implements DocxService {
 
-    public void createDocx(String input, String filename) {
-        String basename = FilenameUtils.getBaseName(filename) + ".docx";
+    public File createDocx(String input, String filename) {
+        String filepath = FilenameUtils.getBaseName(filename) + ".docx";
+        File file = new File(filepath);
         XWPFDocument document = new XWPFDocument();
         XWPFParagraph paragraph = document.createParagraph();
         XWPFRun run = paragraph.createRun();
         run.setText(input);
         try {
-            FileOutputStream output = new FileOutputStream(filename);
+            FileOutputStream output = new FileOutputStream(file);
             document.write(output);
             output.close();
+            return file;
         } catch (Exception e) {
                 e.printStackTrace();
         }
+        return null;
     }
 }
