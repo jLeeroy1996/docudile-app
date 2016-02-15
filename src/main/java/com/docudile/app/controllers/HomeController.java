@@ -5,6 +5,7 @@ import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.UploadResponseDto;
 import com.docudile.app.services.FileSystemService;
 import com.docudile.app.services.HomeService;
+import com.docudile.app.services.TesseractService;
 import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,9 @@ public class HomeController {
     @Autowired
     FileSystemService fileSystemService;
 
+    @Autowired
+    TesseractService tesseractService;
+
     @RequestMapping("/home")
     public ModelAndView goHome(Principal principal) {
         ModelAndView mv = new ModelAndView("home");
@@ -49,6 +53,7 @@ public class HomeController {
 
     @RequestMapping(value = "/upload-documents", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<UploadResponseDto> uploadDoc(@RequestParam("document") MultipartFile document, Principal principal) {
+
         return homeService.uploadDoc(document, principal.getName());
     }
 

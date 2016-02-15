@@ -4,6 +4,7 @@ import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.UploadResponseDto;
 import com.docudile.app.services.HomeService;
 import com.docudile.app.services.FileSystemService;
+import com.docudile.app.services.TesseractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,9 @@ public class HomeServiceImpl implements HomeService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private TesseractService tesseractService;
 
     public ResponseEntity<UploadResponseDto> uploadDoc(MultipartFile document, String username) {
         UploadResponseDto response = new UploadResponseDto();
