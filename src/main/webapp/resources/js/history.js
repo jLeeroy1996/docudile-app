@@ -10,6 +10,10 @@ container.addEventListener('click', function (e) {
         var data = e.target.getAttribute('data-name'),
             url = "/home" + data,
             folder = e.target.getAttribute('data-folder');
+        if(data == "") {
+            e.preventDefault();
+            window.location.href="/home";
+        }
         history.pushState(data, null, url);
         updateFilebox(folder);
     }
@@ -17,8 +21,9 @@ container.addEventListener('click', function (e) {
 }, false);
 
 $(document).ready(function() {
-   $("#dd-filebox-id").children("tr").children("td").click(function () {
-       $(this.parentNode).toggleClass("active");
+   $("#dd-filebox-table").children("tbody").children("tr").on('click', function () {
+       $(this).toggleClass("active");
+       console.log("asdfsdf");
    });
 });
 
@@ -47,7 +52,7 @@ function updateFilebox(getFilesUrl) {
                 if (inside.childFolders.length == 0 && inside.files.length == 0) {
                     icon = '/resources/img/folder-empty.png';
                 }
-                var tablerow = '<tr data-name="/get-files?folderId=' + inside.id + '" data-folder="folderId=' + inside.id + '" ondblclick="myDblClick(' + inside.id + ')">' +
+                var tablerow = '<tr class="dd-file-row" data-name="/get-files?folderId=' + inside.id + '" data-folder="folderId=' + inside.id + '" ondblclick="myDblClick(' + inside.id + ')">' +
                     '<td ><img src="' + icon + '" class="dd-row-icon" /> ' + inside.name + "</td>" +
                     '<td class="dd-row-details">me</td>' +
                     '<td class="dd-row-details">Feb 14, 2015</td>' +
@@ -55,7 +60,7 @@ function updateFilebox(getFilesUrl) {
                 $('#dd-filebox-id').append(tablerow);
             });
             $.each(response.files, function (key, inside) {
-                var tablerow = "<tr>" +
+                var tablerow = '<tr class="dd-file-row">' +
                     '<td><img src="/resources/img/file-icon.png" class="dd-row-icon" /> ' + inside.filename + "</td>" +
                     '<td class="dd-row-details">me</td>' +
                     '<td class="dd-row-details">Feb 14, 2015</td>' +

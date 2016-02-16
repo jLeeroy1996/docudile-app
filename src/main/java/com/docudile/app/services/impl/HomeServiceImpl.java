@@ -31,7 +31,7 @@ public class HomeServiceImpl implements HomeService {
     public ResponseEntity<UploadResponseDto> uploadDoc(MultipartFile document, String username) {
         UploadResponseDto response = new UploadResponseDto();
         if (!document.isEmpty()) {
-            fileSystemService.storeFile(document, "Memo/Hello", userDao.show(username).getId());
+            fileSystemService.storeFile(document, "Memo/2016/Excuse/", userDao.show(username).getId());
             response.setMessage("document_uploaded_successfully");
             return new ResponseEntity<UploadResponseDto>(response, HttpStatus.OK);
         }

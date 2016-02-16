@@ -185,12 +185,12 @@
 
             </div>
             <div class="col-sm-7">
-                <ol class="breadcrumb">
-                    <li><a href="#">Docudile</a></li>
-                    <li><a href="#">Memo</a></li>
-                    <li class="active"><a href="#">2016</a></li>
-                    <li class="active">MOA</li>
-                </ol>
+                <%--<ol class="breadcrumb">--%>
+                    <%--<li><a href="#">Docudile</a></li>--%>
+                    <%--<li><a href="#">Memo</a></li>--%>
+                    <%--<li class="active"><a href="#">2016</a></li>--%>
+                    <%--<li class="active">MOA</li>--%>
+                <%--</ol>--%>
             </div>
             <div class="col-sm-3">
 
@@ -202,7 +202,7 @@
             <div class="col-sm-2 dd-navtree">
                 <ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree" data-nav-tree-expanded="fa fa-folder-open-o" data-nav-tree-collapsed="fa fa-folder-o">
                     <li>
-                        <a href="!#" data-name="">Docudile</a>
+                        <a href="/home" data-name="" data-folder="">Docudile</a>
                         <ul class="nav nav-pills nav-stacked nav-tree">
                             <c:forEach items="${nodes}" var="node" >
                                 <c:set var="node" value="${node}" scope="request"/>
@@ -214,7 +214,7 @@
                 </ul>
             </div>
             <div class="col-sm-7 dd-filebox">
-                <table class="table table-hover">
+                <table class="table table-hover" id="dd-filebox-table">
                     <thead>
                     <tr>
                         <th class="col-sm-6">Name</th>
@@ -224,12 +224,14 @@
                     </tr>
                     </thead>
                     <tbody id="dd-filebox-id">
-                    <tr>
-                        <td><img src="${"/resources/img/folder-filled.png"}" class="dd-row-icon" /> 021416 Moa.docx</td>
-                        <td class="dd-row-details">me</td>
-                        <td class="dd-row-details">Feb 14, 2015</td>
-                        <td class="dd-row-details"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                    </tr>
+                    <c:forEach items="${nodes}" var="node" >
+                        <tr data-name="/get-files?folderId=${node.id}" data-folder="folderId=${node.id}" ondblclick="myDblClick(${node.id})">
+                            <td><img src="${"/resources/img/folder-filled.png"}" class="dd-row-icon" /> ${node.name}</td>
+                            <td class="dd-row-details">me</td>
+                            <td class="dd-row-details">Feb 14, 2015</td>
+                            <td class="dd-row-details"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                        </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>
