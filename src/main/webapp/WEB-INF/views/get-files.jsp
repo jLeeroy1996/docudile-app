@@ -8,8 +8,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <li>
-    <a href="${link}/${node.name}" data-name="${link}/${node.name}">${node.name}</a>
-    <c:set var="link" value="${link}/${node.name}" scope="request" />
+    <a href="./get-files?folderId=${node.id}" data-name="/get-files?folderId=${node.id}" data-folder="folderId=${node.id}">${node.name}</a>
 
     <c:if test="${fn:length(node.childFolders) gt 0}">
         <ul class="nav nav-pills nav-stacked nav-tree">

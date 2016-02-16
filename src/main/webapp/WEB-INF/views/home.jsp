@@ -19,6 +19,10 @@
           href="${"/resources/img/logo.png"}">
 </head>
 <body>
+
+<c:set var="folder-empty" value="${'/resources/img/folder-empty.png'}" />
+<c:set var="folder-filled" value="${'/resources/img/folder-filled.png'}" />
+
 <header>
     <nav class="navbar dd-home-navbar">
         <div class="container-fluid">
@@ -210,7 +214,7 @@
                 </ul>
             </div>
             <div class="col-sm-7 dd-filebox">
-                <table class="table table-striped">
+                <table class="table table-hover">
                     <thead>
                     <tr>
                         <th class="col-sm-6">Name</th>
@@ -221,28 +225,10 @@
                     </thead>
                     <tbody id="dd-filebox-id">
                     <tr>
-                        <td><i class="fa fa-file-image-o"></i> 021416 Moa.docx</td>
-                        <td>me</td>
-                        <td>Feb 14, 2015</td>
-                        <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td><i class="fa fa-file-image-o"></i> 021416 Moa.docx</td>
-                        <td>me</td>
-                        <td>Feb 14, 2015</td>
-                        <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td><i class="fa fa-file-image-o"></i> 021416 Moa.docx</td>
-                        <td>me</td>
-                        <td>Feb 14, 2015</td>
-                        <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td><i class="fa fa-file-image-o"></i> 021416 Moa.docx</td>
-                        <td>me</td>
-                        <td>Feb 14, 2015</td>
-                        <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                        <td><img src="${"/resources/img/folder-filled.png"}" class="dd-row-icon" /> 021416 Moa.docx</td>
+                        <td class="dd-row-details">me</td>
+                        <td class="dd-row-details">Feb 14, 2015</td>
+                        <td class="dd-row-details"><a href="#"><i class="fa fa-trash-o"></i></a></td>
                     </tr>
                     </tbody>
                 </table>

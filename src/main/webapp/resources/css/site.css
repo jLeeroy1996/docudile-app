@@ -123,3 +123,20 @@ ul.nav-tree ul.nav-tree {
 .dd-search {
     margin-left: 87px;
 }
+
+.dd-row-icon {
+    height: 40px;
+    margin-right: 9px;
+}
+
+.dd-row-details {
+    padding-top: 15px !important;
+}
+
+.table th, .table td {
+    border-top: none !important;
+}
+
+#dd-filebox-id > tr.active {
+    background: #AAB2BD !important;
+}

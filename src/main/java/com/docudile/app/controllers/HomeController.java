@@ -56,7 +56,7 @@ public class HomeController {
         return homeService.uploadDoc(document, principal.getName());
     }
 
-    @RequestMapping(value = "/get-files", method = RequestMethod.GET)
+    @RequestMapping(value = "/home/get-files", method = RequestMethod.GET)
     public @ResponseBody FolderShowDto getFiles(Principal principal, Integer folderId) {
         FolderShowDto folder = fileSystemService.getFolder(folderId, userDao.show(principal.getName()).getId());
         return folder;
