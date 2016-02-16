@@ -2,6 +2,8 @@ package com.docudile.app.controllers;
 
 import com.docudile.app.data.dao.FolderDao;
 import com.docudile.app.data.dao.UserDao;
+import com.docudile.app.data.dto.FileShowDto;
+import com.docudile.app.data.dto.FolderShowDto;
 import com.docudile.app.data.dto.UploadResponseDto;
 import com.docudile.app.services.FileSystemService;
 import com.docudile.app.services.HomeService;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Created by franc on 2/6/2016.
@@ -50,21 +53,13 @@ public class HomeController {
 
     @RequestMapping(value = "/upload-documents", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<UploadResponseDto> uploadDoc(@RequestParam("document") MultipartFile document, Principal principal) {
-
         return homeService.uploadDoc(document, principal.getName());
     }
 
     @RequestMapping(value = "/get-files", method = RequestMethod.GET)
-    public String getFiles(Principal principal) {
-        return "get-files";
+    public @ResponseBody FolderShowDto getFiles(Principal principal, Integer folderId) {
+        FolderShowDto folder = fileSystemService.getFolder(folderId, userDao.show(principal.getName()).getId());
+        return folder;
     }
-
-//    @RequestMapping(value = "/new-type", method = RequestMethod.POST)
-//    public @ResponseBody ResponseEntity<UploadResponseDto> submitNewType(
-//            @RequestParam("sampleDocuments") MultipartFile[] documents,
-//            @RequestParam("typeName") String typeName,
-//            Principal principal) {
-//
-//    }
 
 }
