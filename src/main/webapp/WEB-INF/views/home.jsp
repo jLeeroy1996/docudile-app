@@ -219,7 +219,7 @@
                         <th class="col-sm-2"></th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="dd-filebox-id">
                     <tr>
                         <td><i class="fa fa-file-image-o"></i> 021416 Moa.docx</td>
                         <td>me</td>

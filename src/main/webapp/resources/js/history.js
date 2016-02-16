@@ -7,10 +7,16 @@ container.addEventListener('click', function(e) {
     if (e.target != e.currentTarget) {
         e.preventDefault();
         // e.target is the image inside the link we just clicked.
-
         var data = e.target.getAttribute('data-name'),
             url = "/home" + data;
         history.pushState(data, null, url);
     }
     e.stopPropagation();
 }, false);
+
+container.addEventListener('click', function(e) {
+    var folder = e.target.getAttribute('data-name');
+    if(folder != null) {
+
+    }
+});
