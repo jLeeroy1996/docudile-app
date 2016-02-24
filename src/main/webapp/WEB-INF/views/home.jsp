@@ -185,12 +185,12 @@
 
             </div>
             <div class="col-sm-7">
-                <%--<ol class="breadcrumb">--%>
-                    <%--<li><a href="#">Docudile</a></li>--%>
-                    <%--<li><a href="#">Memo</a></li>--%>
-                    <%--<li class="active"><a href="#">2016</a></li>--%>
-                    <%--<li class="active">MOA</li>--%>
-                <%--</ol>--%>
+                <ol class="breadcrumb">
+                    <li><a href="#">Docudile</a></li>
+                    <li><a href="#">Memo</a></li>
+                    <li class="active"><a href="#">2016</a></li>
+                    <li class="active">MOA</li>
+                </ol>
             </div>
             <div class="col-sm-3">
 

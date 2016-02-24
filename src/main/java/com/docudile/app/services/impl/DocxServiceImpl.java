@@ -2,6 +2,7 @@ package com.docudile.app.services.impl;
 
 import com.docudile.app.services.DocxService;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -9,7 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by PaulRyan on 2/16/2016.
@@ -32,6 +36,23 @@ public class DocxServiceImpl implements DocxService {
             return file;
         } catch (Exception e) {
                 e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<String> readDocx(File file) {
+        XWPFWordExtractor extractor = null;
+        try {
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+            XWPFDocument document = new XWPFDocument(fis);
+            extractor = new XWPFWordExtractor(document);
+            String words = extractor.getText();
+            String[] wordArray = words.split(" ");
+            List<String> wordList = Arrays.asList(wordArray);
+            return wordList;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
