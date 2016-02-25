@@ -2,11 +2,14 @@ package com.docudile.app.services.impl;
 
 import com.docudile.app.data.dao.CategoryDao;
 import com.docudile.app.data.dao.FileDao;
+import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.CategoryDto;
 import com.docudile.app.data.dto.FileContentDto;
 import com.docudile.app.data.dto.WordListDto;
 import com.docudile.app.data.entities.Category;
+import com.docudile.app.data.entities.User;
 import com.docudile.app.services.ContentClassificationService;
+import com.docudile.app.services.DropboxService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -32,26 +35,48 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     @Autowired
     private FileDao fileDao;
 
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private DropboxService dropboxService;
+
     public boolean train(Integer userID) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         WordListDto wordList = null;
-        List<FileContentDto> files = null;
+        List<FileContentDto> fileDto = null;
+        List<com.docudile.app.data.entities.File> file = null;
         CategoryDto category = new CategoryDto();
+        FileContentDto fileContentDto = new FileContentDto();
         List<CategoryDto> categoriesDto = null;
+
 
         //get Categories from DB
         List<Category> categories = categoryDao.getCategories(userID);
 
         for(int x = 0; x<categories.size();x++){
+            //instantiate a Category Class ( new Category(categoryName,fileCount) )
             category.setName(categories.get(x).getCategoryName());
             category.setFileCount(fileDao.numberOfFiles(categories.get(x).getId()));
+            category.setCategoryID(categories.get(x).getId());
+            //add it into List<Category> categories
             categoriesDto.add(category);
         }
 
-        //instantiate a Category Class ( new Category(categoryName,fileCount) )
-        //add it into List<Category> categories
+        //get Access Token
+        User user = userDao.getUserDetails(userID);
+
 
         //get Files from each Category in DropBox
+        file = fileDao.getSpecificFiles(userID);
+
+        // convert to FileContentDto
+        for(int x = 0;x<file.size();x++){
+//            fileContentDto.setFilePath(file.get(x).get);
+
+        }
+
+
         //foreach files in the category, open the documents, split the words within the documents, put into List<String>
         //instantiate a Files class ( new Files(filePath,category,List<String> )
         //add it into List<Files> files
@@ -59,11 +84,11 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         //get wordList in DB
 
         //get updated wordList
-        wordList = getDistinctWords(files,wordList);
+        wordList = getDistinctWords(fileDto,wordList);
         //end
 
         //count words
-        categoriesDto = countWords(files,wordList,categoriesDto);
+        categoriesDto = countWords(fileDto,wordList,categoriesDto);
         //end
         mapper.writeValue(new File("D://"),categoriesDto);
         //get vectors

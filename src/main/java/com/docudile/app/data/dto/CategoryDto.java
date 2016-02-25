@@ -5,9 +5,10 @@ import java.io.Serializable;
 /**
  * Created by cicct on 2/10/2016.
  */
-public class CategoryDto implements Serializable{
+public class CategoryDto implements Serializable {
 
     private String name;
+    private int categoryID;
     private int fileCount;
     private int wordCount = 0;
     private String[][] wordList;
@@ -44,7 +45,15 @@ public class CategoryDto implements Serializable{
         this.wordCount = wordCount;
     }
 
-    public void addWordCount(){
+    public void addWordCount() {
         this.wordCount++;
+    }
+
+    public int getCategoryID() {
+        return categoryID;
+    }
+
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
     }
 }

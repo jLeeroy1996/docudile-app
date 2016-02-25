@@ -19,4 +19,10 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         return (User) query.uniqueResult();
     }
 
+    public User getUserDetails(Integer userID) {
+        Query query = getCurrentSession().createQuery("from User u where u.id = :userID");
+        query.setParameter("userID", userID);
+        return (User) query.uniqueResult();
+    }
+
 }
