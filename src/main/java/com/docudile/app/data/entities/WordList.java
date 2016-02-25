@@ -8,8 +8,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "wordLists")
-@org.hibernate.annotations.Table(appliesTo = "wordLists", indexes = {@org.hibernate.annotations.Index(name="idx",columnNames ={"word"})})
+@Table(name = "wordLists", indexes = {@Index(name = "idx", columnList = "word")})
 public class WordList
 {
 

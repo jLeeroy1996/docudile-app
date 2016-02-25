@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Repository("wordListDocument")
 @Transactional
-public class WordListDocumentDaoImpl extends GenericDaoImpl implements WordListDocumentDao {
+public class WordListDocumentDaoImpl extends GenericDaoImpl<WordListDocument> implements WordListDocumentDao {
     public List<WordListDocument> getID(List<File> documentID, Integer wordListID) {
         Query query;
         List<WordListDocument> wordListDocumentList = new ArrayList<WordListDocument>();
