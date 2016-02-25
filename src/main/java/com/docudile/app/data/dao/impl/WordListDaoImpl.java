@@ -6,6 +6,8 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by cicct on 2/25/2016.
  */
@@ -19,4 +21,20 @@ public class WordListDaoImpl extends GenericDaoImpl<WordList> implements WordLis
         query.setParameter("word",word);
         return (WordList) query.uniqueResult();
     }
+
+    public List<String> getWords() {
+
+        List<String> words = null;
+        Query query = getCurrentSession().createQuery("from WordList");
+        List<WordList> wlWords = query.list();
+
+        for(int x = 0;x<wlWords.size();x++){
+            String word = wlWords.get(x).getWord();
+            words.add(word);
+        }
+
+        return words;
+    }
+
+
 }
