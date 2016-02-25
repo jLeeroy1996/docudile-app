@@ -45,4 +45,43 @@ $(document).on('ready', function() {
     $("#train-structure").select2({
         data: [{id: 0, text: "OBE"}, {id: 1, text: "LOL"}, {id: 2, text: "DEAR"}, {id: 3, text: "DEAR"}, {id: 4, text: "DEAR"}, {id: 5, text: "DEAR"}, {id: 6, text: "DEAR"}, {id: 7, text: "DEAR"}]
     });
+    var json = '[' +
+        '{' +
+        '"text": "Parent 1",' +
+        '"nodes": [' +
+        '{' +
+        '"text": "Child 1",' +
+        '"nodes": [' +
+        '{' +
+        '"text": "Grandchild 1"' +
+        '},' +
+        '{' +
+        '"text": "Grandchild 2"' +
+        '}' +
+        ']' +
+        '},' +
+        '{' +
+        '"text": "Child 2"' +
+        '}' +
+        ']' +
+        '},' +
+        '{' +
+        '"text": "Parent 2"' +
+        '},' +
+        '{' +
+        '"text": "Parent 3"' +
+        '},' +
+        '{' +
+        '"text": "Parent 4"' +
+        '},' +
+        '{' +
+        '"text": "Parent 5"' +
+        '}' +
+        ']';
+    $("#treeview").treeview({
+        collapseIcon: "glyphicon glyphicon-folder-open",
+        expandIcon: "glyphicon glyphicon-folder-close",
+        emptyIcon: "glyphicon glyphicon-folder-close",
+        data: json
+    });
 });

@@ -12,10 +12,7 @@ import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,6 +23,7 @@ import java.util.List;
  * Created by franc on 2/6/2016.
  */
 @Controller
+@RequestMapping("/home")
 public class HomeController {
 
     @Autowired
@@ -37,18 +35,9 @@ public class HomeController {
     @Autowired
     FileSystemService fileSystemService;
 
-    @RequestMapping("/home")
-    public ModelAndView goHome(Principal principal) {
-        ModelAndView mv = new ModelAndView("home");
-        mv.addObject("nodes", fileSystemService.getRootFolders(userDao.show(principal.getName()).getId()));
-        return mv;
-    }
-
-    @RequestMapping("/home/**")
-    public ModelAndView navigateHomeFolders(Principal principal) {
-        ModelAndView mv = new ModelAndView("home");
-        mv.addObject("nodes", fileSystemService.getRootFolders(userDao.show(principal.getName()).getId()));
-        return mv;
+    @RequestMapping()
+    public String goHome(Principal principal) {
+        return "home";
     }
 
     @RequestMapping(value = "/upload-documents", method = RequestMethod.POST)
@@ -56,8 +45,11 @@ public class HomeController {
         return homeService.uploadDoc(document, principal.getName());
     }
 
-    @RequestMapping(value = "/home/get-files", method = RequestMethod.GET)
-    public @ResponseBody FolderShowDto getFiles(Principal principal, Integer folderId) {
+    @RequestMapping(value = "/tree")
+    public @ResponseBody
+
+    @RequestMapping(value = "/folder/{id}")
+    public @ResponseBody FolderShowDto getFiles(@PathVariable("id") Integer folderId, Principal principal) {
         FolderShowDto folder = fileSystemService.getFolder(folderId, userDao.show(principal.getName()).getId());
         return folder;
     }

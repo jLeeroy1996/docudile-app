@@ -1,25 +1,6 @@
 /**
  * Created by PaulRyan on 2/15/2016.
  */
-var container = document.querySelector('.dd-navtree');
-
-container.addEventListener('click', function (e) {
-    if (e.target != e.currentTarget) {
-        e.preventDefault();
-        // e.target is the image inside the link we just clicked.
-        var data = e.target.getAttribute('data-name'),
-            url = "/home" + data,
-            folder = e.target.getAttribute('data-folder');
-        if(data == "") {
-            e.preventDefault();
-            window.location.href="/home";
-        }
-        history.pushState(data, null, url);
-        updateFilebox(folder);
-    }
-    e.stopPropagation();
-}, false);
-
 $(document).ready(function() {
    $("#dd-filebox-table").children("tbody").children("tr").on('click', function () {
        $(this).toggleClass("active");

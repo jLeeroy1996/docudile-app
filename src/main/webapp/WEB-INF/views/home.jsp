@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="${"/resources/css/bootstrap.min.css"}">
     <link rel="stylesheet" href="${"/resources/bootflat/css/bootflat.css"}">
+    <link rel="stylesheet" href="${"/resources/treeview/bootstrap-treeview.min.js"}">
     <link rel="stylesheet" href="${"/resources/css/bootstrap-treenav.css"}">
     <link rel="stylesheet" href="${"/resources/fonts/font-awesome/css/font-awesome.min.css"}">
     <link rel="stylesheet" href="${"/resources/css/site.css"}">
@@ -200,7 +201,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-2 dd-navtree">
-                <ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree" data-nav-tree-expanded="fa fa-folder-open-o" data-nav-tree-collapsed="fa fa-folder-o">
+                <%--<ul class="nav nav-pills nav-stacked nav-tree" id="myTree" data-toggle="nav-tree" data-nav-tree-expanded="fa fa-folder-open-o" data-nav-tree-collapsed="fa fa-folder-o">
                     <li>
                         <a href="/home" data-name="" data-folder="">Docudile</a>
                         <ul class="nav nav-pills nav-stacked nav-tree">
@@ -211,7 +212,8 @@
                             </c:forEach>
                         </ul>
                     </li>
-                </ul>
+                </ul>--%>
+                <div id="treeview"></div>
             </div>
             <div class="col-sm-7 dd-filebox">
                 <table class="table table-hover" id="dd-filebox-table">
@@ -243,6 +245,7 @@
 </main>
 <script rel="script" src="${"/resources/js/jquery-2.1.3.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
+<script rel="script" src="${"/resources/treeview/bootstrap-treeview.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap-treenav.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
