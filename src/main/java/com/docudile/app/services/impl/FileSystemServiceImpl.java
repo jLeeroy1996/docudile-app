@@ -100,6 +100,15 @@ public class FileSystemServiceImpl implements FileSystemService {
         return null;
     }
 
+    public String download(Integer id, Integer userId) {
+        File file = fileDao.show(id);
+        if (file.getUser().getId() == userId) {
+            String filepath = getPath(file.getFolder()) + "/" + file.getFilename();
+            return dropboxService.getFile(filepath, userDao.show(userId).getDropboxAccessToken());
+        }
+        return null;
+    }
+
     private String getPath(Folder folder) {
         return getPath(folder, "");
     }

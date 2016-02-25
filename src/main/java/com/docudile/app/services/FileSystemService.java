@@ -22,4 +22,6 @@ public interface FileSystemService {
 
     public FolderShowDto getFolder(Integer id, Integer userId);
 
+    public String download(Integer id, Integer userId);
+
 }
