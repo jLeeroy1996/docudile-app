@@ -32,7 +32,7 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private WordListDocumentDao wordListDocumentDao;
 
-    public void search(Integer userId, String searchString) {
+    public Set<WordListDocument> search(Integer userId, String searchString) {
         Set<WordListDocument> documentID = new TreeSet();
         List<File> files = fileDao.getSpecificFiles(userId);
         List<WordListDocument> documents = null;
@@ -44,5 +44,6 @@ public class SearchServiceImpl implements SearchService {
             documents = wordListDocumentDao.getID(files, wordList.getId());
             documentID.addAll(documents);
         }
+        return documentID;
     }
 }
