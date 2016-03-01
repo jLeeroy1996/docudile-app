@@ -12,5 +12,4 @@ public interface FileDao extends GenericDao<File> {
     public Integer numberOfFiles(Integer categoryID);
 
     public List<File> getSpecificFiles(Integer userID);
-
 }

@@ -12,4 +12,6 @@ public interface CategoryDao extends GenericDao<Category> {
 
     public List<Category> getCategories(Integer userId);
 
+    public Category getCategory(Integer userID);
+
 }

@@ -1,15 +1,11 @@
 package com.docudile.app.services.impl;
 
-import com.docudile.app.data.dao.CategoryDao;
-import com.docudile.app.data.dao.FileDao;
-import com.docudile.app.data.dao.UserDao;
-import com.docudile.app.data.dao.WordListDao;
+import com.docudile.app.data.dao.*;
+import com.docudile.app.data.dao.impl.WordListDocumentDaoImpl;
 import com.docudile.app.data.dto.CategoryDto;
 import com.docudile.app.data.dto.FileContentDto;
 import com.docudile.app.data.dto.WordListDto;
-import com.docudile.app.data.entities.Category;
-import com.docudile.app.data.entities.User;
-import com.docudile.app.data.entities.WordList;
+import com.docudile.app.data.entities.*;
 import com.docudile.app.services.ContentClassificationService;
 import com.docudile.app.services.DocxService;
 import com.docudile.app.services.DropboxService;
@@ -50,6 +46,9 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
     @Autowired
     private WordListDao wordListDao;
+
+    @Autowired
+    private WordListCategoryDao wordListCategoryDao;
 
     public boolean train(Integer userID) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -117,9 +116,16 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         float[][] wordListVectors = calculateNaiveBayes(wordList, categoriesDto);
         //end
 
-
+        WordListCategory wordListCategory = new WordListCategory();
         //put to DB si wordListVectors
-
+        for(int x = 0;x<wordListVectors.length;x++){
+            for(int y = 0;y<wordListVectors[0].length;y++){
+                wordListCategory.setWordList(wordListDao.getID(wordList.getWordList().get(x)));
+                wordListCategory.setCategory(categoryDao.getCategory(categoriesDto.get(y).getCategoryID()));
+                wordListCategory.setCount(wordListVectors[x][y]);
+                wordListCategoryDao.create(wordListCategory);
+            }
+        }
         return false;
     }
 
@@ -195,13 +201,34 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         return wordListVectors;
     }
 
-    public String categorize(List<String> words) {
+    public Integer categorize(com.docudile.app.data.entities.File f, List<String> words, Integer userID, String filename) {
         List<CategoryDto> categories = null;
         //get data from DB Category
+        List<Category> categoryList = categoryDao.getCategories(userID);
+        float[] categoryVectors = new float[categories.size()];
+
+        CategoryDto categoryDto = new CategoryDto();
+        for(int x = 0;x<categoryList.size();x++){
+            categoryDto.setName(categoryList.get(x).getCategoryName());
+            categoryDto.setFileCount(fileDao.numberOfFiles(categoryList.get(x).getId()));
+            categoryDto.setCategoryID(categoryList.get(x).getId());
+            categories.add(categoryDto);
+        }
         //instantiate a Category Class ( new Category(categoryName,fileCount) )
         //add Categories in List<Category> categories
         int totalFiles = 0;
-        float[] categoryVectors = new float[categories.size()];
+
+        WordListDto wordList = null;
+        wordList.setWordList(wordListDao.getWords());
+        wordList.setCount(wordListDao.getWords().size());
+
+        FileContentDto fileContentDto = null;
+        fileContentDto.setWordList(words);
+        fileContentDto.setFileName(filename);
+
+        wordList = getDistinctWords((List<FileContentDto>) fileContentDto,wordList);
+
+
 
         for (int x = 0; x < categories.size(); x++) {
             totalFiles += categories.get(x).getFileCount();
@@ -211,9 +238,29 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             categoryVectors[x] = categories.get(x).getFileCount() / totalFiles;
         }
 
+        for(int x = 0;x<words.size();x++){
+            for(int y = 0;y<categoryVectors.length;y++) {
+                categoryVectors[y] *= wordListCategoryDao.getVector(categoryList.get(y).getId(), words.get(x));
+            }
+        }
 
-        return "";
+
+        categoryDto = categories.get(0);
+        float temp = categoryVectors[0];
+        for(int x = 0;x<categoryVectors.length;x++){
+            if(categoryVectors[x] <   temp){
+                categoryDto = categories.get(x);
+                temp = categoryVectors[x];
+            }
+        }
+
+        f.setCategory(categoryDao.show(categoryDto.getCategoryID()));
+        fileDao.create(f);
+
+        getCount((List<FileContentDto>) f, wordList, f.getId());
+        return categoryDto.getCategoryID();
     }
+
 
     public String readDocxFile(String fileName) {
         String sentence = "";
@@ -234,6 +281,33 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             e.printStackTrace();
         }
         return sentence;
+    }
+
+    private void getCount(List<FileContentDto> files, WordListDto wordList, Integer fileID){
+        String[][] wordCount = new String[wordList.getWordList().size()][2];
+        WordListDocument wordListDocument = null;
+        WordListDocumentDaoImpl wordListDocumentDao = null;
+
+        for(int x = 0;x<wordList.getWordList().size();x++){
+            wordCount[x][0] = wordList.getWordList().get(x);
+            wordCount[x][1] = "0";
+
+        }
+        for(int x = 0;x<files.get(0).getWordList().size();x++){
+            for(int y = 0;y<wordCount.length;y++){
+                if(wordCount[y][0].equalsIgnoreCase(files.get(0).getWordList().get(x))){
+                    wordCount[y][1] = ((Integer.parseInt(wordCount[y][1])+1)) + "";
+                }
+
+            }
+        }
+        for(int x = 0;x<wordCount.length;x++){
+            wordListDocument.setWordList(wordListDao.show(wordListDao.getID(wordCount[x][0]).getId()));
+            wordListDocument.setFile(fileDao.show(fileID));
+            wordListDocument.setVectorCount(Integer.parseInt(wordCount[x][1]));
+            wordListDocumentDao.create(wordListDocument);
+        }
+
     }
 
 }

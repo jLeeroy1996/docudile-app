@@ -20,4 +20,10 @@ public class CategoryDaoImpl extends GenericDaoImpl<Category> implements Categor
         query.setParameter("userId", userId);
         return query.list();
     }
+
+    public Category getCategory(Integer categoryID) {
+        Query query = getCurrentSession().createQuery("from Category f where f.category.id = :categoryID");
+        query.setParameter("categoryID", categoryID);
+        return (Category) query.uniqueResult();
+    }
 }

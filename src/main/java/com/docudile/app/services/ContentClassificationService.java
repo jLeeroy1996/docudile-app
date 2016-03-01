@@ -20,7 +20,7 @@ public interface ContentClassificationService {
 
     public float[][] calculateNaiveBayes(WordListDto wordList, List<CategoryDto> categories);
 
-    public String categorize(List<String> words);
+    public Integer categorize(com.docudile.app.data.entities.File f, List<String> words, Integer userID, String filename);
 
     public String readDocxFile(String filename);
 
