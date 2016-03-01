@@ -23,7 +23,6 @@
 
 body {
     font-family: "Work sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    padding-top: 10px;
 }
 
 .dd-home-navbar-logo img {
@@ -51,6 +50,8 @@ body {
     background-color: #fff;
     color: #2d3238;
 }
+
+
 
 .dd-brand {
     color: #2d3238;
