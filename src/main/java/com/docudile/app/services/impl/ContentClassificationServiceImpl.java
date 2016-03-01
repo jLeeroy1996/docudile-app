@@ -9,6 +9,7 @@ import com.docudile.app.data.dto.FileContentDto;
 import com.docudile.app.data.dto.WordListDto;
 import com.docudile.app.data.entities.Category;
 import com.docudile.app.data.entities.User;
+import com.docudile.app.data.entities.WordList;
 import com.docudile.app.services.ContentClassificationService;
 import com.docudile.app.services.DocxService;
 import com.docudile.app.services.DropboxService;
@@ -123,6 +124,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     }
 
     public WordListDto getDistinctWords(List<FileContentDto> files, WordListDto list) {
+        WordList word = new WordList();
         List<String> wordListWords = list.getWordList();
         for (int x = 0; x < files.size(); x++) {
             List<String> words = files.get(x).getWordList();
@@ -130,7 +132,8 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                 for (int z = 0; z < wordListWords.size(); z++) {
                     if (!(words.get(y).equalsIgnoreCase(wordListWords.get(z)))) {
                         wordListWords.add(words.get(y));
-
+                        word.setWord(words.get(y));
+                        wordListDao.create(word);
                     }
                 }
             }

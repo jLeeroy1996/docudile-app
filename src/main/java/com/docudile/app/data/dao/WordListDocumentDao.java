@@ -8,6 +8,6 @@ import java.util.List;
 /**
  * Created by cicct on 2/25/2016.
  */
-public interface WordListDocumentDao {
+public interface WordListDocumentDao extends GenericDao<WordListDocument>{
     public List<WordListDocument> getID(List<File> documentID, Integer wordListID);
 }

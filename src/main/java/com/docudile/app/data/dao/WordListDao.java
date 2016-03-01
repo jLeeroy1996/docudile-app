@@ -8,7 +8,7 @@ import java.util.List;
  * Created by cicct on 2/25/2016.
  */
 
-public interface WordListDao {
+public interface WordListDao extends GenericDao<WordList>{
 
     public WordList getID(String word);
 
