@@ -75,7 +75,7 @@ body {
 }
 
 .dd-navtree {
-    height: 82vh;
+    height: 84vh;
     padding: 0;
     background: #F5F7FA;
     border-right: 1px solid #d0d4d9;
@@ -84,7 +84,7 @@ body {
 
 .dd-filebox {
     padding: 0;
-    height: 82vh;
+    height: 84vh;
     overflow-y: scroll;
 }
 

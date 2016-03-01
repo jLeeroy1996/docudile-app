@@ -31,6 +31,16 @@ public class UserController {
         return registrationService.registerStart(user, request);
     }
 
+    @RequestMapping("/setup/year")
+    public String goSetupYear() {
+        return "setup-year";
+    }
+
+    @RequestMapping("/setup/data")
+    public String goSetupData() {
+        return "setup-data";
+    }
+
     @RequestMapping(value = "/dropbox-auth-finish")
     public String dropboxFinish(HttpServletRequest request) {
         return registrationService.registerFinish(request);

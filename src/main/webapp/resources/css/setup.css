@@ -1,0 +1,33 @@
+header {
+    color: white;
+}
+
+.dd-brand {
+    color: white;
+}
+
+.dd-nav-links > li {
+    border: 1px solid white;
+    border-radius: 4px;
+}
+
+.dd-nav-links > li > a {
+    color: white;
+}
+
+.dd-setup-btn {
+    border-color: white;
+    background: transparent;
+}
+
+.dd-select {
+    color: #2d3238;
+}
+
+.bootstrap-tagsinput{
+    display: block !important;
+}
+
+.dd-cat-table-box {
+    min-height: 300px;
+}
