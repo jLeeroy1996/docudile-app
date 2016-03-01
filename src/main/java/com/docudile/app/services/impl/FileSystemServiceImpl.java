@@ -17,7 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
 /**
  * Created by franc on 2/10/2016.
@@ -59,11 +63,12 @@ public class FileSystemServiceImpl implements FileSystemService {
         User user = userDao.show(userId);
         String filename = mfile.getOriginalFilename();
         String filepath = path + "/" + filename;
+        System.err.println("File path: " + filepath);
         File file = new File();
         file.setFilename(filename);
         file.setUser(user);
         file.setFolder(folder);
-        file.setDateUploaded(new Date().toString());
+        file.setDateUploaded(convertDateToString(new Date()));
         if (fileDao.create(file)) {
             try {
                 return dropboxService.uploadFile(filepath, mfile.getInputStream(), user.getDropboxAccessToken());
@@ -115,9 +120,9 @@ public class FileSystemServiceImpl implements FileSystemService {
 
     private String getPath(Folder folder, String path) {
         if (folder.getParentFolder() != null) {
-            getPath(folder.getParentFolder(), folder.getName() + "/" + path);
+            return getPath(folder.getParentFolder(), folder.getName() + "/" + path);
         }
-        return path;
+        return folder.getName() + "/" + path;
     }
 
     private Folder getFolderFromPath(String path) {
@@ -158,6 +163,7 @@ public class FileSystemServiceImpl implements FileSystemService {
             files.add(convertToDto(file));
         }
         dto.setFiles(files);
+        dto.setDateModified(convertDateToString(findLatestDate(folder)));
         return dto;
     }
 
@@ -169,6 +175,38 @@ public class FileSystemServiceImpl implements FileSystemService {
         dto.setDateUploaded(file.getDateUploaded());
         dto.setUser(userService.convert(file.getUser()));
         return dto;
+    }
+
+    private Date findLatestDate(Folder folder) {
+        return findLatestDate(folder, new Date(Long.MIN_VALUE));
+    }
+
+    private Date findLatestDate(Folder folder, Date date) {
+        for (Folder childFolder : folder.getChildFolders()) {
+            date = findLatestDate(childFolder, date);
+        }
+        for (File file : folder.getFiles()) {
+            Date currDate = convertStringToDate(file.getDateUploaded());
+            if (currDate.after(date)) {
+                date = currDate;
+            }
+        }
+        return date;
+    }
+
+    private Date convertStringToDate(String date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy, E");
+        try {
+            return formatter.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String convertDateToString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy, E");
+        return formatter.format(date);
     }
 
 }

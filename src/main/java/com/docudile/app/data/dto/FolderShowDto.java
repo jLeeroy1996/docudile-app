@@ -13,6 +13,7 @@ public class FolderShowDto implements Serializable {
     private List<FolderShowDto> childFolders;
     private List<FileShowDto> files;
     private UserShowDto user;
+    private String dateModified;
 
     public Integer getId() {
         return id;
@@ -52,6 +53,14 @@ public class FolderShowDto implements Serializable {
 
     public void setUser(UserShowDto user) {
         this.user = user;
+    }
+
+    public String getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(String dateModified) {
+        this.dateModified = dateModified;
     }
 
 }

@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="${"/resources/css/bootstrap.min.css"}">
     <link rel="stylesheet" href="${"/resources/bootflat/css/bootflat.css"}">
-    <link rel="stylesheet" href="${"/resources/treeview/bootstrap-treeview.min.js"}">
+    <link rel="stylesheet" href="${"/resources/treeview/bootstrap-treeview.min.css"}">
     <link rel="stylesheet" href="${"/resources/css/bootstrap-treenav.css"}">
     <link rel="stylesheet" href="${"/resources/fonts/font-awesome/css/font-awesome.min.css"}">
     <link rel="stylesheet" href="${"/resources/css/site.css"}">
@@ -219,26 +219,15 @@
                 <table class="table table-hover" id="dd-filebox-table">
                     <thead>
                     <tr>
-                        <th class="col-sm-6">Name</th>
-                        <th class="col-sm-2">Owner</th>
-                        <th class="col-sm-2">Last modified</th>
-                        <th class="col-sm-2"></th>
+                        <th class="col-sm-7">Name</th>
+                        <th class="col-sm-5">Last modified</th>
                     </tr>
                     </thead>
                     <tbody id="dd-filebox-id">
-                    <c:forEach items="${nodes}" var="node" >
-                        <tr data-name="/get-files?folderId=${node.id}" data-folder="folderId=${node.id}" ondblclick="myDblClick(${node.id})">
-                            <td><img src="${"/resources/img/folder-filled.png"}" class="dd-row-icon" /> ${node.name}</td>
-                            <td class="dd-row-details">me</td>
-                            <td class="dd-row-details">Feb 14, 2015</td>
-                            <td class="dd-row-details"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                        </tr>
-                    </c:forEach>
                     </tbody>
                 </table>
             </div>
-            <div class="col-sm-3">
-
+            <div id="fileInfo" class="col-sm-3">
             </div>
         </div>
     </div>

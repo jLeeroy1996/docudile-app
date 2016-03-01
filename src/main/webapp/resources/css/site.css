@@ -137,6 +137,17 @@ ul.nav-tree ul.nav-tree {
     border-top: none !important;
 }
 
+.table tbody tr {
+    cursor: pointer;
+    cursor: hand;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 #dd-filebox-id > tr.active {
     background: #AAB2BD !important;
 }

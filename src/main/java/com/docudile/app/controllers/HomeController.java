@@ -36,7 +36,7 @@ public class HomeController {
     FileSystemService fileSystemService;
 
     @RequestMapping()
-    public String goHome(Principal principal) {
+    public String goHome() {
         return "home";
     }
 
@@ -45,13 +45,14 @@ public class HomeController {
         return homeService.uploadDoc(document, principal.getName());
     }
 
-    @RequestMapping(value = "/tree")
-    public @ResponseBody
+    @RequestMapping(value = "/folder")
+    public @ResponseBody List<FolderShowDto> showRoot(Principal principal) {
+        return fileSystemService.getRootFolders(userDao.show(principal.getName()).getId());
+    }
 
     @RequestMapping(value = "/folder/{id}")
-    public @ResponseBody FolderShowDto getFiles(@PathVariable("id") Integer folderId, Principal principal) {
-        FolderShowDto folder = fileSystemService.getFolder(folderId, userDao.show(principal.getName()).getId());
-        return folder;
+    public @ResponseBody FolderShowDto showFolder(@PathVariable("id") Integer folderId, Principal principal) {
+        return fileSystemService.getFolder(folderId, userDao.show(principal.getName()).getId());
     }
 
 }
