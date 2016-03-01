@@ -31,3 +31,7 @@ header {
 .dd-cat-table-box {
     min-height: 300px;
 }
+
+.dd-pretrain {
+    padding-top: 50px;
+}

@@ -41,6 +41,11 @@ public class UserController {
         return "setup-data";
     }
 
+    @RequestMapping("/setup/pretraining")
+    public String goPreTrain() {
+        return "pretraining";
+    }
+
     @RequestMapping(value = "/dropbox-auth-finish")
     public String dropboxFinish(HttpServletRequest request) {
         return registrationService.registerFinish(request);
