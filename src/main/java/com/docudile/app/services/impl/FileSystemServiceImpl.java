@@ -152,7 +152,9 @@ public class FileSystemServiceImpl implements FileSystemService {
         FolderShowDto dto = new FolderShowDto();
         dto.setId(folder.getId());
         dto.setName(folder.getName());
-        dto.setParentFolder(convertToDto(folder.getParentFolder()));
+        if (folder.getParentFolder() != null) {
+            dto.setParentFolder(folder.getParentFolder().getName());
+        }
         dto.setUser(userService.convert(folder.getUser()));
         List<FolderShowDto> childFolders = new ArrayList<FolderShowDto>();
         for (Folder childFolder : folder.getChildFolders()) {
@@ -172,7 +174,6 @@ public class FileSystemServiceImpl implements FileSystemService {
         FileShowDto dto = new FileShowDto();
         dto.setId(file.getId());
         dto.setFilename(file.getFilename());
-        dto.setParentFolder(convertToDto(file.getFolder()));
         dto.setPath(getPath(file.getFolder()));
         dto.setDateUploaded(file.getDateUploaded());
         dto.setUser(userService.convert(file.getUser()));
@@ -189,7 +190,7 @@ public class FileSystemServiceImpl implements FileSystemService {
         }
         for (File file : folder.getFiles()) {
             Date currDate = convertStringToDate(file.getDateUploaded());
-            if (currDate.after(date)) {
+            if (currDate != null && currDate.after(date)) {
                 date = currDate;
             }
         }

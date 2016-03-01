@@ -9,7 +9,6 @@ public class FileShowDto implements Serializable {
 
     private Integer id;
     private String filename;
-    private FolderShowDto parentFolder;
     private String path;
     private String dateUploaded;
     private UserShowDto user;
@@ -28,14 +27,6 @@ public class FileShowDto implements Serializable {
 
     public void setFilename(String filename) {
         this.filename = filename;
-    }
-
-    public FolderShowDto getParentFolder() {
-        return parentFolder;
-    }
-
-    public void setParentFolder(FolderShowDto parentFolder) {
-        this.parentFolder = parentFolder;
     }
 
     public String getPath() {

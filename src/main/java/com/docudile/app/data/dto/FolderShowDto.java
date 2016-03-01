@@ -10,7 +10,7 @@ public class FolderShowDto implements Serializable {
 
     private Integer id;
     private String name;
-    private FolderShowDto parentFolder;
+    private String parentFolder;
     private List<FolderShowDto> childFolders;
     private List<FileShowDto> files;
     private UserShowDto user;
@@ -32,11 +32,11 @@ public class FolderShowDto implements Serializable {
         this.name = name;
     }
 
-    public FolderShowDto getParentFolder() {
+    public String getParentFolder() {
         return parentFolder;
     }
 
-    public void setParentFolder(FolderShowDto parentFolder) {
+    public void setParentFolder(String parentFolder) {
         this.parentFolder = parentFolder;
     }
 

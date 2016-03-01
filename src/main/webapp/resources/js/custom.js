@@ -117,6 +117,7 @@ function convertToTreeData(data) {
 }
 
 function viewDetailsFile(data) {
+    clearDetails();
     var template = '<h3><small><i class="glyphicon glyphicon-list-alt"></i> Details</small></h3>' +
         '<ul class="list-group">' +
         '<li class="list-group-item"><i class="glyphicon glyphicon-user"></i> Owner: ' + data.user.firstname + ' ' + data.user.lastname + '</li>' +
@@ -138,7 +139,6 @@ function viewDetailsFile(data) {
 
 function clearDetails() {
     $('#fileInfo').empty();
-    $('.clickable-row').removeClass('active');
 }
 
 function updateFilebox(id) {
