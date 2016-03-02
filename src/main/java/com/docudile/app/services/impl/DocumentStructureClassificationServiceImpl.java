@@ -4,7 +4,6 @@ import com.docudile.app.services.DocumentStructureClassificationService;
 import com.docudile.app.services.TfIdfService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,37 +56,34 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
     }
 
     @Override
-    public boolean trainTagger(String path, String tag, String line) {
-        if (createAppendFile(line, path + tag + ".txt")) {
-            return tfIdfService.process(path + tag + ".txt", path + "processed");
+    public boolean trainTagger(String path, String tagName, List<String> line) {
+        if (writeToFile(line, path + tagName + ".txt")) {
+            return tfIdfService.process(path + tagName + ".txt", path + "processed");
         }
         return false;
     }
 
     @Override
     public boolean trainClassifier(String path, List<String> tags, String type) {
-        if (createAppendFile(tags, path + type + ".txt")) {
+        if (writeToFile(tags, path + type + ".txt")) {
             return tfIdfService.process(path + type + ".txt", path + "processed");
         }
         return false;
     }
 
-    private boolean createAppendFile(String line, String path) {
-        List<String> lines = new ArrayList<>();
-        lines.add(line);
-        return createAppendFile(lines, path);
+    @Override
+    public boolean delete(String path) {
+        return new File(path).delete();
     }
 
-    private boolean createAppendFile(List<String> lines, String path) {
+    private boolean writeToFile(List<String> lines, String path) {
         File file = new File(path);
         file.getParentFile().mkdirs();
-        if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
         try {
             FileWriter fileWriter = new FileWriter(file, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);

@@ -58,16 +58,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public GeneralMessageResponseDto classifyThenUpload(MultipartFile file, String username) {
         GeneralMessageResponseDto responseDto = new GeneralMessageResponseDto();
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-        List<String> text = null;
-        if (extension.equals(".docx")) {
-            text = docxService.readDocx(multipartToFile(file));
-        } else try {
-            ImageIO.read(file.getInputStream()).toString();
-            text = tesseractService.doOCR(multipartToFile(file));
-        } catch (IOException e) {
-            responseDto.setMessage("filetype_not_supported");
-        }
+        List<String> text = getLines(file);
         if (text != null) {
             List<String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
             String result = docStructureClassification.classify(StringUtils.join(tags, " "), environment.getProperty("storage.classifier"));
@@ -100,18 +91,45 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public GeneralMessageResponseDto trainTag(List<ModTagRequestDto> request, String username) {
-        return null;
+    public GeneralMessageResponseDto trainTag(List<ModTagRequestDto> requests, String username) {
+        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
+        boolean noError = false;
+        for (ModTagRequestDto request : requests) {
+            String path = environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags");
+            noError = docStructureClassification.trainTagger(path, request.getName(), request.getData());
+        }
+        if (!noError) {
+            response.setMessage("problem_in_saving");
+        } else {
+            response.setMessage("training_successfully_saved");
+        }
+        return response;
     }
 
     @Override
     public GeneralMessageResponseDto deleteTag(String tagName, String username) {
-        return null;
+        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
+        String path = environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags") + tagName;
+        if (docStructureClassification.delete(path)) {
+            response.setMessage("tag_deleted");
+        } else {
+            response.setMessage("tag_delete_failed");
+        }
+        return response;
     }
 
     @Override
     public GeneralMessageResponseDto trainClassifier(String name, MultipartFile file, String username) {
-        return null;
+        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
+        String path = environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.classifier");
+        List<String> text = getLines(file);
+        boolean noError = docStructureClassification.trainClassifier(path, docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text), name);
+        if (!noError) {
+            response.setMessage("problem_in_saving");
+        } else {
+            response.setMessage("training_successfully_saved");
+        }
+        return response;
     }
 
     private File multipartToFile(MultipartFile mFile) {
@@ -123,6 +141,19 @@ public class DocumentServiceImpl implements DocumentService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private List<String> getLines(MultipartFile mfile) {
+        List<String> text = null;
+        String extension = FilenameUtils.getExtension(mfile.getOriginalFilename());
+        if (extension.equals(".docx")) {
+            text = docxService.readDocx(multipartToFile(mfile));
+        } else try {
+            ImageIO.read(mfile.getInputStream()).toString();
+            text = tesseractService.doOCR(multipartToFile(mfile));
+        } catch (IOException e) {
+        }
+        return text;
     }
 
 }
