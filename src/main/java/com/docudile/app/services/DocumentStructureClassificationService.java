@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public interface DocumentStructureClassificationService {
 
-    public List<String> tag(String path, List<String> lines);
+    public Map<Integer, String> tag(String path, List<String> lines);
 
     public String classify(String query, String dataPath);
 

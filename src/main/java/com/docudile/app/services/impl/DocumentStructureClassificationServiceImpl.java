@@ -25,9 +25,10 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
     private TfIdfService tfIdfService;
 
     @Override
-    public List<String> tag(String path, List<String> lines) {
-        List<String> tagged = new ArrayList<>();
+    public Map<Integer, String> tag(String path, List<String> lines) {
+        Map<Integer, String> tagged = new HashMap<>();
         Map<String, List<String>> tags = getTags(path);
+        int i = 0;
         for (String line : lines) {
             boolean found = false;
             for (String tag : tags.keySet()) {
@@ -35,7 +36,7 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
                     Pattern pattern = Pattern.compile(rule);
                     if (pattern.matcher(line).matches()) {
                         found = true;
-                        tagged.add(tag);
+                        tagged.put(i, tag);
                         break;
                     }
                 }
@@ -43,9 +44,10 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
             if (!found) {
                 String tag = tfIdfService.search(line, path + "processed");
                 if (StringUtils.isNotEmpty(tag)) {
-                    tagged.add(tag);
+                    tagged.put(i, tag);
                 }
             }
+            i++;
         }
         return tagged;
     }

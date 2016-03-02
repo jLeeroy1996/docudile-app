@@ -18,7 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by FrancAnthony on 3/2/2016.
@@ -60,7 +64,7 @@ public class DocumentServiceImpl implements DocumentService {
         GeneralMessageResponseDto responseDto = new GeneralMessageResponseDto();
         List<String> text = getLines(file);
         if (text != null) {
-            List<String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
+            Map<Integer, String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
             String result = docStructureClassification.classify(StringUtils.join(tags, " "), environment.getProperty("storage.classifier"));
             Integer contentResult = contentClassificationService.categorize(text,userDao.show(username).getId(),file.getOriginalFilename());
             //ang gi return ani kay ang categoryID hehe thanks
@@ -123,7 +127,8 @@ public class DocumentServiceImpl implements DocumentService {
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
         String path = environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.classifier");
         List<String> text = getLines(file);
-        boolean noError = docStructureClassification.trainClassifier(path, docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text), name);
+        List<String> tags = new ArrayList<>(docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text).values());
+        boolean noError = docStructureClassification.trainClassifier(path, tags, name);
         if (!noError) {
             response.setMessage("problem_in_saving");
         } else {
@@ -154,6 +159,33 @@ public class DocumentServiceImpl implements DocumentService {
         } catch (IOException e) {
         }
         return text;
+    }
+
+    private String getYear(String line) {
+        Pattern pattern = Pattern.compile("\\d{4}");
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
+    }
+
+    private String getFromMemo(String line) {
+        Pattern pattern = Pattern.compile("(i?)From: (.+)");
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+            return matcher.group(2);
+        }
+        return null;
+    }
+
+    private String getToMemo(String line) {
+        Pattern pattern = Pattern.compile("(i?)To: (.+)");
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+            return matcher.group(2);
+        }
+        return null;
     }
 
 }
