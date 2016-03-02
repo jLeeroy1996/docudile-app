@@ -36,12 +36,4 @@ public class FolderDaoImpl extends GenericDaoImpl<Folder> implements FolderDao {
         return query.list();
     }
 
-    @Override
-    public Folder getFolderIDOfTraining(Integer userId) {
-        Query query = getCurrentSession().createQuery("from Folder f where f.name = :contentTraining and f.user.id = :userId");
-        query.setParameter("contentTraining","contentTraining");
-        query.setParameter("userId",userId);
-        return (Folder) query.uniqueResult();
-    }
-
 }

@@ -27,6 +27,10 @@ public class File {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     public Category getCategory() {
         return category;
     }
@@ -34,10 +38,6 @@ public class File {
     public void setCategory(Category category) {
         this.category = category;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 
 
     public Integer getId() {
