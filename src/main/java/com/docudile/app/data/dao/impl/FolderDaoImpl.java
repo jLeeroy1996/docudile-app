@@ -23,10 +23,25 @@ public class FolderDaoImpl extends GenericDaoImpl<Folder> implements FolderDao {
         return (Folder) query.uniqueResult();
     }
 
+    @Override
+    public Folder show(Integer id) {
+        Query query = getCurrentSession().createQuery("from Folder f where f.id = :id");
+        query.setParameter("id", id);
+        return (Folder) query.uniqueResult();
+    }
+
     public List<Folder> root(Integer userId) {
         Query query = getCurrentSession().createQuery("from Folder f where f.parentFolder = null and f.user.id = :userId");
         query.setParameter("userId", userId);
         return query.list();
+    }
+
+    @Override
+    public Folder getFolderIDOfTraining(Integer userId) {
+        Query query = getCurrentSession().createQuery("from Folder f where f.name = :contentTraining and f.user.id = :userId");
+        query.setParameter("contentTraining","contentTraining");
+        query.setParameter("userId",userId);
+        return (Folder) query.uniqueResult();
     }
 
 }

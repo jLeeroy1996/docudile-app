@@ -1,5 +1,6 @@
 package com.docudile.app.controllers;
 
+import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.UserRegistrationDto;
 import com.docudile.app.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 /**
  * Created by PaulRyan on 2/8/2016.
@@ -18,6 +21,9 @@ public class UserController {
 
     @Autowired
     private RegistrationService registrationService;
+
+    @Autowired
+    UserDao userDao;
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String goRegister() {
@@ -32,13 +38,23 @@ public class UserController {
     }
 
     @RequestMapping("/setup/year")
-    public String goSetupYear() {
-        return "setup-year";
+    public ModelAndView goSetupYear(Principal principal) {
+        ModelAndView mv = new ModelAndView("setup-year");
+        mv.addObject("user", userDao.show(principal.getName()));
+        System.out.println(principal.getName() + "adsfasfkhwer");
+        return mv;
+    }
+
+    @RequestMapping(value = "/setup/year", method = RequestMethod.POST)
+    public String doSetupYear(Principal principal, HttpServletRequest request) {
+        return registrationService.createFolders(userDao.show(principal.getName()), request);
     }
 
     @RequestMapping("/setup/data")
-    public String goSetupData() {
-        return "setup-data";
+    public ModelAndView goSetupData(Principal principal) {
+        ModelAndView mv = new ModelAndView("setup-year");
+        mv.addObject("user", userDao.show(principal.getName()));
+        return mv;
     }
 
     @RequestMapping("/setup/pretraining")

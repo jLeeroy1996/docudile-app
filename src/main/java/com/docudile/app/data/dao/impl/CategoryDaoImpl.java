@@ -26,4 +26,12 @@ public class CategoryDaoImpl extends GenericDaoImpl<Category> implements Categor
         query.setParameter("categoryID", categoryID);
         return (Category) query.uniqueResult();
     }
+
+    @Override
+    public Category getCategory(String categoryName, Integer userID) {
+        Query query = getCurrentSession().createQuery("from Category f where f.category.name = :categoryName and f.user.id = :userId");
+        query.setParameter("categoryName", categoryName);
+        query.setParameter("userId",userID);
+        return (Category) query.uniqueResult();
+    }
 }

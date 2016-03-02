@@ -1,8 +1,10 @@
 package com.docudile.app.data.dao.impl;
 
 import com.docudile.app.data.dao.FileDao;
+import com.docudile.app.data.dao.FolderDao;
 import com.docudile.app.data.entities.File;
 import org.hibernate.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,10 @@ import java.util.List;
 @Repository("fileDao")
 @Transactional
 public class FileDaoImpl extends GenericDaoImpl<File> implements FileDao {
+
+    @Autowired
+    FolderDao folderDao;
+
     public Integer numberOfFiles(Integer categoryID) {
         Query query = getCurrentSession().createQuery("from File f where f.category.id = :categoryID");
         query.setParameter("categoryID", categoryID);
@@ -27,4 +33,13 @@ public class FileDaoImpl extends GenericDaoImpl<File> implements FileDao {
 
 
     }
+
+
+
+    public List<File> getTrainingFiles(Integer userID){
+        Query query = getCurrentSession().createQuery("from File f where f.folder.id = :folderID");
+        query.setParameter("folderID", folderDao.getFolderIDOfTraining(userID).getId());
+        return query.list();
+    }
+
 }

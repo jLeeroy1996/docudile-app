@@ -1,5 +1,8 @@
 package com.docudile.app.services.impl;
 
+import com.docudile.app.data.dao.CategoryDao;
+import com.docudile.app.data.dao.FileDao;
+import com.docudile.app.data.dao.FolderDao;
 import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.FolderShowDto;
 import com.docudile.app.data.dto.GeneralMessageResponseDto;
@@ -18,7 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+import java.util.Date;
+>>>>>>> origin/master
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -39,6 +46,9 @@ public class DocumentServiceImpl implements DocumentService {
     private FileSystemService fileSystemService;
 
     @Autowired
+    private FileDao fileDao;
+
+    @Autowired
     private DocumentStructureClassificationService docStructureClassification;
 
     @Autowired
@@ -52,6 +62,12 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private CategoryDao categoryDao;
+
+    @Autowired
+    private FolderDao folderDao;
 
     @Override
     public FileSystemResource showFile(Integer id, String username) {
@@ -111,6 +127,38 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    public GeneralMessageResponseDto contentTrain(String username) throws IOException {
+        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
+
+        boolean noError = contentClassificationService.train(userDao.show(username).getId());
+
+        if(noError){
+            response.setMessage("training_successfully_saved");
+        }
+        else{
+            response.setMessage("problem_in_training");
+        }
+        return response;
+
+    }
+
+    @Override
+    public GeneralMessageResponseDto uploadTraining(MultipartFile file, String username, String categoryName) {
+        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
+        Date date = new Date();
+        com.docudile.app.data.entities.File f = null;
+        for(int x = 0;x<file.getSize();x++){
+            f.setFilename(file.getOriginalFilename());
+            f.setCategory(categoryDao.getCategory(categoryName,userDao.show(username).getId()));
+            f.setFolder(folderDao.getFolderIDOfTraining(userDao.show(username).getId()));
+            f.setDateUploaded(date.toString());
+            fileDao.create(f);
+        }
+        //upload file to the DropBox with the path /miscellaneous/training/content
+        return response;
+    }
+
+    @Override
     public GeneralMessageResponseDto deleteTag(String tagName, String username) {
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
         String path = environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags") + tagName;
@@ -136,6 +184,8 @@ public class DocumentServiceImpl implements DocumentService {
         }
         return response;
     }
+
+
 
     private File multipartToFile(MultipartFile mFile) {
         File file = new File(mFile.getOriginalFilename());

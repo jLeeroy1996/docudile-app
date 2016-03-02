@@ -6,6 +6,7 @@ import com.docudile.app.data.dto.ModTagRequestDto;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,6 +19,10 @@ public interface DocumentService {
     public GeneralMessageResponseDto classifyThenUpload(MultipartFile file, String username);
 
     public GeneralMessageResponseDto deleteFile(Integer id, String username);
+
+    public GeneralMessageResponseDto contentTrain(String username) throws IOException;
+
+    public GeneralMessageResponseDto uploadTraining(MultipartFile file, String username, String categoryName);
 
     public List<FolderShowDto> showRoot(String username);
 

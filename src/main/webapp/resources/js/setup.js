@@ -2,7 +2,7 @@
  * Created by PaulRyan on 3/2/2016.
  */
 var categories = [];
-$("#inputStartYear").on("load", function () {
+$("#inputStartYear").ready(function () {
     var select = document.getElementById("inputStartYear");
     for (var i = 1900; i <= 2016; ++i) {
         var option = document.createElement('option');
