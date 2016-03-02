@@ -1,6 +1,6 @@
 package com.docudile.app.services;
 
-import com.docudile.app.data.dto.UploadResponseDto;
+import com.docudile.app.data.dto.GeneralMessageResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,8 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface HomeService {
 
-    public ResponseEntity<UploadResponseDto> uploadDoc(MultipartFile document, String username);
+    public ResponseEntity<GeneralMessageResponseDto> uploadDoc(MultipartFile document, String username);
 
-//    public ResponseEntity<UploadResponseDto> submitNewType(MultipartFile[] document, String typeName, String username);
+//    public ResponseEntity<GeneralMessageResponseDto> submitNewType(MultipartFile[] document, String typeName, String username);
 
 }

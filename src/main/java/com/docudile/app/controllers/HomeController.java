@@ -1,20 +1,15 @@
 package com.docudile.app.controllers;
 
-import com.docudile.app.data.dao.FolderDao;
 import com.docudile.app.data.dao.UserDao;
-import com.docudile.app.data.dto.FileShowDto;
 import com.docudile.app.data.dto.FolderShowDto;
-import com.docudile.app.data.dto.UploadResponseDto;
+import com.docudile.app.data.dto.GeneralMessageResponseDto;
 import com.docudile.app.services.FileSystemService;
 import com.docudile.app.services.HomeService;
-import com.docudile.app.services.TesseractService;
-import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.List;
@@ -41,7 +36,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/upload-documents", method = RequestMethod.POST)
-    public @ResponseBody ResponseEntity<UploadResponseDto> uploadDoc(@RequestParam("document") MultipartFile document, Principal principal) {
+    public @ResponseBody ResponseEntity<GeneralMessageResponseDto> uploadDoc(@RequestParam("document") MultipartFile document, Principal principal) {
         return homeService.uploadDoc(document, principal.getName());
     }
 

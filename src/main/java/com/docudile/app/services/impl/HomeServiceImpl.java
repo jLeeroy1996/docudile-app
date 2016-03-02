@@ -1,7 +1,7 @@
 package com.docudile.app.services.impl;
 
 import com.docudile.app.data.dao.UserDao;
-import com.docudile.app.data.dto.UploadResponseDto;
+import com.docudile.app.data.dto.GeneralMessageResponseDto;
 import com.docudile.app.services.HomeService;
 import com.docudile.app.services.FileSystemService;
 import com.docudile.app.services.TesseractService;
@@ -28,19 +28,19 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private TesseractService tesseractService;
 
-    public ResponseEntity<UploadResponseDto> uploadDoc(MultipartFile document, String username) {
-        UploadResponseDto response = new UploadResponseDto();
+    public ResponseEntity<GeneralMessageResponseDto> uploadDoc(MultipartFile document, String username) {
+        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
         if (!document.isEmpty()) {
             fileSystemService.storeFile(document, "Memo/2016/Excuse", userDao.show(username).getId());
             response.setMessage("document_uploaded_successfully");
-            return new ResponseEntity<UploadResponseDto>(response, HttpStatus.OK);
+            return new ResponseEntity<GeneralMessageResponseDto>(response, HttpStatus.OK);
         }
         response.setMessage("document_empty");
-        return new ResponseEntity<UploadResponseDto>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<GeneralMessageResponseDto>(response, HttpStatus.BAD_REQUEST);
     }
 
-//    public ResponseEntity<UploadResponseDto> submitNewType(MultipartFile[] document, String typeName, String username) {
-//        UploadResponseDto response = new UploadResponseDto();
+//    public ResponseEntity<GeneralMessageResponseDto> submitNewType(MultipartFile[] document, String typeName, String username) {
+//        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
 //
 //    }
 

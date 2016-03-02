@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by franc on 2/10/2016.
  */
-public class UploadResponseDto implements Serializable {
+public class GeneralMessageResponseDto implements Serializable {
 
     @JsonProperty
     private String message;
