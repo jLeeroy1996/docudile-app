@@ -106,6 +106,7 @@ public class DocumentServiceImpl implements DocumentService {
         return response;
     }
 
+    @Override
     public GeneralMessageResponseDto contentTrain(String username) throws IOException {
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
 
