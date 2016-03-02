@@ -33,6 +33,7 @@ body {
     margin-bottom: 0;
     border-bottom: 1px solid #d0d4d9;
     box-shadow: 0px 1px 1px #d0d4d9;
+    background: #fff;
 }
 
 .dd-nav-links p {
@@ -151,4 +152,22 @@ ul.nav-tree ul.nav-tree {
 
 #dd-filebox-id > tr.active {
     background: #AAB2BD !important;
+}
+
+.dd-retrain-box {
+    padding-top: 50px;
+}
+
+.dd-retrain-file-list {
+    height: 150px;
+    color: #fff;
+    overflow: auto;
+}
+
+.file-drop-zone-title {
+    color: #fff !important;
+}
+
+.file-drop-zone {
+    border: 1px dashed #fff !important;
 }
