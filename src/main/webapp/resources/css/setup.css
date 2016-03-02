@@ -35,3 +35,11 @@ header {
 .dd-pretrain {
     padding-top: 50px;
 }
+
+.file-drop-zone-title {
+    color: #fff !important;
+}
+
+.file-drop-zone {
+    border: 1px dashed #fff !important;
+}

@@ -3,6 +3,7 @@ package com.docudile.app.controllers;
 import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.FolderShowDto;
 import com.docudile.app.data.dto.GeneralMessageResponseDto;
+import com.docudile.app.services.DocumentService;
 import com.docudile.app.services.FileSystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,9 @@ public class HomeController {
     @Autowired
     FileSystemService fileSystemService;
 
+    @Autowired
+    DocumentService documentService;
+
     @RequestMapping()
     public String goHome() {
         return "home";
@@ -33,6 +37,7 @@ public class HomeController {
 
     @RequestMapping(value = "/upload-documents", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<GeneralMessageResponseDto> uploadDoc(@RequestParam("document") MultipartFile document, Principal principal) {
+        return ResponseEntity.ok(documentService.classifyThenUpload(document, principal.getName()));
     }
 
     @RequestMapping(value = "/folder")

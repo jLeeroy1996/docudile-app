@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="${"/resources/css/setup.css"}">
     <link rel="stylesheet" href="${"/resources/css/bootstrap-tagsinput.css"}">
     <link rel="stylesheet" href="${"/resources/select2/css/select2.min.css"}">
+    <link rel="stylesheet" href="${"/resources/bootstrap-fileinput/css/fileinput.min.css"}">
 
 
     <link rel="icon"
@@ -67,14 +68,15 @@
     <div class="container">
         <div class="row dd-pretrain">
             <div class="col-sm-6 col-sm-offset-3">
-                <form>
-                    <div class="form-group">
-                        <select id="dd-select-train" class="form-control">
-                            <option value="memo">Memo</option>
-                            <option value="letter">Letter</option>
-                        </select>
-                    </div>
-                </form>
+                <div class="form-group">
+                    <select id="dd-select-train" class="form-control">
+                        <option value="memo">Memo</option>
+                        <option value="letter">Letter</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input id="dd-training-files" name="training[]" type="file" multiple class="file-loading">
+                </div>
             </div>
         </div>
     </div>
@@ -88,9 +90,18 @@
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap-tagsinput.js"}"></script>
 <script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
+<script rel="script" src="${"/resources/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"}"></script>
+<script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
 <script rel="script" src="${"/resources/js/setup.js"}"></script>
 <script>
     $("#dd-select-train").select2();
+
+    var $input = $("#dd-training-files");
+    $input.fileinput({
+        uploadUrl: "http://localhost/file-upload-single/1", // server upload action
+        uploadAsync: true,
+        maxFileCount: 5
+    });
 </script>
 </body>
 </html>
