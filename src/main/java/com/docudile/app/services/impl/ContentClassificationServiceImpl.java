@@ -8,16 +8,16 @@ import com.docudile.app.data.dto.WordListDto;
 import com.docudile.app.data.entities.*;
 import com.docudile.app.services.ContentClassificationService;
 import com.docudile.app.services.DocxService;
-import com.docudile.app.services.DropboxService;
 import com.docudile.app.services.FileSystemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +27,7 @@ import java.util.List;
  */
 @Service("contentClassificationService")
 @Transactional
+@PropertySource({"classpath:/storage.properties"})
 public class ContentClassificationServiceImpl implements ContentClassificationService {
 
     @Autowired
@@ -78,25 +79,15 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
         //get Files from each Category in DropBox
         file = fileDao.getTrainingFiles(userID);
-
-        // convert to FileContentDto
-        for (int x = 0; x < file.size(); x++) {
-            fileContentDto.setFileName(file.get(x).getFilename());
-            fileContentDto.setFileID(file.get(x).getId());
-            for (int y = 0; y < categoriesDto.size(); y++) {
-                if (categoriesDto.get(y).getCategoryID() == file.get(x).getId()) {
-                    fileContentDto.setCategoryName(categoriesDto.get(y).getName());
-                }
+        for(int x = 0;x<categoriesDto.size();x++) {
+            java.io.File folder = new java.io.File("storage.content_training"+"/"+categoriesDto.get(x).getName());
+            for (final java.io.File fileEntry : folder.listFiles()) {
+                fileContentDto.setFileName(fileEntry.getName());
+                fileContentDto.setCategoryName(categoriesDto.get(x).getName());
+                fileContentDto.setWordList(docxService.readDocx(fileEntry));
+                fileDto.add(fileContentDto);
             }
-            //foreach files in the category, open the documents, split the words within the documents, put into List<String>
-            String path = fileSystemService.download(fileContentDto.getFileID(),userID);
-            File f = new File(path);
-            fileContentDto.setWordList(docxService.readDocx(f));
-            //add it into List<Files> files
-            fileDto.add(fileContentDto);
         }
-
-
 
 
         //get wordList in DB
@@ -111,7 +102,6 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         //count words
         categoriesDto = countWords(fileDto, wordList, categoriesDto);
         //end
-        mapper.writeValue(new File("D://"), categoriesDto);
         //get vectors
         float[][] wordListVectors = calculateNaiveBayes(wordList, categoriesDto);
         //end
@@ -262,7 +252,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     public String readDocxFile(String fileName) {
         String sentence = "";
         try {
-            File file = new File(fileName);
+            java.io.File file = new java.io.File(fileName);
             FileInputStream fis = new FileInputStream(file.getAbsolutePath());
 
             XWPFDocument document = new XWPFDocument(fis);
@@ -305,6 +295,10 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             wordListDocumentDao.create(wordListDocument);
         }
 
+    }
+
+    private void writeToFile(MultipartFile f, String path) throws IOException {
+        f.transferTo(new java.io.File(path));
     }
 
 }

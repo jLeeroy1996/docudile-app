@@ -7,6 +7,7 @@ import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.FolderShowDto;
 import com.docudile.app.data.dto.GeneralMessageResponseDto;
 import com.docudile.app.data.dto.ModTagRequestDto;
+import com.docudile.app.data.entities.Category;
 import com.docudile.app.services.*;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -136,7 +137,14 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public GeneralMessageResponseDto uploadTraining(MultipartFile file, String username, String categoryName) {
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
-        if (fileSystemService.storeFileNotMapped(file, environment.getProperty("storage.content_training"), userDao.show(username).getId())) {
+
+        Category cat = null;
+
+        cat.setCategoryName(categoryName);
+        cat.setUser(userDao.show(username));
+        categoryDao.create(cat);
+
+        if (fileSystemService.storeFileNotMapped(file, environment.getProperty("storage.content_training")+"/categoryName", userDao.show(username).getId())) {
             response.setMessage("upload_training_data_success");
         } else {
             response.setMessage("upload_failed");

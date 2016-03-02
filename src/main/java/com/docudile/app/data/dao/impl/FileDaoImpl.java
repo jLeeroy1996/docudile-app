@@ -36,10 +36,4 @@ public class FileDaoImpl extends GenericDaoImpl<File> implements FileDao {
 
 
 
-    public List<File> getTrainingFiles(Integer userID){
-        Query query = getCurrentSession().createQuery("from File f where f.folder.id = :folderID");
-        query.setParameter("folderID", folderDao.getFolderIDOfTraining(userID).getId());
-        return query.list();
-    }
-
 }
