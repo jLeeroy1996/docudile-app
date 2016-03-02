@@ -12,6 +12,8 @@ public interface FolderDao extends GenericDao<Folder> {
 
     public Folder show(String name);
 
+    public Folder show(Integer id);
+
     public List<Folder> root(Integer userId);
 
     public Folder getFolderIDOfTraining(Integer userId);

@@ -1,18 +1,31 @@
 package com.docudile.app.services.impl;
 
+import com.docudile.app.data.dao.FolderDao;
 import com.docudile.app.data.dao.UserDao;
+import com.docudile.app.data.dto.FolderShowDto;
 import com.docudile.app.data.dto.UserRegistrationDto;
+import com.docudile.app.data.entities.Folder;
 import com.docudile.app.data.entities.User;
 import com.docudile.app.services.DropboxService;
+import com.docudile.app.services.FileSystemService;
 import com.docudile.app.services.RegistrationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by franc on 2/7/2016.
@@ -23,6 +36,12 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private FolderDao folderDao;
+
+    @Autowired
+    private FileSystemService fileSystemService;
 
     @Autowired
     private DropboxService dropboxService;
@@ -37,6 +56,10 @@ public class RegistrationServiceImpl implements RegistrationService {
         userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
         if (userDao.create(userEntity)) {
             session.setAttribute("username", user.getUsername());
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            Authentication auth = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), authorities);
+            SecurityContextHolder.getContext().setAuthentication(auth);
             return "redirect:" + dropboxService.linkDropbox(request);
         }
         return "redirect:/register?error=true";
@@ -51,10 +74,47 @@ public class RegistrationServiceImpl implements RegistrationService {
             User user = userDao.show(username);
             user.setDropboxAccessToken(token);
             if (userDao.update(user)) {
-                return "redirect:/login";
+                return "redirect:/setup/year";
             }
         }
         return "redirect:/register?error=true";
+    }
+
+    public String createFolders(User user, HttpServletRequest request) {
+        int start = Integer.parseInt(request.getParameter("startYear"));
+        int end = Integer.parseInt(request.getParameter("endYear"));
+        for(int x = start; x <= end; x++) {
+            Folder f = new Folder();
+            f.setName(x+"");
+            f.setParentFolder(null);
+            f.setUser(user);
+            folderDao.create(f);
+            dropboxService.createFolder("/"+x, userDao.show(user.getId()).getDropboxAccessToken());
+            createSubFolder("Memo", f.getId(), user, "/"+x+"/");
+            createSubFolder("Letter", f.getId(), user, "/"+x+"/");
+        }
+        return "redirect:/setup/data";
+    }
+
+    public void createSubFolder(String name, Integer id, User user, String path) {
+        Folder f = new Folder();
+        Folder f2 = new Folder();
+        Folder f3 = new Folder();
+        f.setName(name);
+        f.setParentFolder(folderDao.show(id));
+        f.setUser(user);
+        folderDao.create(f);
+        dropboxService.createFolder(path+name, userDao.show(user.getId()).getDropboxAccessToken());
+        f2.setName("from");
+        f2.setParentFolder(folderDao.show(f.getId()));
+        f2.setUser(user);
+        folderDao.create(f2);
+        dropboxService.createFolder(path+name+"/from", userDao.show(user.getId()).getDropboxAccessToken());
+        f3.setName("to");
+        f3.setParentFolder(folderDao.show(f.getId()));
+        f3.setUser(user);
+        folderDao.create(f3);
+        dropboxService.createFolder(path+name+"/to", userDao.show(user.getId()).getDropboxAccessToken());
     }
 
 }

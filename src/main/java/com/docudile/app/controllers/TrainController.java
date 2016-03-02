@@ -1,15 +1,42 @@
 package com.docudile.app.controllers;
 
+import com.docudile.app.data.dto.GeneralMessageResponseDto;
+import com.docudile.app.data.dto.ModTagRequestDto;
+import com.docudile.app.services.DocumentService;
+import com.docudile.app.services.impl.DocumentServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.security.Principal;
+import java.util.List;
 
 /**
  * Created by PaulRyan on 3/2/2016.
  */
 @Controller
 public class TrainController {
+    @Autowired
+    DocumentService documentService;
+
     @RequestMapping("/retraining")
     public String goRetrain() {
         return "retraining";
+    }
+
+    @RequestMapping(value = "/trainTag", method = RequestMethod.POST)
+    public @ResponseBody GeneralMessageResponseDto trainTag(@RequestBody List<ModTagRequestDto> request, Principal principal) {
+        return documentService.trainTag(request, principal.getName());
+    }
+
+    @RequestMapping(value = "/deleteTag", method = RequestMethod.POST)
+    public @ResponseBody GeneralMessageResponseDto deleteTag(@RequestParam("tagName") String tagName, Principal principal) {
+        return documentService.deleteTag(tagName, principal.getName());
+    }
+
+    @RequestMapping(value = "/trainClassifier", method = RequestMethod.POST)
+    public @ResponseBody GeneralMessageResponseDto trainClassifier(@RequestPart("name") String name, @RequestPart("file") MultipartFile file, Principal principal) {
+        return documentService.trainClassifier(name, file, principal.getName());
     }
 }
