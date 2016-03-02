@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by franc on 2/9/2016.
@@ -17,11 +19,11 @@ import java.io.File;
 @Transactional
 public class TesseractServiceImpl implements TesseractService {
 
-    public String doOCR(File file) {
+    public List<String> doOCR(File file) {
         ITesseract tesseract = new Tesseract();
         if (verifyImage(file)) {
             try {
-                return tesseract.doOCR(file);
+                return Arrays.asList(tesseract.doOCR(file).split("\n"));
             } catch (TesseractException e) {
                 return null;
             }

@@ -24,4 +24,6 @@ public interface FileSystemService {
 
     public String download(Integer id, Integer userId);
 
+    public boolean delete(Integer id, Integer userId);
+
 }

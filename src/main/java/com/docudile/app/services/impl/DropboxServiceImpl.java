@@ -95,4 +95,17 @@ public class DropboxServiceImpl implements DropboxService {
         return null;
     }
 
+    @Override
+    public boolean deleteFile(String path, String accessToken) {
+        DbxRequestConfig config = new DbxRequestConfig("Docudi.le/1.0", Locale.getDefault().toString());
+        DbxClientV2 client = new DbxClientV2(config, accessToken);
+        try {
+            client.files.permanentlyDelete(path);
+            return true;
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

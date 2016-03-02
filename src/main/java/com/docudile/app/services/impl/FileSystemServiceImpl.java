@@ -114,6 +114,16 @@ public class FileSystemServiceImpl implements FileSystemService {
         return null;
     }
 
+    @Override
+    public boolean delete(Integer id, Integer userId) {
+        File file = fileDao.show(id);
+        if (file.getUser().getId() == userId) {
+            String filepath = getPath(file.getFolder()) + "/" + file.getFilename();
+            return dropboxService.deleteFile(filepath, userDao.show(userId).getDropboxAccessToken());
+        }
+        return false;
+    }
+
     private String getPath(Folder folder) {
         return getPath(folder, "");
     }

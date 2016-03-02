@@ -20,4 +20,6 @@ public interface DropboxService {
 
     public String getFile(String path, String accessToken);
 
+    public boolean deleteFile(String path, String accessToken);
+
 }

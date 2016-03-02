@@ -19,7 +19,7 @@ public interface DocumentService {
 
     public GeneralMessageResponseDto deleteFile(Integer id, String username);
 
-    public List<FolderShowDto> showRoot();
+    public List<FolderShowDto> showRoot(String username);
 
     public FolderShowDto showFolder(Integer id, String username);
 
