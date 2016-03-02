@@ -105,6 +105,15 @@
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/js/jquery.fs.selecter.min.js"}"></script>
 <script rel="script" src="${"/resources/js/setup.js"}"></script>
-
+<script>
+    $("#inputStartYear").ready(function () {
+        var select = document.getElementById("inputStartYear");
+        for (var i = 1900; i <= 2016; ++i) {
+            var option = document.createElement('option');
+            option.text = option.value = i;
+            select.add(option, 0);
+        }
+    });
+</script>
 </body>
 </html>

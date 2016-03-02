@@ -52,7 +52,7 @@ public class UserController {
 
     @RequestMapping("/setup/data")
     public ModelAndView goSetupData(Principal principal) {
-        ModelAndView mv = new ModelAndView("setup-year");
+        ModelAndView mv = new ModelAndView("setup-data");
         mv.addObject("user", userDao.show(principal.getName()));
         return mv;
     }

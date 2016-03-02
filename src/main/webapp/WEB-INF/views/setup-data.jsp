@@ -5,7 +5,8 @@
   Time: 1:16 AM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -50,7 +51,11 @@
                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                     <ul class="nav navbar-nav navbar-right dd-nav-links">
-                                        <p class="dd-setup-hello">Hello <strong>Paul Ryan!</strong></p>
+                                        <p class="dd-setup-hello">Hello
+                                            <strong>
+                                                <c:out value="${user.firstname}" />
+                                            </strong>
+                                        </p>
                                     </ul>
                                 </div>
                                 <!-- /.navbar-collapse -->
@@ -100,7 +105,7 @@
         </div>
         <div class="row">
             <div class="col-sm-2 col-sm-offset-8">
-                <button class="btn btn-primary btn-block dd-setup-btn" id="continueBtn">Continue</button>
+                <a class="btn btn-primary btn-block dd-setup-btn" id="continueBtn" href="/setup/pretraining">Continue</a>
             </div>
         </div>
     </div>
