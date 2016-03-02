@@ -38,6 +38,9 @@ public class DocumentServiceImpl implements DocumentService {
     private DocumentStructureClassificationService docStructureClassification;
 
     @Autowired
+    private ContentClassificationService contentClassificationService;
+
+    @Autowired
     private DocxService docxService;
 
     @Autowired
@@ -68,7 +71,8 @@ public class DocumentServiceImpl implements DocumentService {
         if (text != null) {
             List<String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
             String result = docStructureClassification.classify(StringUtils.join(tags, " "), environment.getProperty("storage.classifier"));
-            //iadd diri nga part imo leeroy....
+            Integer contentResult = contentClassificationService.categorize(text,userDao.show(username).getId(),file.getOriginalFilename());
+            //ang gi return ani kay ang categoryID hehe thanks
         } else {
             responseDto.setMessage("error_reading_file");
         }

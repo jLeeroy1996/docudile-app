@@ -201,7 +201,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         return wordListVectors;
     }
 
-    public Integer categorize(com.docudile.app.data.entities.File f, List<String> words, Integer userID, String filename) {
+    public Integer categorize( List<String> words, Integer userID, String filename) {
         List<CategoryDto> categories = null;
         //get data from DB Category
         List<Category> categoryList = categoryDao.getCategories(userID);
@@ -254,10 +254,6 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             }
         }
 
-        f.setCategory(categoryDao.show(categoryDto.getCategoryID()));
-        fileDao.create(f);
-
-        getCount((List<FileContentDto>) f, wordList, f.getId());
         return categoryDto.getCategoryID();
     }
 
