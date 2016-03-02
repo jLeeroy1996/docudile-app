@@ -46,7 +46,7 @@ public class DropboxServiceImpl implements DropboxService {
         String redirectUri = "http://localhost:8080/dropbox-auth-finish";
         DbxWebAuth webAuth = new DbxWebAuth(config, appInfo, redirectUri, sessionStore);
         try {
-            return webAuth.finish(request.getParameterMap()).accessToken;
+             return webAuth.finish(request.getParameterMap()).accessToken;
         } catch (Exception ex) {
             return null;
         }

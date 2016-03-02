@@ -22,6 +22,8 @@ public interface DocumentService {
 
     public GeneralMessageResponseDto contentTrain(String username) throws IOException;
 
+    public GeneralMessageResponseDto uploadTraining(MultipartFile file, String username, String categoryName);
+
     public List<FolderShowDto> showRoot(String username);
 
     public FolderShowDto showFolder(Integer id, String username);
