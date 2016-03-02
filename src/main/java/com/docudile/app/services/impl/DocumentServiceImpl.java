@@ -106,6 +106,21 @@ public class DocumentServiceImpl implements DocumentService {
         return response;
     }
 
+    public GeneralMessageResponseDto contentTrain(String username) throws IOException {
+        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
+
+        boolean noError = contentClassificationService.train(userDao.show(username).getId());
+
+        if(noError){
+            response.setMessage("training_successfully_saved");
+        }
+        else{
+            response.setMessage("problem_in_training");
+        }
+        return response;
+
+    }
+
     @Override
     public GeneralMessageResponseDto deleteTag(String tagName, String username) {
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
@@ -131,6 +146,8 @@ public class DocumentServiceImpl implements DocumentService {
         }
         return response;
     }
+
+
 
     private File multipartToFile(MultipartFile mFile) {
         File file = new File(mFile.getOriginalFilename());

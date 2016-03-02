@@ -77,7 +77,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
 
         //get Files from each Category in DropBox
-        file = fileDao.getSpecificFiles(userID);
+        file = fileDao.getTrainingFiles(userID);
 
         // convert to FileContentDto
         for (int x = 0; x < file.size(); x++) {
@@ -126,8 +126,9 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                 wordListCategoryDao.create(wordListCategory);
             }
         }
-        return false;
+        return true;
     }
+
 
     public WordListDto getDistinctWords(List<FileContentDto> files, WordListDto list) {
         WordList word = new WordList();
