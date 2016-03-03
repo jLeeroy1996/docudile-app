@@ -27,7 +27,7 @@ public class TrainController {
     }
 
     @CrossOrigin(origins = "http://localhost:9000")
-    @RequestMapping(value = "/trainTag", method = RequestMethod.POST, headers ="content-type=application/json")
+    @RequestMapping(value = "/training/trainTag", method = RequestMethod.POST, headers ="content-type=application/json")
     public @ResponseBody GeneralMessageResponseDto trainTag(@RequestBody List<ModTagRequestDto> request, Principal principal) {
         return documentService.trainTag(request, principal.getName());
     }
@@ -37,13 +37,16 @@ public class TrainController {
         return documentService.deleteTag(tagName, principal.getName());
     }
 
-    @RequestMapping(value = "/trainClassifier", method = RequestMethod.POST)
+    @RequestMapping(value = "/training/trainClassifier", method = RequestMethod.POST)
     public @ResponseBody GeneralMessageResponseDto trainClassifier(@RequestPart("name") String name, @RequestPart("file") MultipartFile file, Principal principal) {
         return documentService.trainClassifier(name, file, principal.getName());
     }
 
-    @RequestMapping(value = "/trainCategory", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("name") String name, @RequestPart("content_new") MultipartFile file, @RequestPart("categoryName") String categoryName, Principal principal) throws IOException {
+    @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
+    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("name") String name,
+                                                                 @RequestPart("content_new") MultipartFile file,
+                                                                 @RequestPart("categoryName") String categoryName,
+                                                                 Principal principal) throws IOException {
         return documentService.contentTrain(name,file,categoryName);
     }
 }
