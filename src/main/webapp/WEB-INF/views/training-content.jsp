@@ -76,15 +76,14 @@
     <div class="container">
         <div class="row dd-pretrain">
             <div class="col-sm-6 col-sm-offset-3">
-                <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab">Content</a></li>
-                    <li role="presentation"><a href="#structure" aria-controls="structure" role="tab" data-toggle="tab">Structure</a></li>
+                    <li role="presentation" class="active"><a href="#retrain" aria-controls="home" role="tab" data-toggle="tab">Retrain</a></li>
+                    <li role="presentation"><a href="#new" aria-controls="new" role="tab" data-toggle="tab">New</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="content">
+                    <div role="tabpanel" class="tab-pane active" id="retrain">
                         <div class="form-group">
-                            <select id="dd-select-train-content" class="form-control">
+                            <select id="dd-select-train" class="form-control">
                                 <option value="memo">Memo</option>
                                 <option value="letter">Letter</option>
                             </select>
@@ -120,48 +119,30 @@
                             </table>
                         </div>
                         <div class="form-group">
-                            <input id="dd-training-files-content" name="content-training[]" type="file" multiple class="file-loading">
+                            <input id="dd-training-files-content-retrain" name="content-retrain[]" type="file" multiple class="file-loading">
                         </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="structure">
+                    <div role="tabpanel" class="tab-pane" id="new">
                         <div class="form-group">
-                            <select id="dd-select-train-structure" class="form-control">
-                                <option value="memo">Memo</option>
+                            <select id="dd-select-content-new structureCategory" class="form-control">
+                                <option value="memo" selected>Memo</option>
                                 <option value="letter">Letter</option>
                             </select>
                         </div>
-                        <div class="form-group dd-retrain-file-list">
-                            <table class="table">
-                                <tbody>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <div class="form-group">
+                            <input type="text" name="trainNewCategory" class="form-control" placeholder="Category name..." id="categoryName"/>
                         </div>
                         <div class="form-group">
-                            <input id="dd-training-files-structure" name="structure-training[]" type="file" multiple class="file-loading">
+                            <div id="drag-and-drop-zone" class="uploader">
+                                <div>Drag &amp; Drop Images Here</div>
+                                <div class="or">-or-</div>
+                                <div class="browser">
+                                    <label>
+                                        <span>Click to open the file Browser</span>
+                                        <input type="file" name="content-new[]" multiple="multiple" title='Click to add Files' id="dd-training-files-content-new">
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -177,20 +158,50 @@
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
 <script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
+<script rel="script" src="${"/resources/js/dmuploader.min.js"}"></script>
 <script rel="script" src="${"/resources/js/custom.js"}"></script>
 <script>
-    $("#dd-select-train-content").select2();
-    $("#dd-select-train-structure").select2();
-    $("#dd-training-files-content").fileinput({
-        uploadUrl: "http://localhost/file-upload-single/1", // server upload action
-        uploadAsync: true,
-        maxFileCount: 5
-    });
-    $("#dd-training-files-structure").fileinput({
-        uploadUrl: "http://localhost/file-upload-single/1", // server upload action
-        uploadAsync: true,
-        maxFileCount: 5
-    });
+    $(document).on('ready', function () {
+        var token = $("input[name='_csrf']").val();
+        var doc_url = "./trainCategory?_csrf=" + token;
+        var type_url = "./new-type?_csrf=" + token;
+        $("#dd-select-content-retrain").select2();
+//        $("#dd-select-content-new").select2();
+
+        $("#dd-training-files-content-retrain").fileinput({
+            uploadUrl: "http://localhost/file-upload-single/1", // server upload action
+            uploadAsync: true,
+            maxFileCount: 5
+        });
+//        $("#dd-training-files-content-new").fileinput({
+//            uploadUrl: doc_url, // server upload action
+//            uploadAsync: false,
+//            uploadExtraData: function () {
+//                return {
+//                    name: $("#structureName").val(),
+//                    categoryName: $("input:text #categoryName").val()
+//                };
+//            },
+//            maxFileCount: 10
+//        });
+        $("#drag-and-drop-zone").dmUploader({
+            url: doc_url,
+            dataType: 'json',
+            allowedTypes: 'image/*',
+            extraData: {
+                name: $("#structureCategory").val(),
+                categoryName: $("input:text #categoryName").val()
+            },
+            maxFiles: 10,
+            onUploadSuccess: function(){
+                console.log("boom panes");
+            },
+            onBeforeUpload: function() {
+                alert($("#structureCategory").val());
+            }
+        });
+    })
+
 </script>
 </body>
 </html>
