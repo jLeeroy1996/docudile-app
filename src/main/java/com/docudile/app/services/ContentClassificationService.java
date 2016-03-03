@@ -3,6 +3,7 @@ package com.docudile.app.services;
 import com.docudile.app.data.dto.CategoryDto;
 import com.docudile.app.data.dto.FileContentDto;
 import com.docudile.app.data.dto.WordListDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,5 +24,7 @@ public interface ContentClassificationService {
     public Integer categorize(List<String> words, Integer userID, String filename);
 
     public String readDocxFile(String filename);
+
+    public void writeToFile(MultipartFile f, String path) throws IOException;
 
 }

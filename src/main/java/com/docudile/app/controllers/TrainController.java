@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -39,5 +40,10 @@ public class TrainController {
     @RequestMapping(value = "/trainClassifier", method = RequestMethod.POST)
     public @ResponseBody GeneralMessageResponseDto trainClassifier(@RequestPart("name") String name, @RequestPart("file") MultipartFile file, Principal principal) {
         return documentService.trainClassifier(name, file, principal.getName());
+    }
+
+    @RequestMapping(value = "/trainCategory", method = RequestMethod.POST)
+    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("name") String name, @RequestPart("file") MultipartFile file, String categoryName, Principal principal) throws IOException {
+        return documentService.contentTrain(name,file,categoryName);
     }
 }
