@@ -76,15 +76,14 @@
     <div class="container">
         <div class="row dd-pretrain">
             <div class="col-sm-6 col-sm-offset-3">
-                <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab">Content</a></li>
-                    <li role="presentation"><a href="#structure" aria-controls="structure" role="tab" data-toggle="tab">Structure</a></li>
+                    <li role="presentation" class="active"><a href="#retrain" aria-controls="home" role="tab" data-toggle="tab">Retrain</a></li>
+                    <li role="presentation"><a href="#new" aria-controls="new" role="tab" data-toggle="tab">New</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="content">
+                    <div role="tabpanel" class="tab-pane active" id="retrain">
                         <div class="form-group">
-                            <select id="dd-select-train-content" class="form-control">
+                            <select id="dd-select-train" class="form-control">
                                 <option value="memo">Memo</option>
                                 <option value="letter">Letter</option>
                             </select>
@@ -120,48 +119,21 @@
                             </table>
                         </div>
                         <div class="form-group">
-                            <input id="dd-training-files-content" name="content-training[]" type="file" multiple class="file-loading">
+                            <input id="dd-training-files-content-retrain" name="content-retrain[]" type="file" multiple class="file-loading">
                         </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="structure">
+                    <div role="tabpanel" class="tab-pane" id="new">
                         <div class="form-group">
-                            <select id="dd-select-train-structure" class="form-control">
+                            <select id="dd-select-content-new" class="form-control">
                                 <option value="memo">Memo</option>
                                 <option value="letter">Letter</option>
                             </select>
                         </div>
-                        <div class="form-group dd-retrain-file-list">
-                            <table class="table">
-                                <tbody>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>excuse.docx</td>
-                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                        <div class="form-group">
+                            <input type="text" name="trainNewCategory" class="form-control" placeholder="Category name..."/>
                         </div>
                         <div class="form-group">
-                            <input id="dd-training-files-structure" name="structure-training[]" type="file" multiple class="file-loading">
+                            <input id="dd-training-files-content-new" name="content-new[]" type="file" multiple class="file-loading">
                         </div>
                     </div>
                 </div>
@@ -179,14 +151,15 @@
 <script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
 <script rel="script" src="${"/resources/js/custom.js"}"></script>
 <script>
-    $("#dd-select-train-content").select2();
-    $("#dd-select-train-structure").select2();
-    $("#dd-training-files-content").fileinput({
+    $("#dd-select-content-retrain").select2();
+    $("#dd-select-content-new").select2();
+
+    $("#dd-training-files-content-retrain").fileinput({
         uploadUrl: "http://localhost/file-upload-single/1", // server upload action
         uploadAsync: true,
         maxFileCount: 5
     });
-    $("#dd-training-files-structure").fileinput({
+    $("#dd-training-files-content-new").fileinput({
         uploadUrl: "http://localhost/file-upload-single/1", // server upload action
         uploadAsync: true,
         maxFileCount: 5

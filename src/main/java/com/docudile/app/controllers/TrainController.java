@@ -21,9 +21,9 @@ public class TrainController {
     @Autowired
     DocumentService documentService;
 
-    @RequestMapping("/retraining")
+    @RequestMapping("/training/content")
     public String goRetrain() {
-        return "retraining";
+        return "training-content";
     }
 
     @CrossOrigin(origins = "http://localhost:9000")
