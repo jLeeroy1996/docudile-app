@@ -77,19 +77,6 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         User user = userDao.getUserDetails(userID);
 
 
-        //get Files from each Category in DropBox
-        file = fileDao.getTrainingFiles(userID);
-        for(int x = 0;x<categoriesDto.size();x++) {
-            java.io.File folder = new java.io.File("storage.content_training"+"/"+categoriesDto.get(x).getName());
-            for (final java.io.File fileEntry : folder.listFiles()) {
-                fileContentDto.setFileName(fileEntry.getName());
-                fileContentDto.setCategoryName(categoriesDto.get(x).getName());
-                fileContentDto.setWordList(docxService.readDocx(fileEntry));
-                fileDto.add(fileContentDto);
-            }
-        }
-
-
         //get wordList in DB
         wordList.setWordList(wordListDao.getWords());
         wordList.setCount(wordListDao.getWords().size());

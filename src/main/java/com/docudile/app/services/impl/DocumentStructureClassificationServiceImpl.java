@@ -60,7 +60,8 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
     @Override
     public boolean trainTagger(String path, String tagName, List<String> line) {
         if (writeToFile(line, path + tagName + ".txt")) {
-            return tfIdfService.process(path + tagName + ".txt", path + "processed");
+            System.out.println("here");
+            return tfIdfService.process(path, path + "processed");
         }
         return false;
     }
@@ -68,7 +69,7 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
     @Override
     public boolean trainClassifier(String path, List<String> tags, String type) {
         if (writeToFile(tags, path + type + ".txt")) {
-            return tfIdfService.process(path + type + ".txt", path + "processed");
+            return tfIdfService.process(path, path + "processed");
         }
         return false;
     }
@@ -81,11 +82,11 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
     private boolean writeToFile(List<String> lines, String path) {
         File file = new File(path);
         file.getParentFile().mkdirs();
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         try {
             FileWriter fileWriter = new FileWriter(file, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -107,7 +108,7 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
             FileReader fileReader = new FileReader(location);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String temp;
-            while((temp = bufferedReader.readLine()) != null) {
+            while ((temp = bufferedReader.readLine()) != null) {
                 String[] tokens = temp.split(":=");
                 if (tokens.length >= 2) {
                     if (tags.containsKey(tokens[0])) {

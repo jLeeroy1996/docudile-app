@@ -103,14 +103,10 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public GeneralMessageResponseDto trainTag(List<ModTagRequestDto> requests, String username) {
+    public GeneralMessageResponseDto trainTag(ModTagRequestDto request, String username) {
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
-        boolean noError = false;
-        for (ModTagRequestDto request : requests) {
-            String path = environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags");
-            noError = docStructureClassification.trainTagger(path, request.getName(), request.getData());
-        }
-        if (!noError) {
+        String path = environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags");
+        if (!docStructureClassification.trainTagger(path, request.getName(), request.getData())) {
             response.setMessage("problem_in_saving");
         } else {
             response.setMessage("training_successfully_saved");

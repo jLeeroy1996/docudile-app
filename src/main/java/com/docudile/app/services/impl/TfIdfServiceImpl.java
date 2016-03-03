@@ -23,6 +23,7 @@ public class TfIdfServiceImpl implements TfIdfService {
     @Override
     public boolean process(String dataPath, String savePath) {
         try {
+            System.out.println(dataPath);
             Map<String, List<String>> fileTokens = getFileTokens(FileHandler.readAllFiles(dataPath));
             Set<String> distinctTokens = getDistinctTokens(fileTokens);
             Map<String, Integer[]> fileTokenCounts = getFileTokenCounts(fileTokens, distinctTokens);
@@ -129,9 +130,7 @@ public class TfIdfServiceImpl implements TfIdfService {
     private Double[] getIdfWeight(Map<String, Integer[]> tokenCounts, int tokensCnt) {
         Double[] idfWeight = new Double[tokensCnt];
         for (int i = 0; i < tokensCnt; i++) {
-            System.out.println((double) tokenCounts.size() / (double) getWordDocuCount(i, tokenCounts));
             idfWeight[i] = MathCalculations.log2((double) tokenCounts.size() / (double) getWordDocuCount(i, tokenCounts));
-            System.out.println(idfWeight[i]);
         }
         return idfWeight;
     }

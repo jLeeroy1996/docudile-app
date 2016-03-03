@@ -27,7 +27,7 @@ public class TrainController {
 
     @CrossOrigin(origins = "http://localhost:9000")
     @RequestMapping(value = "/trainTag", method = RequestMethod.POST, headers ="content-type=application/json")
-    public @ResponseBody GeneralMessageResponseDto trainTag(@RequestBody List<ModTagRequestDto> request, Principal principal) {
+    public @ResponseBody GeneralMessageResponseDto trainTag(@RequestBody ModTagRequestDto request, Principal principal) {
         return documentService.trainTag(request, principal.getName());
     }
 

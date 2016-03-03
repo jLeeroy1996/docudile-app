@@ -21,6 +21,7 @@ public class FileHandler {
 
     public static boolean writeToFile(List<String> lines, String filename) {
         try {
+            System.out.println("i was here.");
             new File(filename).getParentFile().mkdirs();
             FileWriter fw = new FileWriter(filename);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -34,6 +35,7 @@ public class FileHandler {
             fw.close();
             return true;
         } catch (Exception ex) {
+            System.out.println(ex);
         }
         return false;
     }
@@ -92,6 +94,7 @@ public class FileHandler {
             br.close();
             fr.close();
         }
+        System.out.println(files.size());
         return files;
     }
     
