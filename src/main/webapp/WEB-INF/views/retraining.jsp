@@ -76,44 +76,94 @@
     <div class="container">
         <div class="row dd-pretrain">
             <div class="col-sm-6 col-sm-offset-3">
-                <div class="form-group">
-                    <select id="dd-select-train" class="form-control">
-                        <option value="memo">Memo</option>
-                        <option value="letter">Letter</option>
-                    </select>
-                </div>
-                <div class="form-group dd-retrain-file-list">
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <td>excuse.docx</td>
-                                <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>excuse.docx</td>
-                                <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>excuse.docx</td>
-                                <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>excuse.docx</td>
-                                <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>excuse.docx</td>
-                                <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>excuse.docx</td>
-                                <td><a href="#!"><i class="fa fa-times"></i></a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="form-group">
-                    <input id="dd-training-files" name="training[]" type="file" multiple class="file-loading">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab">Content</a></li>
+                    <li role="presentation"><a href="#structure" aria-controls="structure" role="tab" data-toggle="tab">Structure</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="content">
+                        <div class="form-group">
+                            <select id="dd-select-train-content" class="form-control">
+                                <option value="memo">Memo</option>
+                                <option value="letter">Letter</option>
+                            </select>
+                        </div>
+                        <div class="form-group dd-retrain-file-list">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <input id="dd-training-files-content" name="content-training[]" type="file" multiple class="file-loading">
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="structure">
+                        <div class="form-group">
+                            <select id="dd-select-train-structure" class="form-control">
+                                <option value="memo">Memo</option>
+                                <option value="letter">Letter</option>
+                            </select>
+                        </div>
+                        <div class="form-group dd-retrain-file-list">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>excuse.docx</td>
+                                    <td><a href="#!"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <input id="dd-training-files-structure" name="structure-training[]" type="file" multiple class="file-loading">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -129,10 +179,14 @@
 <script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
 <script rel="script" src="${"/resources/js/custom.js"}"></script>
 <script>
-    $("#dd-select-train").select2();
-
-    var $input = $("#dd-training-files");
-    $input.fileinput({
+    $("#dd-select-train-content").select2();
+    $("#dd-select-train-structure").select2();
+    $("#dd-training-files-content").fileinput({
+        uploadUrl: "http://localhost/file-upload-single/1", // server upload action
+        uploadAsync: true,
+        maxFileCount: 5
+    });
+    $("#dd-training-files-structure").fileinput({
         uploadUrl: "http://localhost/file-upload-single/1", // server upload action
         uploadAsync: true,
         maxFileCount: 5
