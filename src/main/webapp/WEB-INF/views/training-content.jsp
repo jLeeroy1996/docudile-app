@@ -124,13 +124,13 @@
                     </div>
                     <div role="tabpanel" class="tab-pane" id="new">
                         <div class="form-group">
-                            <select id="dd-select-content-new" class="form-control">
+                            <select id="dd-select-content-new" class="form-control" id="structureName">
                                 <option value="memo">Memo</option>
                                 <option value="letter">Letter</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="trainNewCategory" class="form-control" placeholder="Category name..."/>
+                            <input type="text" name="trainNewCategory" class="form-control" placeholder="Category name..." id="categoryName"/>
                         </div>
                         <div class="form-group">
                             <input id="dd-training-files-content-new" name="content-new[]" type="file" multiple class="file-loading">
@@ -151,19 +151,29 @@
 <script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
 <script rel="script" src="${"/resources/js/custom.js"}"></script>
 <script>
-    $("#dd-select-content-retrain").select2();
-    $("#dd-select-content-new").select2();
+    $(document).on('ready', function () {
+        var token = $("input[name='_csrf']").val();
+        var doc_url = "./trainCategory?_csrf=" + token;
+        var type_url = "./new-type?_csrf=" + token;
+        $("#dd-select-content-retrain").select2();
+        $("#dd-select-content-new").select2();
 
-    $("#dd-training-files-content-retrain").fileinput({
-        uploadUrl: "http://localhost/file-upload-single/1", // server upload action
-        uploadAsync: true,
-        maxFileCount: 5
-    });
-    $("#dd-training-files-content-new").fileinput({
-        uploadUrl: "http://localhost/trainCategory", // server upload action
-        uploadAsync: true,
-        maxFileCount: 5
-    });
+        $("#dd-training-files-content-retrain").fileinput({
+            uploadUrl: "http://localhost/file-upload-single/1", // server upload action
+            uploadAsync: true,
+            maxFileCount: 5
+        });
+        $("#dd-training-files-content-new").fileinput({
+            uploadUrl: doc_url, // server upload action
+            uploadAsync: false,
+            uploadExtraData: {
+                name: $("input:text #structureName").val(),
+                categoryName: $("input:text #categoryName").val()
+            },
+            maxFileCount: 10
+        });
+    })
+
 </script>
 </body>
 </html>
