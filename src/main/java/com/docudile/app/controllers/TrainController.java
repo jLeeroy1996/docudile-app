@@ -43,7 +43,7 @@ public class TrainController {
     }
 
     @RequestMapping(value = "/trainCategory", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("name") String name, @RequestPart("file") MultipartFile file, String categoryName, Principal principal) throws IOException {
+    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("name") String name, @RequestPart("content_new") MultipartFile file, @RequestPart("categoryName") String categoryName, Principal principal) throws IOException {
         return documentService.contentTrain(name,file,categoryName);
     }
 }

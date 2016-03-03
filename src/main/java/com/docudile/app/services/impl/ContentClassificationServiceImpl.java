@@ -14,6 +14,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +33,9 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
     @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    private Environment environment;
 
     @Autowired
     private FileDao fileDao;
@@ -76,7 +80,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         User user = userDao.getUserDetails(userID);
 
         for(int x = 0;x<categoriesDto.size();x++) {
-            java.io.File folder = new java.io.File("storage.content_training"+"/"+categoriesDto.get(x).getName());
+            java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" +environment.getProperty("storage.content_training")+"/"+categoriesDto.get(x).getName());
             for (final java.io.File fileEntry : folder.listFiles()) {
                 fileContentDto.setFileName(fileEntry.getName());
                 fileContentDto.setCategoryName(categoriesDto.get(x).getName());

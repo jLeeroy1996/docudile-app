@@ -70,9 +70,9 @@
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="form-group">
                     <select id="dd-select-train" class="form-control">
-                        <option value="memo">Memo</option>
-                        <option value="letter">Letter</option>
-                    </select>
+                    <option value="memo">Memo</option>
+                    <option value="letter">Letter</option>
+                </select>
                 </div>
                 <div class="form-group">
                     <input id="dd-training-files" name="training[]" type="file" multiple class="file-loading">
