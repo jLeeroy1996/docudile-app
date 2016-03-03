@@ -72,13 +72,9 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             //add it into List<Category> categories
             categoriesDto.add(category);
         }
-
         //get Access Token
         User user = userDao.getUserDetails(userID);
 
-
-        //get Files from each Category in DropBox
-        file = fileDao.getTrainingFiles(userID);
         for(int x = 0;x<categoriesDto.size();x++) {
             java.io.File folder = new java.io.File("storage.content_training"+"/"+categoriesDto.get(x).getName());
             for (final java.io.File fileEntry : folder.listFiles()) {
@@ -145,16 +141,13 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         List<String> wordListWords = wordList.getWordList();
         List<String> filesWordList = null;
         int counter = 0;
-
         for (int x = 0; x < wordListWords.size(); x++) {
             countWords[x][0] = wordListWords.get(x);
             countWords[x][1] = "0";
         }
-
         for (int x = 0; x < categories.size(); x++) {
             categories.get(x).setWordList(countWords);
         }
-
         for (int x = 0; x < files.size(); x++) {
             filesWordList = files.get(x).getWordList();
             for (int y = 0; y < categories.size(); y++) {
@@ -297,7 +290,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
     }
 
-    private void writeToFile(MultipartFile f, String path) throws IOException {
+    public void writeToFile(MultipartFile f, String path) throws IOException {
         f.transferTo(new java.io.File(path));
     }
 
