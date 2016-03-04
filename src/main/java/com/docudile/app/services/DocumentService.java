@@ -28,7 +28,7 @@ public interface DocumentService {
 
     public FolderShowDto showFolder(Integer id, String username);
 
-    public GeneralMessageResponseDto trainTag(List<ModTagRequestDto> requests, String username);
+    public GeneralMessageResponseDto trainTag(ModTagRequestDto requests, String username);
 
     public GeneralMessageResponseDto deleteTag(String tagName, String username);
 

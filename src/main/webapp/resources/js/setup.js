@@ -1,7 +1,6 @@
 /**
  * Created by PaulRyan on 3/2/2016.
  */
-var data = [];
 $("#inputStartYear").on("change", function () {
     var value = $(":selected", this).val();
     value = parseFloat(value) + 1;
@@ -15,24 +14,28 @@ $("#inputStartYear").on("change", function () {
 });
 
 $(document).ready(function () {
+    var token = $("input[name='_csrf']").val();
     $("#categoryAdd").click(function () {
+        var data = {};
+        var url = "/trainTag?_csrf=" + token;
         var categoryName = $('#inputCategory').val();
         var tags = $('#inputTags').tagsinput("items");
         var tr = "<tr><td>" + categoryName + "</td><td><a href='#!'><i class='fa fa-times'></i></a></td></tr>";
         $('#categoryTable').append(tr);
-        data["name"] = categoryName;
-        data["data"] = tags;
-        post(data);
+        data.name = categoryName;
+        data.data = tags;
+        post(data, url);
         $('#inputCategory').val("");
         $('#inputTags').tagsinput("removeAll");
     });
 });
 
-function post(data) {
+function post(data, url) {
     var jsonData = JSON.stringify(data);
+    console.log(jsonData);
     $.ajax({
         type: 'POST',
-        url: "http://localhost:8080/trainTag",
+        url: url,
         dataType: 'json',
         data: jsonData,
         contentType: "application/json",

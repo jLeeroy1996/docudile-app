@@ -79,6 +79,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
    //         categoriesDto.add(category);
     //    }
         //get Access Token
+<<<<<<< HEAD
    //     User user = userDao.getUserDetails(userID);
 
 //        for(int x = 0;x<categoriesDto.size();x++) {
@@ -99,6 +100,14 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         for(int x = 0;x<categoriesDto.size();x++){
             java.io.File folder = new java.io.File("C:\\Docudile\\TestingFiles");
             System.out.println(folder.listFiles());
+=======
+        User user = userDao.getUserDetails(userID);
+
+<<<<<<< HEAD
+=======
+        for(int x = 0;x<categoriesDto.size();x++) {
+            java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" +environment.getProperty("storage.content_training")+"/"+categoriesDto.get(x).getName());
+>>>>>>> origin/master
             for (final java.io.File fileEntry : folder.listFiles()) {
                 fileContentDto.setFileName(fileEntry.getName());
                 fileContentDto.setCategoryName(categoriesDto.get(x).getName());
@@ -107,6 +116,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             }
         }
 
+>>>>>>> origin/master
 
         //get wordList in DB
         wordList.setWordList(wordListDao.getWords());

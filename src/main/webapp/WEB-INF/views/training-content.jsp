@@ -124,8 +124,8 @@
                     </div>
                     <div role="tabpanel" class="tab-pane" id="new">
                         <div class="form-group">
-                            <select id="dd-select-content-new" class="form-control" id="structureName">
-                                <option value="memo">Memo</option>
+                            <select id="dd-select-content-new structureCategory" class="form-control">
+                                <option value="memo" selected>Memo</option>
                                 <option value="letter">Letter</option>
                             </select>
                         </div>
@@ -133,7 +133,16 @@
                             <input type="text" name="trainNewCategory" class="form-control" placeholder="Category name..." id="categoryName"/>
                         </div>
                         <div class="form-group">
-                            <input id="dd-training-files-content-new" name="content-new[]" type="file" multiple class="file-loading">
+                            <div id="drag-and-drop-zone" class="uploader">
+                                <div>Drag &amp; Drop Images Here</div>
+                                <div class="or">-or-</div>
+                                <div class="browser">
+                                    <label>
+                                        <span>Click to open the file Browser</span>
+                                        <input type="file" name="content-new[]" multiple="multiple" title='Click to add Files' id="dd-training-files-content-new">
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -149,6 +158,7 @@
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
 <script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
+<script rel="script" src="${"/resources/js/dmuploader.min.js"}"></script>
 <script rel="script" src="${"/resources/js/custom.js"}"></script>
 <script>
     $(document).on('ready', function () {
@@ -156,21 +166,39 @@
         var doc_url = "./trainCategory?_csrf=" + token;
         var type_url = "./new-type?_csrf=" + token;
         $("#dd-select-content-retrain").select2();
-        $("#dd-select-content-new").select2();
+//        $("#dd-select-content-new").select2();
 
         $("#dd-training-files-content-retrain").fileinput({
             uploadUrl: "http://localhost/file-upload-single/1", // server upload action
             uploadAsync: true,
             maxFileCount: 5
         });
-        $("#dd-training-files-content-new").fileinput({
-            uploadUrl: doc_url, // server upload action
-            uploadAsync: false,
-            uploadExtraData: {
-                name: $("input:text #structureName").val(),
+//        $("#dd-training-files-content-new").fileinput({
+//            uploadUrl: doc_url, // server upload action
+//            uploadAsync: false,
+//            uploadExtraData: function () {
+//                return {
+//                    name: $("#structureName").val(),
+//                    categoryName: $("input:text #categoryName").val()
+//                };
+//            },
+//            maxFileCount: 10
+//        });
+        $("#drag-and-drop-zone").dmUploader({
+            url: doc_url,
+            dataType: 'json',
+            allowedTypes: 'image/*',
+            extraData: {
+                name: $("#structureCategory").val(),
                 categoryName: $("input:text #categoryName").val()
             },
-            maxFileCount: 10
+            maxFiles: 10,
+            onUploadSuccess: function(){
+                console.log("boom panes");
+            },
+            onBeforeUpload: function() {
+                alert($("#structureCategory").val());
+            }
         });
     })
 
