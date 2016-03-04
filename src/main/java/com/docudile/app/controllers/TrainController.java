@@ -42,8 +42,14 @@ public class TrainController {
         return documentService.trainClassifier(name, file, principal.getName());
     }
 
-    @RequestMapping(value = "/trainCategory", method = RequestMethod.POST)
+    @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
     public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("name") String name, @RequestPart("content_new") MultipartFile file, @RequestPart("categoryName") String categoryName, Principal principal) throws IOException {
-        return documentService.contentTrain(name,file,categoryName);
+        return documentService.contentTrain(name, file, categoryName);
     }
+
+    @RequestMapping(value = "/training/trainCategorySample", method = RequestMethod.GET)
+    public @ResponseBody GeneralMessageResponseDto trainCategorySample() throws IOException {
+        return documentService.sampleTrainContent();
+    }
+
 }
