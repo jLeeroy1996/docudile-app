@@ -17,14 +17,15 @@
     <link rel="stylesheet" href="${"/resources/treeview/bootstrap-treeview.min.css"}">
     <link rel="stylesheet" href="${"/resources/css/bootstrap-treenav.css"}">
     <link rel="stylesheet" href="${"/resources/fonts/font-awesome/css/font-awesome.min.css"}">
-    <link rel="stylesheet" href="${"/resources/css/site.css"}">
     <link rel="stylesheet" href="${"/resources/select2/css/select2.min.css"}">
+    <link rel="stylesheet" href="${"/resources/css/dropzone.css"}">
+    <link rel="stylesheet" href="${"/resources/css/site.css"}">
 
     <link rel="icon"
           type="image/png"
           href="${"/resources/img/logo.png"}">
 </head>
-<body style="background: #2b83c6">
+<body style="background: #55acef">
 
 <header>
     <nav class="navbar dd-home-navbar">
@@ -118,28 +119,26 @@
                             </table>
                         </div>
                         <div class="form-group">
-                            <input id="dd-training-files-content-retrain" name="content-retrain[]" type="file" multiple class="file-loading">
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="new">
-                        <div class="form-group">
-                            <select id="dd-select-content-new" class="form-control">
-                                <option value="memo" selected>Memo</option>
-                                <option value="letter">Letter</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Category name..." id="category_name"/>
-                        </div>
-                        <div class="form-group">
-                            <form action="/training/category/new?_csrf=${_csrf.token}" id="category_upload" class="dropzone">
+                            <form action="/training/category/new?_csrf=${_csrf.token}" id="category_upload_retrain" class="dropzone">
                                 <div class="fallback">
                                     <input name="file" type="file" multiple>
                                 </div>
                             </form>
                         </div>
                         <div class="form-group">
-                            <div id="category_upload_preview"></div>
+                            <button id="category_upload_btn" class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="new">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Category name..." id="category_name"/>
+                        </div>
+                        <div class="form-group">
+                            <form action="/training/category/new?_csrf=${_csrf.token}" id="category_upload_new" class="dropzone">
+                                <div class="fallback">
+                                    <input name="file" type="file" multiple>
+                                </div>
+                            </form>
                         </div>
                         <div class="form-group">
                             <button id="category_upload_btn" class="btn btn-primary">Create</button>

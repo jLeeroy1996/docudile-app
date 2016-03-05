@@ -165,20 +165,17 @@ ul.nav-tree ul.nav-tree {
 }
 
 .dropzone {
-    width: 100%;
-    height: 350px;
-    border: 1px solid #ccc;
+    color: #333 !important;
+    min-height: 250px !important;
+    border: 2px dashed rgba(0, 0, 0, 0.3);
     border-radius: 4px;
-    background-color: #f7f8f8;
-    cursor: pointer;
-    cursor: hand;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    text-align: center;
-    line-height: 350px;
-    font-size: 30px;
+}
+
+.dz-message span {
+    font-size: 21px;
+    color: #646C7F;
+}
+
+.dz-message {
+    margin-top: 83px !important;
 }

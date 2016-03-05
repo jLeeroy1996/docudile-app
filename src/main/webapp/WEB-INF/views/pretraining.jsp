@@ -16,11 +16,11 @@
     <link rel="stylesheet" href="${"/resources/bootflat/css/bootflat.css"}">
     <link rel="stylesheet" href="${"/resources/fonts/font-awesome/css/font-awesome.min.css"}">
     <link rel="stylesheet" href="${"/resources/css/index.css"}">
-    <link rel="stylesheet" href="${"/resources/css/setup.css"}">
     <link rel="stylesheet" href="${"/resources/css/bootstrap-tagsinput.css"}">
     <link rel="stylesheet" href="${"/resources/select2/css/select2.min.css"}">
     <link rel="stylesheet" href="${"/resources/bootstrap-fileinput/css/fileinput.min.css"}">
-
+    <link rel="stylesheet" href="${"/resources/css/dropzone.css"}">
+    <link rel="stylesheet" href="${"/resources/css/setup.css"}">
 
     <link rel="icon"
           type="image/png"
@@ -75,7 +75,17 @@
                 </select>
                 </div>
                 <div class="form-group">
-                    <input id="dd-training-files" name="training[]" type="file" multiple class="file-loading">
+                    <form action="/training/category/new?_csrf=${_csrf.token}" id="category_upload" class="dropzone">
+                        <div class="fallback">
+                            <input name="file" type="file" multiple>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-group">
+                    <div id="category_upload_preview"></div>
+                </div>
+                <div class="form-group">
+                    <button id="category_upload_btn" class="btn btn-primary">Create</button>
                 </div>
             </div>
         </div>
@@ -87,21 +97,12 @@
 </main>
 
 <script rel="script" src="${"/resources/js/jquery-2.1.3.min.js"}"></script>
+<script rel="script" src="${"/resources/js/dropzone.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap-tagsinput.js"}"></script>
 <script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
 <script rel="script" src="${"/resources/js/setup.js"}"></script>
-<script>
-    $("#dd-select-train").select2();
-
-    var $input = $("#dd-training-files");
-    $input.fileinput({
-        uploadUrl: "http://localhost/file-upload-single/1", // server upload action
-        uploadAsync: true,
-        maxFileCount: 5
-    });
-</script>
 </body>
 </html>

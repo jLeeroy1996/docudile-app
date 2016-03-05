@@ -15,13 +15,13 @@
     <link rel="stylesheet" href="${"/resources/css/bootstrap.min.css"}">
     <link rel="stylesheet" href="${"/resources/bootflat/css/bootflat.css"}  ">
     <link rel="stylesheet" href="${"/resources/css/index.css"}">
-
+    <link rel="stylesheet" href="${"/resources/css/setup.css"}">
 
     <link rel="icon"
           type="image/png"
           href="${"/resources/img/logo.png"}">
 </head>
-<body>
+<body style="background: #55acef;">
 
 <header class="dd-frontpage dd-onepage">
     <div class="dd-border">
@@ -62,10 +62,7 @@
 
     <div class="container">
         <div class="row dd-register">
-            <div class="col-sm-offset-1 col-sm-5">
-                <img src="${"/resources/img/cabinet.jpg"}" class="img-responsive">
-            </div>
-            <div class="col-sm-5">
+            <div class="col-sm-4 col-sm-offset-4">
                 <h4>Create an account</h4>
                 <form action="register" method="post">
                     <div class="form-group">
@@ -82,15 +79,9 @@
                     </div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="row">
-                        <div class="col-sm-6 col-sm-offset-1">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> I agree to Docudile's terms
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-sm-5">
-                            <button type="submit" class="btn btn-primary btn-block">Create an account</button>
+
+                        <div class="col-sm-6 col-sm-offset-6">
+                            <button type="submit" class="btn btn-primary btn-block dd-setup-btn">Create an account</button>
                         </div>
                     </div>
                 </form>

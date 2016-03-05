@@ -25,7 +25,7 @@
           type="image/png"
           href="${"/resources/img/logo.png"}">
 </head>
-<body style="background: #246da5">
+<body style="background: #55acef">
 <header class="dd-frontpage dd-onepage">
     <div class="dd-border">
         <div class="container">
