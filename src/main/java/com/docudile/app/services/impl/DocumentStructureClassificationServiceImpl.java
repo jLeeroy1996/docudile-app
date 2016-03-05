@@ -4,6 +4,8 @@ import com.docudile.app.services.DocumentStructureClassificationService;
 import com.docudile.app.services.TfIdfService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,15 +21,19 @@ import java.util.regex.Pattern;
  */
 @Service("documentStructureClassificationService")
 @Transactional
+@PropertySource({"classpath:/storage.properties"})
 public class DocumentStructureClassificationServiceImpl implements DocumentStructureClassificationService {
 
     @Autowired
     private TfIdfService tfIdfService;
 
+    @Autowired
+    private Environment environment;
+
     @Override
     public Map<Integer, String> tag(String path, List<String> lines) {
         Map<Integer, String> tagged = new HashMap<>();
-        Map<String, List<String>> tags = getTags(path);
+        Map<String, List<String>> tags = getTags(environment.getProperty("storage.base_tags"));
         int i = 0;
         for (String line : lines) {
             boolean found = false;
@@ -46,6 +52,9 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
                 if (StringUtils.isNotEmpty(tag)) {
                     tagged.put(i, tag);
                 }
+            }
+            if (tagged.get(i).equals("SALUTATION") || tagged.get(i).equals("SUBJECT")) {
+                break;
             }
             i++;
         }

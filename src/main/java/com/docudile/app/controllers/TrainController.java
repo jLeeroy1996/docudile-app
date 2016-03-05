@@ -38,32 +38,13 @@ public class TrainController {
     public @ResponseBody GeneralMessageResponseDto trainClassifier(@RequestPart("name") String name, @RequestPart("file") MultipartFile file, Principal principal) {
         return documentService.trainClassifier(name, file, principal.getName());
     }
-
-<<<<<<< HEAD
+    
     @RequestMapping(value = "/training/category/new", method = RequestMethod.POST)
     public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestParam("category_name") String name,
                                                                  @RequestPart("file") MultipartFile file,
                                                                  Principal principal) throws IOException {
         System.out.println("Name: " + name + " File: " + file.getOriginalFilename());
         return documentService.contentTrain(principal.getName(), file, name);
-=======
-    @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
-<<<<<<< HEAD
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("name") String name, @RequestPart("content_new") MultipartFile file, @RequestPart("categoryName") String categoryName, Principal principal) throws IOException {
-        return documentService.contentTrain(name, file, categoryName);
-=======
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("name") String name,
-                                                                 @RequestPart("content_new") MultipartFile file,
-                                                                 @RequestPart("categoryName") String categoryName,
-                                                                 Principal principal) throws IOException {
-        return documentService.contentTrain(name,file,categoryName);
->>>>>>> origin/master
->>>>>>> origin/master
-    }
-
-    @RequestMapping(value = "/training/trainCategorySample", method = RequestMethod.GET)
-    public @ResponseBody GeneralMessageResponseDto trainCategorySample() throws IOException {
-        return documentService.sampleTrainContent();
     }
 
 }

@@ -73,9 +73,70 @@ public class DocumentServiceImpl implements DocumentService {
         List<String> text = getLines(file);
         if (text != null) {
             Map<Integer, String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
-            String result = docStructureClassification.classify(StringUtils.join(tags, " "), environment.getProperty("storage.classifier"));
+            String type = docStructureClassification.classify(StringUtils.join(tags, " "), environment.getProperty("storage.classifier"));
             Integer contentResult = contentClassificationService.categorize(text, userDao.show(username).getId(), file.getOriginalFilename());
-            //ang gi return ani kay ang categoryID hehe thanks
+            String path = "";
+            String year = "";
+            String from = "";
+            String to = "";
+            boolean fromHome = false;
+            boolean fromOthers = false;
+            for (Integer key : tags.keySet()) {
+                String curr = tags.get(key);
+                if (curr.equals("DATE") || curr.equals("TO_DATE")) {
+                    year = getYear(text.get(key));
+                } else if (!fromHome && !fromOthers) {
+                    if (curr.equals("COLLEGE")) {
+                        String line = text.get(key);
+                        if (line.equalsIgnoreCase("College of Information, Computer, and Communications Technology") || line.equalsIgnoreCase("CICCT")) {
+                            fromHome = true;
+                        } else {
+                            fromOthers = true;
+                        }
+                    }
+                }
+                if (fromHome) {
+                    if (type.equalsIgnoreCase("memo")) {
+                        if (curr.equals("TO")) {
+                            to = getToMemo(text.get(key));
+                        }
+                    } else if (type.equalsIgnoreCase("letter")) {
+                        if (tags.get(key).equals("Person") && (tags.get(key + 1).equals("Office") || tags.get(key + 1).equals("Position"))) {
+                            to = text.get(key);
+                        }
+                    }
+                } else if (fromOthers) {
+                    if (type.equalsIgnoreCase("memo")) {
+                        if (curr.equals("FROM")) {
+                            from = getFromMemo(text.get(key));
+                        }
+                    } else if (type.equalsIgnoreCase("letter")) {
+                        if (tags.get(key).equals("Office")) {
+                            from = text.get(key);
+                        }
+                    }
+                }
+            }
+            if (StringUtils.isNotEmpty(year)) {
+                path = year;
+                if (StringUtils.isNotEmpty(type)) {
+                    path += "/" + type;
+                    String category = categoryDao.show(contentResult).getCategoryName();
+                    if (fromHome) {
+                        path += "/" + to + "/" + category;
+                    } else if (fromOthers) {
+                        path += "/" + from + "/" + category;
+                    } else {
+                        path += "/uncategorized";
+                    }
+                } else {
+                    path += "/uncategorized";
+                }
+            } else {
+                path = "uncategorized";
+            }
+            fileSystemService.storeFile(file, path, userDao.show(username).getId());
+            responseDto.setMessage("file_upload_success");
         } else {
             responseDto.setMessage("error_reading_file");
         }
