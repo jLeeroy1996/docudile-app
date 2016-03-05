@@ -62,7 +62,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         List<FileContentDto> fileDto = new ArrayList<>();
         List<com.docudile.app.data.entities.File> file = new ArrayList<>();
         CategoryDto category = new CategoryDto();
-        FileContentDto fileContentDto = new FileContentDto();
+
         List<CategoryDto> categoriesDto = new ArrayList<>();
 
         List<Category> categories = null;
@@ -79,7 +79,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
    //         categoriesDto.add(category);
     //    }
         //get Access Token
-<<<<<<< HEAD
+
    //     User user = userDao.getUserDetails(userID);
 
 //        for(int x = 0;x<categoriesDto.size();x++) {
@@ -97,18 +97,14 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         category.setCategoryID(1);
         categoriesDto.add(category);
 
-        for(int x = 0;x<categoriesDto.size();x++){
-            java.io.File folder = new java.io.File("C:\\Docudile\\TestingFiles");
-            System.out.println(folder.listFiles());
-=======
         User user = userDao.getUserDetails(userID);
 
-<<<<<<< HEAD
-=======
         for(int x = 0;x<categoriesDto.size();x++) {
-            java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" +environment.getProperty("storage.content_training")+"/"+categoriesDto.get(x).getName());
->>>>>>> origin/master
+            //java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" + environment.getProperty("storage.content_training") + "/" + categoriesDto.get(x).getName());
+            java.io.File folder = new java.io.File("C:\\Docudile\\TestingFiles");
             for (final java.io.File fileEntry : folder.listFiles()) {
+                System.out.println(fileEntry);
+                FileContentDto fileContentDto = new FileContentDto();
                 fileContentDto.setFileName(fileEntry.getName());
                 fileContentDto.setCategoryName(categoriesDto.get(x).getName());
                 fileContentDto.setWordList(docxService.readDocx(fileEntry));
@@ -116,7 +112,6 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             }
         }
 
->>>>>>> origin/master
 
         //get wordList in DB
         wordList.setWordList(wordListDao.getWords());
@@ -130,14 +125,15 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         //count words
         categoriesDto = countWords(fileDto, wordList, categoriesDto);
         //end
-        //get vectors
+        // get vectors
         float[][] wordListVectors = calculateNaiveBayes(wordList, categoriesDto);
         //end
 
-        WordListCategory wordListCategory = new WordListCategory();
+
         //put to DB si wordListVectors
         for(int x = 0;x<wordListVectors.length;x++){
             for(int y = 0;y<wordListVectors[0].length;y++){
+                WordListCategory wordListCategory = new WordListCategory();
                 wordListCategory.setWordList(wordListDao.getID(wordList.getWordList().get(x)));
                 wordListCategory.setCategory(categoryDao.getCategory(categoriesDto.get(y).getCategoryID()));
                 wordListCategory.setCount(wordListVectors[x][y]);
@@ -149,24 +145,24 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
 
     public WordListDto getDistinctWords(List<FileContentDto> files, WordListDto list) {
-        WordList word = new WordList();
         boolean isExist = false;
         List<String> wordListWords = list.getWordList();
         for (int x = 0; x < files.size(); x++) {
             List<String> words = files.get(x).getWordList();
             for (int y = 0; y < words.size(); y++) {
                 for (int z = 0; z < wordListWords.size(); z++) {
-                    if (!(words.get(y).equalsIgnoreCase(wordListWords.get(z)))) {
+                    if ((words.get(y).equalsIgnoreCase(wordListWords.get(z)))) {
                         isExist = true;
                         break;
                     }
                 }
                 if(!isExist){
+                    WordList word = new WordList();
                     wordListWords.add(words.get(y));
                     word.setWord(words.get(y));
                     wordListDao.create(word);
-                    isExist = false;
                 }
+                isExist = false;
             }
         }
         WordListDto wordList = new WordListDto(wordListWords);
