@@ -90,16 +90,29 @@ public class RegistrationServiceImpl implements RegistrationService {
             f.setUser(user);
             folderDao.create(f);
             dropboxService.createFolder("/"+x, userDao.show(user.getId()).getDropboxAccessToken());
-            createSubFolder("Memo", f.getId(), user, "/"+x+"/");
-            createSubFolder("Letter", f.getId(), user, "/"+x+"/");
+            createSubFolders("Memo", f.getId(), user, "/"+x+"/");
+            createSubFolders("Letter", f.getId(), user, "/"+x+"/");
+            Folder un = new Folder();
+            un.setName("uncategorized");
+            un.setParentFolder(folderDao.show(f.getId()));
+            un.setUser(user);
+            folderDao.create(un);
+            dropboxService.createFolder("/"+x+"/uncategorized", userDao.show(user.getId()).getDropboxAccessToken());
         }
+        Folder f = new Folder();
+        f.setName("uncategorized");
+        f.setParentFolder(null);
+        f.setUser(user);
+        folderDao.create(f);
+        dropboxService.createFolder("/uncategorized", userDao.show(user.getId()).getDropboxAccessToken());
         return "redirect:/setup/data";
     }
 
-    public void createSubFolder(String name, Integer id, User user, String path) {
+    public void createSubFolders(String name, Integer id, User user, String path) {
         Folder f = new Folder();
         Folder f2 = new Folder();
         Folder f3 = new Folder();
+        Folder f4 = new Folder();
         f.setName(name);
         f.setParentFolder(folderDao.show(id));
         f.setUser(user);
@@ -115,6 +128,11 @@ public class RegistrationServiceImpl implements RegistrationService {
         f3.setUser(user);
         folderDao.create(f3);
         dropboxService.createFolder(path+name+"/to", userDao.show(user.getId()).getDropboxAccessToken());
+        f4.setName("uncategorized");
+        f4.setParentFolder(folderDao.show(f.getId()));
+        f4.setUser(user);
+        folderDao.create(f4);
+        dropboxService.createFolder(path+name+"/uncategorized", userDao.show(user.getId()).getDropboxAccessToken());
     }
 
 }

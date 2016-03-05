@@ -189,7 +189,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public GeneralMessageResponseDto contentTrain(String username, MultipartFile file, String categoryName) throws IOException {
         contentClassificationService.writeToFile(file, environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.content_training") + "/" + categoryName + "/" + file.getOriginalFilename());
-
+        contentClassificationService.createCategory(categoryName,userDao.show(username).getId());
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
 
         boolean noError = contentClassificationService.train(userDao.show(username).getId());

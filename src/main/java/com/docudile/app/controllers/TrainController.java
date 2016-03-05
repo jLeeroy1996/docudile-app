@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Created by PaulRyan on 3/2/2016.
@@ -24,9 +25,12 @@ public class TrainController {
         return "training-content";
     }
 
+    @CrossOrigin(origins = "http://localhost:9000")
+
+
     @RequestMapping(value = "/training/trainTag", method = RequestMethod.POST, headers ="content-type=application/json")
-    public @ResponseBody GeneralMessageResponseDto trainTag(@RequestBody ModTagRequestDto request, Principal principal) {
-        return documentService.trainTag(request, principal.getName());
+    public @ResponseBody GeneralMessageResponseDto trainTag(@RequestBody List<ModTagRequestDto> request, Principal principal) {
+        return documentService.trainTag((ModTagRequestDto) request, principal.getName());
     }
 
     @RequestMapping(value = "/deleteTag", method = RequestMethod.POST)
@@ -38,13 +42,33 @@ public class TrainController {
     public @ResponseBody GeneralMessageResponseDto trainClassifier(@RequestPart("name") String name, @RequestPart("file") MultipartFile file, Principal principal) {
         return documentService.trainClassifier(name, file, principal.getName());
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> origin/master
     @RequestMapping(value = "/training/category/new", method = RequestMethod.POST)
     public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestParam("category_name") String name,
                                                                  @RequestPart("file") MultipartFile file,
                                                                  Principal principal) throws IOException {
         System.out.println("Name: " + name + " File: " + file.getOriginalFilename());
         return documentService.contentTrain(principal.getName(), file, name);
+<<<<<<< HEAD
+=======
+    }
+
+    @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
+    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("name") String name,
+                                                                 @RequestPart("content_new") MultipartFile file,
+                                                                 @RequestPart("categoryName") String categoryName,
+                                                                 Principal principal) throws IOException {
+        return documentService.contentTrain(name,file,categoryName);
+    }
+
+    @RequestMapping(value = "/training/trainCategorySample", method = RequestMethod.GET)
+    public @ResponseBody GeneralMessageResponseDto trainCategorySample() throws IOException {
+        return documentService.sampleTrainContent();
+>>>>>>> origin/master
     }
 
 }

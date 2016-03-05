@@ -23,7 +23,7 @@
           type="image/png"
           href="${"/resources/img/logo.png"}">
 </head>
-<body style="background: #2b83c6">
+<body style="background: #55acef">
 <header class="dd-frontpage dd-onepage">
     <div class="dd-border">
         <div class="container">
@@ -102,6 +102,7 @@
 </main>
 
 <script rel="script" src="${"/resources/js/jquery-2.1.3.min.js"}"></script>
+<script rel="script" src="${"/resources/js/dropzone.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/js/jquery.fs.selecter.min.js"}"></script>
 <script rel="script" src="${"/resources/js/setup.js"}"></script>

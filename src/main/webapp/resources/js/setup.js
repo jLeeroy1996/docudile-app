@@ -32,11 +32,38 @@ $(document).ready(function () {
     $('#category_upload').dropzone({
         paramName: 'file',
         clickable: true,
-        previewsContainer: '#category_upload_preview',
         autoProcessQueue: false,
         init: function() {
             var dropzone = this;
-            $('#category_upload_btn').click(function() {
+            $('.category_upload_btn').click(function() {
+                dropzone.processQueue();
+            });
+            dropzone.on('sending', function(file, xhr, formData) {
+                formData.append('category_name', $('#category_name').val());
+            });
+        }
+    });
+    $('#category_upload_retrain').dropzone({
+        paramName: 'file',
+        clickable: true,
+        autoProcessQueue: false,
+        init: function() {
+            var dropzone = this;
+            $('.category_upload_btn').click(function() {
+                dropzone.processQueue();
+            });
+            dropzone.on('sending', function(file, xhr, formData) {
+                formData.append('category_name', $('#category_name').val());
+            });
+        }
+    });
+    $('#category_upload_new').dropzone({
+        paramName: 'file',
+        clickable: true,
+        autoProcessQueue: false,
+        init: function() {
+            var dropzone = this;
+            $('.category_upload_btn').click(function() {
                 dropzone.processQueue();
             });
             dropzone.on('sending', function(file, xhr, formData) {

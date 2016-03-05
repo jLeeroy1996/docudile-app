@@ -18,6 +18,6 @@ public interface RegistrationService {
 
     public String createFolders(User user, HttpServletRequest request);
 
-    public void createSubFolder(String name, Integer id, User user, String path);
+    public void createSubFolders(String name, Integer id, User user, String path);
 
 }

@@ -21,6 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.io.File;
+<<<<<<< HEAD
+=======
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+>>>>>>> origin/master
 import java.util.List;
 
 /**
@@ -62,8 +68,13 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         List<com.docudile.app.data.entities.File> file = null;
         CategoryDto category = new CategoryDto();
         FileContentDto fileContentDto = new FileContentDto();
+<<<<<<< HEAD
         List<CategoryDto> categoriesDto = null;
 
+=======
+
+        List<CategoryDto> categoriesDto = new ArrayList<>();
+>>>>>>> origin/master
 
         //get Categories from DB
         List<Category> categories = categoryDao.getCategories(userID);
@@ -77,16 +88,42 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             categoriesDto.add(category);
         }
         //get Access Token
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
         User user = userDao.getUserDetails(userID);
+
         for(int x = 0;x<categoriesDto.size();x++) {
             java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" +environment.getProperty("storage.content_training")+"/"+categoriesDto.get(x).getName());
             for (final java.io.File fileEntry : folder.listFiles()) {
+                fileContentDto = new FileContentDto();
                 fileContentDto.setFileName(fileEntry.getName());
                 fileContentDto.setCategoryName(categoriesDto.get(x).getName());
                 fileContentDto.setWordList(docxService.readDocx(fileEntry));
                 fileDto.add(fileContentDto);
             }
         }
+
+//        category.setName("SampleCategory");
+//        category.setFileCount(2);
+//        category.setCategoryID(1);
+//        categoriesDto.add(category);
+
+        //User user = userDao.getUserDetails(userID);
+
+//        for(int x = 0;x<categoriesDto.size();x++) {
+//            //java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" + environment.getProperty("storage.content_training") + "/" + categoriesDto.get(x).getName());
+//            java.io.File folder = new java.io.File("C:\\Docudile\\TestingFiles");
+//            for (final java.io.File fileEntry : folder.listFiles()) {
+//                System.out.println(fileEntry);
+//                FileContentDto fileContentDto = new FileContentDto();
+//                fileContentDto.setFileName(fileEntry.getName());
+//                fileContentDto.setCategoryName(categoriesDto.get(x).getName());
+//                fileContentDto.setWordList(docxService.readDocx(fileEntry));
+//                fileDto.add(fileContentDto);
+//            }
+//        }
 
         //get wordList in DB
         wordList.setWordList(wordListDao.getWords());
@@ -100,14 +137,15 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         //count words
         categoriesDto = countWords(fileDto, wordList, categoriesDto);
         //end
-        //get vectors
+        // get vectors
         float[][] wordListVectors = calculateNaiveBayes(wordList, categoriesDto);
         //end
 
-        WordListCategory wordListCategory = new WordListCategory();
+
         //put to DB si wordListVectors
         for(int x = 0;x<wordListVectors.length;x++){
             for(int y = 0;y<wordListVectors[0].length;y++){
+                WordListCategory wordListCategory = new WordListCategory();
                 wordListCategory.setWordList(wordListDao.getID(wordList.getWordList().get(x)));
                 wordListCategory.setCategory(categoryDao.getCategory(categoriesDto.get(y).getCategoryID()));
                 wordListCategory.setCount(wordListVectors[x][y]);
@@ -119,18 +157,37 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
 
     public WordListDto getDistinctWords(List<FileContentDto> files, WordListDto list) {
+<<<<<<< HEAD
         WordList word = new WordList();
+=======
+        boolean isExist = false;
+>>>>>>> origin/master
         List<String> wordListWords = list.getWordList();
         for (int x = 0; x < files.size(); x++) {
             List<String> words = files.get(x).getWordList();
             for (int y = 0; y < words.size(); y++) {
                 for (int z = 0; z < wordListWords.size(); z++) {
+<<<<<<< HEAD
                     if (!(words.get(y).equalsIgnoreCase(wordListWords.get(z)))) {
                         wordListWords.add(words.get(y));
                         word.setWord(words.get(y));
                         wordListDao.create(word);
                     }
                 }
+=======
+                    if ((words.get(y).equalsIgnoreCase(wordListWords.get(z)))) {
+                        isExist = true;
+                        break;
+                    }
+                }
+                if(!isExist){
+                    WordList word = new WordList();
+                    wordListWords.add(words.get(y));
+                    word.setWord(words.get(y));
+                    wordListDao.create(word);
+                }
+                isExist = false;
+>>>>>>> origin/master
             }
         }
         WordListDto wordList = new WordListDto(wordListWords);
@@ -296,6 +353,13 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         File file = new File(path);
         file.getParentFile().mkdirs();
         f.transferTo(file);
+    }
+
+    public void createCategory(String categoryName, Integer userID){
+        Category cat = new Category();
+        cat.setCategoryName(categoryName);
+        cat.setUser(userDao.getUserDetails(userID));
+        categoryDao.create(cat);
     }
 
 }

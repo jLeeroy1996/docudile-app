@@ -36,10 +36,23 @@ header {
     padding-top: 50px;
 }
 
-.file-drop-zone-title {
-    color: #fff !important;
+.dropzone {
+    color: #333 !important;
+    min-height: 250px !important;
+    border: 2px dashed rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
 }
 
-.file-drop-zone {
-    border: 1px dashed #fff !important;
+.dz-message span {
+    font-size: 21px;
+    color: #646C7F;
+}
+
+.dz-message {
+    margin-top: 83px !important;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+    background-color: #4fc1e9;
+    border-color: #4fc1e9;
 }

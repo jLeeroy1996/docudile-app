@@ -22,7 +22,7 @@ public class CategoryDaoImpl extends GenericDaoImpl<Category> implements Categor
     }
 
     public Category getCategory(Integer categoryID) {
-        Query query = getCurrentSession().createQuery("from Category f where f.category.id = :categoryID");
+        Query query = getCurrentSession().createQuery("from Category f where f.id = :categoryID");
         query.setParameter("categoryID", categoryID);
         return (Category) query.uniqueResult();
     }
