@@ -19,8 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -78,9 +78,6 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         }
         //get Access Token
         User user = userDao.getUserDetails(userID);
-
-<<<<<<< HEAD
-=======
         for(int x = 0;x<categoriesDto.size();x++) {
             java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" +environment.getProperty("storage.content_training")+"/"+categoriesDto.get(x).getName());
             for (final java.io.File fileEntry : folder.listFiles()) {
@@ -90,8 +87,6 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                 fileDto.add(fileContentDto);
             }
         }
-
->>>>>>> origin/master
 
         //get wordList in DB
         wordList.setWordList(wordListDao.getWords());
@@ -298,7 +293,9 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     }
 
     public void writeToFile(MultipartFile f, String path) throws IOException {
-        f.transferTo(new java.io.File(path));
+        File file = new File(path);
+        file.getParentFile().mkdirs();
+        f.transferTo(file);
     }
 
 }

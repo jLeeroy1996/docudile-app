@@ -74,7 +74,7 @@ public class DocumentServiceImpl implements DocumentService {
         if (text != null) {
             Map<Integer, String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
             String result = docStructureClassification.classify(StringUtils.join(tags, " "), environment.getProperty("storage.classifier"));
-            Integer contentResult = contentClassificationService.categorize(text,userDao.show(username).getId(),file.getOriginalFilename());
+            Integer contentResult = contentClassificationService.categorize(text, userDao.show(username).getId(), file.getOriginalFilename());
             //ang gi return ani kay ang categoryID hehe thanks
         } else {
             responseDto.setMessage("error_reading_file");
@@ -116,16 +116,15 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public GeneralMessageResponseDto contentTrain(String username, MultipartFile file, String categoryName) throws IOException {
-        contentClassificationService.writeToFile(file,environment.getProperty("storage.users") + username + "/" +environment.getProperty("storage.content_training") + "/"+categoryName);
+        contentClassificationService.writeToFile(file, environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.content_training") + "/" + categoryName + "/" + file.getOriginalFilename());
 
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
 
         boolean noError = contentClassificationService.train(userDao.show(username).getId());
 
-        if(noError){
+        if (noError) {
             response.setMessage("training_successfully_saved");
-        }
-        else{
+        } else {
             response.setMessage("problem_in_training");
         }
         return response;
@@ -142,7 +141,7 @@ public class DocumentServiceImpl implements DocumentService {
         cat.setUser(userDao.show(username));
         categoryDao.create(cat);
 
-        if (fileSystemService.storeFileNotMapped(file, environment.getProperty("storage.content_training")+"/categoryName", userDao.show(username).getId())) {
+        if (fileSystemService.storeFileNotMapped(file, environment.getProperty("storage.content_training") + "/categoryName", userDao.show(username).getId())) {
             response.setMessage("upload_training_data_success");
         } else {
             response.setMessage("upload_failed");
@@ -176,7 +175,6 @@ public class DocumentServiceImpl implements DocumentService {
         }
         return response;
     }
-
 
 
     private File multipartToFile(MultipartFile mFile) {
