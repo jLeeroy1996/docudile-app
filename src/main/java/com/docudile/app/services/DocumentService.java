@@ -34,4 +34,6 @@ public interface DocumentService {
 
     public GeneralMessageResponseDto trainClassifier(String name, MultipartFile file, String username);
 
+    public GeneralMessageResponseDto sampleTrainContent() throws IOException;
+
 }

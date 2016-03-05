@@ -19,8 +19,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+<<<<<<< HEAD
 import java.io.*;
 import java.io.File;
+=======
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+>>>>>>> origin/master
 import java.util.List;
 
 /**
@@ -57,29 +63,53 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
     public boolean train(Integer userID) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        WordListDto wordList = null;
-        List<FileContentDto> fileDto = null;
-        List<com.docudile.app.data.entities.File> file = null;
+        WordListDto wordList = new WordListDto();
+        List<FileContentDto> fileDto = new ArrayList<>();
+        List<com.docudile.app.data.entities.File> file = new ArrayList<>();
         CategoryDto category = new CategoryDto();
         FileContentDto fileContentDto = new FileContentDto();
-        List<CategoryDto> categoriesDto = null;
+        List<CategoryDto> categoriesDto = new ArrayList<>();
 
-
+        List<Category> categories = null;
+        System.out.println("im here");
         //get Categories from DB
-        List<Category> categories = categoryDao.getCategories(userID);
+        //List<Category> categories = categoryDao.getCategories(userID);
 
-        for (int x = 0; x < categories.size(); x++) {
-            //instantiate a Category Class ( new Category(categoryName,fileCount) )
-            category.setName(categories.get(x).getCategoryName());
-            category.setFileCount(fileDao.numberOfFiles(categories.get(x).getId()));
-            category.setCategoryID(categories.get(x).getId());
+//        for (int x = 0; x < categories.size(); x++) {
+ //           //instantiate a Category Class ( new Category(categoryName,fileCount) )
+  //          category.setName(categories.get(x).getCategoryName());
+   //         category.setFileCount(fileDao.numberOfFiles(categories.get(x).getId()));
+    //        category.setCategoryID(categories.get(x).getId());
             //add it into List<Category> categories
-            categoriesDto.add(category);
-        }
+   //         categoriesDto.add(category);
+    //    }
         //get Access Token
+<<<<<<< HEAD
+   //     User user = userDao.getUserDetails(userID);
+
+//        for(int x = 0;x<categoriesDto.size();x++) {
+//            java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" +environment.getProperty("storage.content_training")+"/"+categoriesDto.get(x).getName());
+//            for (final java.io.File fileEntry : folder.listFiles()) {
+//                fileContentDto.setFileName(fileEntry.getName());
+//                fileContentDto.setCategoryName(categoriesDto.get(x).getName());
+//                fileContentDto.setWordList(docxService.readDocx(fileEntry));
+//                fileDto.add(fileContentDto);
+//            }
+//        }
+
+        category.setName("SampleCategory");
+        category.setFileCount(2);
+        category.setCategoryID(1);
+        categoriesDto.add(category);
+
+        for(int x = 0;x<categoriesDto.size();x++){
+            java.io.File folder = new java.io.File("C:\\Docudile\\TestingFiles");
+            System.out.println(folder.listFiles());
+=======
         User user = userDao.getUserDetails(userID);
         for(int x = 0;x<categoriesDto.size();x++) {
             java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" +environment.getProperty("storage.content_training")+"/"+categoriesDto.get(x).getName());
+>>>>>>> origin/master
             for (final java.io.File fileEntry : folder.listFiles()) {
                 fileContentDto.setFileName(fileEntry.getName());
                 fileContentDto.setCategoryName(categoriesDto.get(x).getName());
@@ -120,16 +150,22 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
     public WordListDto getDistinctWords(List<FileContentDto> files, WordListDto list) {
         WordList word = new WordList();
+        boolean isExist = false;
         List<String> wordListWords = list.getWordList();
         for (int x = 0; x < files.size(); x++) {
             List<String> words = files.get(x).getWordList();
             for (int y = 0; y < words.size(); y++) {
                 for (int z = 0; z < wordListWords.size(); z++) {
                     if (!(words.get(y).equalsIgnoreCase(wordListWords.get(z)))) {
-                        wordListWords.add(words.get(y));
-                        word.setWord(words.get(y));
-                        wordListDao.create(word);
+                        isExist = true;
+                        break;
                     }
+                }
+                if(!isExist){
+                    wordListWords.add(words.get(y));
+                    word.setWord(words.get(y));
+                    wordListDao.create(word);
+                    isExist = false;
                 }
             }
         }

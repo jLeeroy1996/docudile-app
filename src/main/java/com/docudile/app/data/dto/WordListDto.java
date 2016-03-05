@@ -14,6 +14,10 @@ public class WordListDto implements Serializable{
         this.wordList = wordList;
     }
 
+    public WordListDto() {
+
+    }
+
     public int getCount() {
         return count;
     }

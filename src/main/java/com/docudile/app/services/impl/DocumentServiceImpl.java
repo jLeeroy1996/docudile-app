@@ -114,6 +114,17 @@ public class DocumentServiceImpl implements DocumentService {
         return response;
     }
 
+    public GeneralMessageResponseDto sampleTrainContent() throws IOException {
+        boolean ifError = contentClassificationService.train(1);
+        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
+        if(!ifError){
+            response.setMessage("Error");
+        }else{
+            response.setMessage("Success!");
+        }
+        return response;
+    }
+
     @Override
     public GeneralMessageResponseDto contentTrain(String username, MultipartFile file, String categoryName) throws IOException {
         contentClassificationService.writeToFile(file, environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.content_training") + "/" + categoryName + "/" + file.getOriginalFilename());

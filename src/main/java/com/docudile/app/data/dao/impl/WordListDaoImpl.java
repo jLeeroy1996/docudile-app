@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class WordListDaoImpl extends GenericDaoImpl<WordList> implements WordLis
 
     public List<String> getWords() {
 
-        List<String> words = null;
+        List<String> words = new ArrayList<>();
         Query query = getCurrentSession().createQuery("from WordList");
         List<WordList> wlWords = query.list();
 
