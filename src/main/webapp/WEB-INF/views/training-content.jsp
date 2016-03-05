@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="${"/resources/css/bootstrap-treenav.css"}">
     <link rel="stylesheet" href="${"/resources/fonts/font-awesome/css/font-awesome.min.css"}">
     <link rel="stylesheet" href="${"/resources/css/site.css"}">
-    <link rel="stylesheet" href="${"/resources/bootstrap-fileinput/css/fileinput.min.css"}">
     <link rel="stylesheet" href="${"/resources/select2/css/select2.min.css"}">
 
     <link rel="icon"
@@ -124,25 +123,26 @@
                     </div>
                     <div role="tabpanel" class="tab-pane" id="new">
                         <div class="form-group">
-                            <select id="dd-select-content-new structureCategory" class="form-control">
+                            <select id="dd-select-content-new" class="form-control">
                                 <option value="memo" selected>Memo</option>
                                 <option value="letter">Letter</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="trainNewCategory" class="form-control" placeholder="Category name..." id="categoryName"/>
+                            <input type="text" class="form-control" placeholder="Category name..." id="category_name"/>
                         </div>
                         <div class="form-group">
-                            <div id="drag-and-drop-zone" class="uploader">
-                                <div>Drag &amp; Drop Images Here</div>
-                                <div class="or">-or-</div>
-                                <div class="browser">
-                                    <label>
-                                        <span>Click to open the file Browser</span>
-                                        <input type="file" name="content-new[]" multiple="multiple" title='Click to add Files' id="dd-training-files-content-new">
-                                    </label>
+                            <form action="/training/category/new?_csrf=${_csrf.token}" id="category_upload" class="dropzone">
+                                <div class="fallback">
+                                    <input name="file" type="file" multiple>
                                 </div>
-                            </div>
+                            </form>
+                        </div>
+                        <div class="form-group">
+                            <div id="category_upload_preview"></div>
+                        </div>
+                        <div class="form-group">
+                            <button id="category_upload_btn" class="btn btn-primary">Create</button>
                         </div>
                     </div>
                 </div>
@@ -150,58 +150,13 @@
         </div>
     </div>
 </main>
-
 <script rel="script" src="${"/resources/js/jquery-2.1.3.min.js"}"></script>
+<script rel="script" src="${"/resources/js/dropzone.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/treeview/bootstrap-treeview.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap-treenav.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
-<script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
-<script rel="script" src="${"/resources/js/dmuploader.min.js"}"></script>
-<script rel="script" src="${"/resources/js/custom.js"}"></script>
-<script>
-    $(document).on('ready', function () {
-        var token = $("input[name='_csrf']").val();
-        var doc_url = "./trainCategory?_csrf=" + token;
-        var type_url = "./new-type?_csrf=" + token;
-        $("#dd-select-content-retrain").select2();
-//        $("#dd-select-content-new").select2();
-
-        $("#dd-training-files-content-retrain").fileinput({
-            uploadUrl: "http://localhost/file-upload-single/1", // server upload action
-            uploadAsync: true,
-            maxFileCount: 5
-        });
-//        $("#dd-training-files-content-new").fileinput({
-//            uploadUrl: doc_url, // server upload action
-//            uploadAsync: false,
-//            uploadExtraData: function () {
-//                return {
-//                    name: $("#structureName").val(),
-//                    categoryName: $("input:text #categoryName").val()
-//                };
-//            },
-//            maxFileCount: 10
-//        });
-        $("#drag-and-drop-zone").dmUploader({
-            url: doc_url,
-            dataType: 'json',
-            allowedTypes: 'image/*',
-            extraData: {
-                name: $("#structureCategory").val(),
-                categoryName: $("input:text #categoryName").val()
-            },
-            maxFiles: 10,
-            onUploadSuccess: function(){
-                console.log("boom panes");
-            },
-            onBeforeUpload: function() {
-                alert($("#structureCategory").val());
-            }
-        });
-    })
-
-</script>
+<script rel="script" src="${"/resources/js/setup.js"}"></script>
 </body>
 </html>

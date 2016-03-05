@@ -1,19 +1,9 @@
 /**
  * Created by PaulRyan on 3/2/2016.
  */
-$("#inputStartYear").on("change", function () {
-    var value = $(":selected", this).val();
-    value = parseFloat(value) + 1;
-    var select = document.getElementById("inputEndYear");
-    $("#inputEndYear").empty();
-    for (var i = value + 50; i >= value; --i) {
-        var option = document.createElement('option');
-        option.text = option.value = i;
-        select.add(option, 0);
-    }
-});
 
 $(document).ready(function () {
+    Dropzone.autoDiscover = false;
     var token = $("input[name='_csrf']").val();
     $("#categoryAdd").click(function () {
         var data = {};
@@ -27,6 +17,32 @@ $(document).ready(function () {
         post(data, url);
         $('#inputCategory').val("");
         $('#inputTags').tagsinput("removeAll");
+    });
+    $("#inputStartYear").on("change", function () {
+        var value = $(":selected", this).val();
+        value = parseFloat(value) + 1;
+        var select = document.getElementById("inputEndYear");
+        $("#inputEndYear").empty();
+        for (var i = value + 50; i >= value; --i) {
+            var option = document.createElement('option');
+            option.text = option.value = i;
+            select.add(option, 0);
+        }
+    });
+    $('#category_upload').dropzone({
+        paramName: 'file',
+        clickable: true,
+        previewsContainer: '#category_upload_preview',
+        autoProcessQueue: false,
+        init: function() {
+            var dropzone = this;
+            $('#category_upload_btn').click(function() {
+                dropzone.processQueue();
+            });
+            dropzone.on('sending', function(file, xhr, formData) {
+                formData.append('category_name', $('#category_name').val());
+            });
+        }
     });
 });
 
