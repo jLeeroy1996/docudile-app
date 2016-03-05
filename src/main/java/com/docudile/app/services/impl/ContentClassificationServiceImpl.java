@@ -19,14 +19,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-<<<<<<< HEAD
 import java.io.*;
 import java.io.File;
-=======
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
->>>>>>> origin/master
 import java.util.List;
 
 /**
@@ -67,52 +64,29 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         List<FileContentDto> fileDto = new ArrayList<>();
         List<com.docudile.app.data.entities.File> file = new ArrayList<>();
         CategoryDto category = new CategoryDto();
+        FileContentDto fileContentDto = new FileContentDto();
 
         List<CategoryDto> categoriesDto = new ArrayList<>();
 
-        List<Category> categories = null;
-        System.out.println("im here");
         //get Categories from DB
-        //List<Category> categories = categoryDao.getCategories(userID);
+        List<Category> categories = categoryDao.getCategories(userID);
 
-//        for (int x = 0; x < categories.size(); x++) {
- //           //instantiate a Category Class ( new Category(categoryName,fileCount) )
-  //          category.setName(categories.get(x).getCategoryName());
-   //         category.setFileCount(fileDao.numberOfFiles(categories.get(x).getId()));
-    //        category.setCategoryID(categories.get(x).getId());
+        for (int x = 0; x < categories.size(); x++) {
+            //instantiate a Category Class ( new Category(categoryName,fileCount) )
+            category.setName(categories.get(x).getCategoryName());
+            category.setFileCount(fileDao.numberOfFiles(categories.get(x).getId()));
+            category.setCategoryID(categories.get(x).getId());
             //add it into List<Category> categories
-   //         categoriesDto.add(category);
-    //    }
+            categoriesDto.add(category);
+        }
         //get Access Token
 
-   //     User user = userDao.getUserDetails(userID);
-
-//        for(int x = 0;x<categoriesDto.size();x++) {
-//            java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" +environment.getProperty("storage.content_training")+"/"+categoriesDto.get(x).getName());
-//            for (final java.io.File fileEntry : folder.listFiles()) {
-//                fileContentDto.setFileName(fileEntry.getName());
-//                fileContentDto.setCategoryName(categoriesDto.get(x).getName());
-//                fileContentDto.setWordList(docxService.readDocx(fileEntry));
-//                fileDto.add(fileContentDto);
-//            }
-//        }
-
-        category.setName("SampleCategory");
-        category.setFileCount(2);
-        category.setCategoryID(1);
-        categoriesDto.add(category);
-
         User user = userDao.getUserDetails(userID);
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
         for(int x = 0;x<categoriesDto.size();x++) {
-            //java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" + environment.getProperty("storage.content_training") + "/" + categoriesDto.get(x).getName());
-            java.io.File folder = new java.io.File("C:\\Docudile\\TestingFiles");
+            java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" +environment.getProperty("storage.content_training")+"/"+categoriesDto.get(x).getName());
             for (final java.io.File fileEntry : folder.listFiles()) {
-                System.out.println(fileEntry);
-                FileContentDto fileContentDto = new FileContentDto();
+                fileContentDto = new FileContentDto();
                 fileContentDto.setFileName(fileEntry.getName());
                 fileContentDto.setCategoryName(categoriesDto.get(x).getName());
                 fileContentDto.setWordList(docxService.readDocx(fileEntry));
@@ -120,10 +94,26 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             }
         }
 
-<<<<<<< HEAD
+//        category.setName("SampleCategory");
+//        category.setFileCount(2);
+//        category.setCategoryID(1);
+//        categoriesDto.add(category);
 
-=======
->>>>>>> origin/master
+        //User user = userDao.getUserDetails(userID);
+
+//        for(int x = 0;x<categoriesDto.size();x++) {
+//            //java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" + environment.getProperty("storage.content_training") + "/" + categoriesDto.get(x).getName());
+//            java.io.File folder = new java.io.File("C:\\Docudile\\TestingFiles");
+//            for (final java.io.File fileEntry : folder.listFiles()) {
+//                System.out.println(fileEntry);
+//                FileContentDto fileContentDto = new FileContentDto();
+//                fileContentDto.setFileName(fileEntry.getName());
+//                fileContentDto.setCategoryName(categoriesDto.get(x).getName());
+//                fileContentDto.setWordList(docxService.readDocx(fileEntry));
+//                fileDto.add(fileContentDto);
+//            }
+//        }
+
         //get wordList in DB
         wordList.setWordList(wordListDao.getWords());
         wordList.setCount(wordListDao.getWords().size());
@@ -339,6 +329,13 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         File file = new File(path);
         file.getParentFile().mkdirs();
         f.transferTo(file);
+    }
+
+    public void createCategory(String categoryName, Integer userID){
+        Category cat = new Category();
+        cat.setCategoryName(categoryName);
+        cat.setUser(userDao.getUserDetails(userID));
+        categoryDao.create(cat);
     }
 
 }

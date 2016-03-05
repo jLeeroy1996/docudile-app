@@ -27,4 +27,6 @@ public interface ContentClassificationService {
 
     public void writeToFile(MultipartFile f, String path) throws IOException;
 
+    public void createCategory(String categoryName, Integer userID);
+
 }
