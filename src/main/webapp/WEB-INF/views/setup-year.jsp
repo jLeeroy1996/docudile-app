@@ -103,6 +103,7 @@
 
 <script rel="script" src="${"/resources/js/jquery-2.1.3.min.js"}"></script>
 <script rel="script" src="${"/resources/js/dropzone.js"}"></script>
+<script rel="script" src="${"/resources/js/dropzone.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/js/jquery.fs.selecter.min.js"}"></script>
 <script rel="script" src="${"/resources/js/setup.js"}"></script>

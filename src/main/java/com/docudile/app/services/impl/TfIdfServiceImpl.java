@@ -23,7 +23,6 @@ public class TfIdfServiceImpl implements TfIdfService {
     @Override
     public boolean process(String dataPath, String savePath) {
         try {
-            System.out.println(dataPath);
             Map<String, List<String>> fileTokens = getFileTokens(FileHandler.readAllFiles(dataPath));
             Set<String> distinctTokens = getDistinctTokens(fileTokens);
             Map<String, Integer[]> fileTokenCounts = getFileTokenCounts(fileTokens, distinctTokens);
@@ -62,7 +61,6 @@ public class TfIdfServiceImpl implements TfIdfService {
             FileHandler.writeToFile(lines, savePath + "/docuLength.dat");
             return true;
         } catch (Exception ex) {
-            System.out.println(ex);
         }
         return false;
     }
@@ -94,7 +92,7 @@ public class TfIdfServiceImpl implements TfIdfService {
             for (String line : fileLines.get(path)) {
                 tokens.addAll(StringHandler.tokenizer(line.toLowerCase(), Defaults.DELIMETER));
             }
-            fileTokens.put(path, tokens);
+            fileTokens.put(getTagName(path).toUpperCase(), tokens);
         }
         return fileTokens;
     }
@@ -167,6 +165,10 @@ public class TfIdfServiceImpl implements TfIdfService {
             count += tokenCounts.get(key)[index];
         }
         return count;
+    }
+
+    private String getTagName(String path) {
+        return path.substring(path.lastIndexOf("\\") + 1, path.lastIndexOf("."));
     }
 
     private List<String> loadTokens(String folderPath) {
@@ -282,7 +284,11 @@ public class TfIdfServiceImpl implements TfIdfService {
                 min = degree.get(minIndex);
             }
         }
-        return tags.get(minIndex);
+        if (min < 90) {
+            return tags.get(minIndex);
+        } else {
+            return null;
+        }
     }
 
 }

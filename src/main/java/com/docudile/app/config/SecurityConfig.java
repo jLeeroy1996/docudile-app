@@ -1,6 +1,5 @@
 package com.docudile.app.config;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import java.util.Collection;
 
 /**
  * Created by franc on 2/8/2016.
@@ -36,8 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
-                .antMatchers("/setup/**").permitAll()
-                .antMatchers("/retraining").permitAll()
                 .antMatchers("/resources/**").permitAll()
                 .anyRequest().hasRole("USER")
                 .and()

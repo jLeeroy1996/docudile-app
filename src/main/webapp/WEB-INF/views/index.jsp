@@ -39,7 +39,7 @@
                                     <span class="icon-bar"></span>
                                 </button>
                                 <a href="#" class="dd-navbar-logo pull-left"><img src="${"resources/img/logo-inverted.png"}"></a>
-                                <a class="navbar-brand dd-brand" href="#">docu dile</a>
+                                <a class="navbar-brand dd-brand" href="/"><strong>docudile</strong></a>
                             </div>
 
                             <!-- Collect the nav links, forms, and other content for toggling -->

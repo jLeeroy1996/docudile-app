@@ -126,7 +126,7 @@
                             </form>
                         </div>
                         <div class="form-group">
-                            <button id="category_upload_btn" class="btn btn-primary">Create</button>
+                            <button id="category_upload_retrain_btn" class="btn btn-primary">Create</button>
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="new">
@@ -141,7 +141,7 @@
                             </form>
                         </div>
                         <div class="form-group">
-                            <button id="category_upload_btn" class="btn btn-primary">Create</button>
+                            <button id="category_upload_new_btn" class="btn btn-primary">Create</button>
                         </div>
                     </div>
                 </div>

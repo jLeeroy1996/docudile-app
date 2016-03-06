@@ -5,9 +5,9 @@
 $(document).ready(function () {
     Dropzone.autoDiscover = false;
     var token = $("input[name='_csrf']").val();
-    $("#categoryAdd").click(function () {
+    $("#tagAdd").click(function () {
         var data = {};
-        var url = "/trainTag?_csrf=" + token;
+        var url = "/training/tagger?_csrf=" + token;
         var categoryName = $('#inputCategory').val();
         var tags = $('#inputTags').tagsinput("items");
         var tr = "<tr><td>" + categoryName + "</td><td><a href='#!'><i class='fa fa-times'></i></a></td></tr>";
@@ -29,17 +29,17 @@ $(document).ready(function () {
             select.add(option, 0);
         }
     });
-    $('#category_upload').dropzone({
+    $('#classifier_upload').dropzone({
         paramName: 'file',
         clickable: true,
         autoProcessQueue: false,
         init: function() {
             var dropzone = this;
-            $('.category_upload_btn').click(function() {
+            $('#classifier_upload_btn').click(function() {
                 dropzone.processQueue();
             });
             dropzone.on('sending', function(file, xhr, formData) {
-                formData.append('category_name', $('#category_name').val());
+                formData.append('type_name', $('#classifier_types').val());
             });
         }
     });
@@ -49,7 +49,7 @@ $(document).ready(function () {
         autoProcessQueue: false,
         init: function() {
             var dropzone = this;
-            $('.category_upload_btn').click(function() {
+            $('#category_upload_retrain_btn').click(function() {
                 dropzone.processQueue();
             });
             dropzone.on('sending', function(file, xhr, formData) {
@@ -63,7 +63,7 @@ $(document).ready(function () {
         autoProcessQueue: false,
         init: function() {
             var dropzone = this;
-            $('.category_upload_btn').click(function() {
+            $('#category_upload_new_btn').click(function() {
                 dropzone.processQueue();
             });
             dropzone.on('sending', function(file, xhr, formData) {

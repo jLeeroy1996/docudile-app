@@ -21,12 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.io.File;
-<<<<<<< HEAD
-=======
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
->>>>>>> origin/master
 import java.util.List;
 
 /**
@@ -68,13 +65,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         List<com.docudile.app.data.entities.File> file = null;
         CategoryDto category = new CategoryDto();
         FileContentDto fileContentDto = new FileContentDto();
-<<<<<<< HEAD
-        List<CategoryDto> categoriesDto = null;
-
-=======
-
         List<CategoryDto> categoriesDto = new ArrayList<>();
->>>>>>> origin/master
 
         //get Categories from DB
         List<Category> categories = categoryDao.getCategories(userID);
@@ -87,11 +78,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             //add it into List<Category> categories
             categoriesDto.add(category);
         }
-        //get Access Token
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
         User user = userDao.getUserDetails(userID);
 
         for(int x = 0;x<categoriesDto.size();x++) {
@@ -157,24 +144,12 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
 
     public WordListDto getDistinctWords(List<FileContentDto> files, WordListDto list) {
-<<<<<<< HEAD
-        WordList word = new WordList();
-=======
         boolean isExist = false;
->>>>>>> origin/master
         List<String> wordListWords = list.getWordList();
         for (int x = 0; x < files.size(); x++) {
             List<String> words = files.get(x).getWordList();
             for (int y = 0; y < words.size(); y++) {
                 for (int z = 0; z < wordListWords.size(); z++) {
-<<<<<<< HEAD
-                    if (!(words.get(y).equalsIgnoreCase(wordListWords.get(z)))) {
-                        wordListWords.add(words.get(y));
-                        word.setWord(words.get(y));
-                        wordListDao.create(word);
-                    }
-                }
-=======
                     if ((words.get(y).equalsIgnoreCase(wordListWords.get(z)))) {
                         isExist = true;
                         break;
@@ -187,7 +162,6 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                     wordListDao.create(word);
                 }
                 isExist = false;
->>>>>>> origin/master
             }
         }
         WordListDto wordList = new WordListDto(wordListWords);

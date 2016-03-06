@@ -97,7 +97,7 @@
 
                     </div>
                     <div class="col-sm-4 col-sm-offset-2">
-                        <button class="btn btn-primary btn-block dd-setup-btn" id="categoryAdd">Add</button>
+                        <button class="btn btn-primary btn-block dd-setup-btn" id="tagAdd">Add</button>
                     </div>
                 </div>
 
@@ -105,17 +105,13 @@
         </div>
         <div class="row">
             <div class="col-sm-2 col-sm-offset-8">
-                <a class="btn btn-primary btn-block dd-setup-btn" id="continueBtn" href="/setup/pretraining">Continue</a>
+                <a class="btn btn-primary btn-block dd-setup-btn" id="continueBtn" href="/setup/">Continue</a>
             </div>
         </div>
     </div>
 </header>
-
-<main>
-
-</main>
-
 <script rel="script" src="${"/resources/js/jquery-2.1.3.min.js"}"></script>
+<script rel="script" src="${"/resources/js/dropzone.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap-tagsinput.js"}"></script>
 <script rel="script" src="${"/resources/js/setup.js"}"></script>

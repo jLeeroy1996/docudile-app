@@ -45,23 +45,6 @@ public class UserController {
         return mv;
     }
 
-    @RequestMapping(value = "/setup/year", method = RequestMethod.POST)
-    public String doSetupYear(Principal principal, HttpServletRequest request) {
-        return registrationService.createFolders(userDao.show(principal.getName()), request);
-    }
-
-    @RequestMapping("/setup/data")
-    public ModelAndView goSetupData(Principal principal) {
-        ModelAndView mv = new ModelAndView("setup-data");
-        mv.addObject("user", userDao.show(principal.getName()));
-        return mv;
-    }
-
-    @RequestMapping("/setup/pretraining")
-    public String goPreTrain() {
-        return "pretraining";
-    }
-
     @RequestMapping(value = "/dropbox-auth-finish")
     public String dropboxFinish(HttpServletRequest request) {
         return registrationService.registerFinish(request);

@@ -41,7 +41,7 @@
                                         <span class="icon-bar"></span>
                                     </button>
                                     <a href="#" class="dd-navbar-logo pull-left"><img src="${"/resources/img/logo-inverted.png"}"></a>
-                                    <a class="navbar-brand dd-brand" href="/">docu dile</a>
+                                    <a class="navbar-brand dd-brand" href="/"><strong>docudile</strong></a>
                                 </div>
 
                                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -63,7 +63,7 @@
     <div class="container">
         <div class="row dd-register">
             <div class="col-sm-4 col-sm-offset-4">
-                <h4>Create an account</h4>
+                <h3>Create an account</h3>
                 <form action="register" method="post">
                     <div class="form-group">
                         <input type="text" class="form-control" id="inputFirstname" name="firstname" placeholder="First name">

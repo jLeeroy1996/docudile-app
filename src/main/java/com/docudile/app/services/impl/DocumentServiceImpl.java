@@ -1,8 +1,6 @@
 package com.docudile.app.services.impl;
 
 import com.docudile.app.data.dao.CategoryDao;
-import com.docudile.app.data.dao.FileDao;
-import com.docudile.app.data.dao.FolderDao;
 import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.FolderShowDto;
 import com.docudile.app.data.dto.GeneralMessageResponseDto;
@@ -23,7 +21,6 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -53,7 +50,7 @@ public class DocumentServiceImpl implements DocumentService {
     private DocxService docxService;
 
     @Autowired
-    private TesseractService tesseractService;
+    private AspriseOCRService aspriseOCRService;
 
     @Autowired
     private UserDao userDao;
@@ -266,8 +263,9 @@ public class DocumentServiceImpl implements DocumentService {
         if (extension.equals(".docx")) {
             text = docxService.readDocx(multipartToFile(mfile));
         } else try {
+            ImageIO.setUseCache(false);
             ImageIO.read(mfile.getInputStream()).toString();
-            text = tesseractService.doOCR(multipartToFile(mfile));
+            text = aspriseOCRService.doOCR(multipartToFile(mfile));
         } catch (IOException e) {
         }
         return text;

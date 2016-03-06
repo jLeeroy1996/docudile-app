@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Created by franc on 2/9/2016.
+ * Created by franc on 3/6/2016.
  */
-public interface TesseractService {
+public interface AspriseOCRService {
 
     public List<String> doOCR(File file);
 
