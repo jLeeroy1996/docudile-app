@@ -69,23 +69,20 @@
         <div class="row dd-pretrain">
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="form-group">
-                    <select id="dd-select-train" class="form-control">
+                    <select id="classifier_types" class="form-control">
                     <option value="memo">Memo</option>
                     <option value="letter">Letter</option>
                 </select>
                 </div>
                 <div class="form-group">
-                    <form action="/training/category/new?_csrf=${_csrf.token}" id="category_upload" class="dropzone">
+                    <form action="/training/classifier?_csrf=${_csrf.token}" id="classifier_upload" class="dropzone">
                         <div class="fallback">
                             <input name="file" type="file" multiple>
                         </div>
                     </form>
                 </div>
                 <div class="form-group">
-                    <div id="category_upload_preview"></div>
-                </div>
-                <div class="form-group">
-                    <button id="category_upload_btn" class="btn btn-primary">Create</button>
+                    <button id="classifier_upload_btn" class="btn btn-primary">Create</button>
                 </div>
             </div>
         </div>

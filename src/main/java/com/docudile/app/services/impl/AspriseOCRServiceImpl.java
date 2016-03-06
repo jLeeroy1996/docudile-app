@@ -1,9 +1,7 @@
 package com.docudile.app.services.impl;
 
-import com.docudile.app.services.TesseractService;
-import net.sourceforge.tess4j.ITesseract;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
+import com.asprise.ocr.Ocr;
+import com.docudile.app.services.AspriseOCRService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,20 +11,21 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by franc on 2/9/2016.
+ * Created by franc on 3/6/2016.
  */
-@Service("tesseractService")
+@Service("aspriseOCRService")
 @Transactional
-public class TesseractServiceImpl implements TesseractService {
+public class AspriseOCRServiceImpl implements AspriseOCRService {
 
+    @Override
     public List<String> doOCR(File file) {
-        ITesseract tesseract = new Tesseract();
         if (verifyImage(file)) {
-            try {
-                return Arrays.asList(tesseract.doOCR(file).split("\n"));
-            } catch (TesseractException e) {
-                return null;
-            }
+            Ocr.setUp();
+            Ocr ocr = new Ocr();
+            ocr.startEngine("eng", Ocr.SPEED_SLOW);
+            String result = ocr.recognize(new File[]{file}, Ocr.RECOGNIZE_TYPE_TEXT, Ocr.OUTPUT_FORMAT_PLAINTEXT);
+            ocr.stopEngine();
+            return Arrays.asList(result.split("\n"));
         }
         return null;
     }

@@ -1,13 +1,17 @@
 package com.docudile.app.controllers;
 
+import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.GeneralMessageResponseDto;
 import com.docudile.app.data.dto.ModTagRequestDto;
 import com.docudile.app.services.DocumentService;
+import com.docudile.app.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -17,19 +21,40 @@ import java.util.List;
  */
 @Controller
 public class TrainController {
+
     @Autowired
     DocumentService documentService;
+
+    @Autowired
+    private RegistrationService registrationService;
+
+    @Autowired
+    private UserDao userDao;
 
     @RequestMapping("/training/content")
     public String goRetrain() {
         return "training-content";
     }
 
-    @CrossOrigin(origins = "http://localhost:9000")
+    @RequestMapping(value = "/setup/year", method = RequestMethod.POST)
+    public String doSetupYear(Principal principal, HttpServletRequest request) {
+        return registrationService.createFolders(userDao.show(principal.getName()), request);
+    }
 
+    @RequestMapping("/setup/data")
+    public ModelAndView goSetupData(Principal principal) {
+        ModelAndView mv = new ModelAndView("setup-data");
+        mv.addObject("user", userDao.show(principal.getName()));
+        return mv;
+    }
 
-    @RequestMapping(value = "/training/trainTag", method = RequestMethod.POST, headers ="content-type=application/json")
-    public @ResponseBody GeneralMessageResponseDto trainTag(@RequestBody List<ModTagRequestDto> request, Principal principal) {
+    @RequestMapping("/setup/classifier")
+    public String goPreTrain() {
+        return "setup-classifier";
+    }
+
+    @RequestMapping(value = "/training/tagger", method = RequestMethod.POST)
+    public @ResponseBody GeneralMessageResponseDto trainTag(@RequestBody ModTagRequestDto request, Principal principal) {
         return documentService.trainTag((ModTagRequestDto) request, principal.getName());
     }
 
@@ -38,43 +63,23 @@ public class TrainController {
         return documentService.deleteTag(tagName, principal.getName());
     }
 
-    @RequestMapping(value = "/training/trainClassifier", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainClassifier(@RequestPart("name") String name, @RequestPart("file") MultipartFile file, Principal principal) {
-        return documentService.trainClassifier(name, file, principal.getName());
+    @RequestMapping(value = "/training/classifier", method = RequestMethod.POST)
+    public @ResponseBody GeneralMessageResponseDto trainClassifier(@RequestParam("type_name") String typeName, @RequestPart("file") MultipartFile file, Principal principal) {
+        return documentService.trainClassifier(typeName, file, principal.getName());
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> origin/master
     @RequestMapping(value = "/training/category/new", method = RequestMethod.POST)
     public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestParam("category_name") String name,
                                                                  @RequestPart("file") MultipartFile file,
                                                                  Principal principal) throws IOException {
-        System.out.println("Name: " + name + " File: " + file.getOriginalFilename());
         return documentService.contentTrain(principal.getName(), file, name);
-<<<<<<< HEAD
-=======
     }
 
     @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("name") String name,
-                                           W                      @RequestPart("content_new") MultipartFile file,
+    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("content_new") MultipartFile file,
                                                                  @RequestPart("categoryName") String categoryName,
                                                                  Principal principal) throws IOException {
-        documentService.createCategory(categoryName,name);
-        return documentService.contentTrain(name,file,categoryName);
-    }
-
-    @RequestMapping(value = "/training/trainCategorySample", method = RequestMethod.GET)
-    public @ResponseBody GeneralMessageResponseDto trainCategorySample() throws IOException {
-        return documentService.sampleTrainContent();
->>>>>>> origin/master
-    }
-
-    @RequestMapping(value = "/createCategory", method = RequestMethod.GET)
-    public @ResponseBody GeneralMessageResponseDto createCategory(){
-        return documentService.createCategorySample();
+        documentService.createCategory(categoryName, principal.getName());
+        return documentService.contentTrain(principal.getName(),file,categoryName);
     }
 
 }

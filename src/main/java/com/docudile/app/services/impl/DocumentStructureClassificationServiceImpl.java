@@ -36,6 +36,7 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
         Map<String, List<String>> tags = getTags(environment.getProperty("storage.base_tags"));
         int i = 0;
         for (String line : lines) {
+            System.out.println(line);
             boolean found = false;
             for (String tag : tags.keySet()) {
                 for (String rule : tags.get(tag)) {
@@ -51,10 +52,13 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
                 String tag = tfIdfService.search(line, path + "processed");
                 if (StringUtils.isNotEmpty(tag)) {
                     tagged.put(i, tag);
+                    found = true;
                 }
             }
-            if (tagged.get(i).equals("SALUTATION") || tagged.get(i).equals("SUBJECT")) {
-                break;
+            if (found) {
+                if (tagged.get(i).equals("SALUTATION") || tagged.get(i).equals("SUBJECT")) {
+                    break;
+                }
             }
             i++;
         }
@@ -69,7 +73,6 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
     @Override
     public boolean trainTagger(String path, String tagName, List<String> line) {
         if (writeToFile(line, path + tagName + ".txt")) {
-            System.out.println("here");
             return tfIdfService.process(path, path + "processed");
         }
         return false;
