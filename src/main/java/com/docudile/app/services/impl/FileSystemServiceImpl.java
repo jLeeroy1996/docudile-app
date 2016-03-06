@@ -177,6 +177,7 @@ public class FileSystemServiceImpl implements FileSystemService {
         }
         dto.setFiles(files);
         dto.setDateModified(convertDateToString(findLatestDate(folder)));
+        dto.setPath(getPath(folder));
         return dto;
     }
 

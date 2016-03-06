@@ -38,6 +38,7 @@ function createTreeView() {
         levels: 1,
         onNodeSelected: function (event, node) {
             updateFilebox(node.id);
+            updateDetailsBoxFromTreeview(node.id);
         }
     });
 }
@@ -101,8 +102,36 @@ function viewDetailsFile(data) {
     $('#fileInfo').append(template);
 }
 
+function viewDetailsFolder(data) {
+    clearDetails();
+    var template = '<h3><small><i class="glyphicon glyphicon-list-alt"></i> Details</small></h3>' +
+        '<ul class="list-group">' +
+        '<li class="list-group-item"><i class="glyphicon glyphicon-user"></i> Owner: ' + data.user.firstname + ' ' + data.user.lastname + '</li>' +
+        '<li class="list-group-item"><i class="glyphicon glyphicon-calendar"></i> Date Modified: ' + data.dateModified + '</li>' +
+        '<li class="list-group-item"><i class="glyphicon glyphicon-folder-close"></i> Path: ' + data.path + '</li>' +
+        '</ul>' +
+        '<h3><small><i class="glyphicon glyphicon-cog"></i> Manage</small></h3>' +
+        '<p><i class="glyphicon glyphicon-info-sign"></i> Info: Deleting the file will result to the permanent loss of that file.</p>';
+    $('#fileInfo').append(template);
+}
+
 function clearDetails() {
     $('#fileInfo').empty();
+}
+
+function updateDetailsBoxFromTreeview(id) {
+    $.ajax({
+        dataType: "json",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: 'GET',
+        url: '/home/folder/' + id,
+        success: function (response) {
+            viewDetailsFolder(response);
+        }
+    });
 }
 
 function updateFilebox(id) {
@@ -127,6 +156,7 @@ function updateFilebox(id) {
                 $('#dd-filebox-id').append(tablerow);
                 tablerow.click(function () {
                     $(this).addClass('active').siblings().removeClass('active');
+                    viewDetailsFolder(inside);
                 });
                 tablerow.dblclick(function () {
                     updateFilebox(inside.id);
