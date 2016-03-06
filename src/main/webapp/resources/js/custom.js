@@ -15,7 +15,47 @@ $(document).on('ready', function () {
             clearDetails();
         }
     });
+    $("#searchForm").on("submit", function (e) {
+        var queryString = $("#query-string").val();
+        if (!queryString.trim()) {
+            e.preventDefault();
+            return;
+        }
+        var filebox = $("#filebox");
+        readyFileboxBeforeSearch(queryString);
+        //$.ajax({
+        //    type: 'GET',
+        //    url: '/search?quertString=' + queryString,
+        //    success: function (response) {
+        //
+        //    }
+        //});
+        e.preventDefault();
+    });
 });
+
+function readyFileboxBeforeSearch(queryString) {
+    var filebox = $("#filebox");
+    filebox.empty();
+    var header = '<h4 class="search-header">Search result for ' + queryString + '</h4>'
+    filebox.append(header);
+}
+
+function readyFileboxAfterSearch() {
+    var filebox = $("#filebox");
+    filebox.empty();
+    var line = '<table class="table table-hover" id="dd-filebox-table">' +
+        '<thead>' +
+        '<tr>' +
+        '<th class="col-sm-7">Name</th>' +
+        '<th class="col-sm-5">Last modified</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody id="dd-filebox-id">' +
+        '</tbody>' +
+        '</table>';
+    filebox.append(line);
+}
 
 $.extend({
     retrieveTreeData: function () {
@@ -37,6 +77,7 @@ function createTreeView() {
         data: window.treeData,
         levels: 1,
         onNodeSelected: function (event, node) {
+            readyFileboxAfterSearch();
             updateFilebox(node.id);
             updateDetailsBoxFromTreeview(node.id);
         }

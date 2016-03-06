@@ -34,10 +34,10 @@
                 <a href="/home" class="dd-home-navbar-logo pull-left"><img src="${"/resources/img/logo-inverted.png"}"></a>
                 <a class="navbar-brand dd-brand" href="/home">Docudile</a></div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                <form class="navbar-form navbar-left dd-search" role="search">
+                <form class="navbar-form navbar-left dd-search" role="search" id="searchForm">
                     <div class="form-search search-only">
                         <i class="search-icon glyphicon glyphicon-search"></i>
-                        <input type="text" class="form-control search-query">
+                        <input type="text" class="form-control search-query" id="query-string">
                     </div>
                 </form>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -114,7 +114,7 @@
             <div class="col-sm-2 dd-navtree">
                 <div id="treeview"></div>
             </div>
-            <div class="col-sm-7 dd-filebox">
+            <div class="col-sm-7 dd-filebox" id="filebox">
                 <table class="table table-hover" id="dd-filebox-table">
                     <thead>
                     <tr>
