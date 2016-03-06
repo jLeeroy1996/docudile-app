@@ -39,16 +39,9 @@
                 <a href="/home" class="dd-home-navbar-logo pull-left"><img src="${"/resources/img/logo-inverted.png"}"></a>
                 <a class="navbar-brand dd-brand" href="/home">Docudile</a></div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                <form class="navbar-form navbar-left dd-search" role="search">
-                    <div class="form-search search-only">
-                        <i class="search-icon glyphicon glyphicon-search"></i>
-                        <input type="text" class="form-control search-query">
-                    </div>
-                </form>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right dd-nav-links">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <li><button class="btn navbar-btn" data-toggle="modal" data-target="#uploadModal"><i class="fa fa-upload"></i> Upload</button></li>
                         <li role="presentation" class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i><small> Paul Ryan</small></a>
                             <ul class="dropdown-menu">
@@ -58,6 +51,9 @@
                                 </li>
                                 <li>
                                     <a href="/setup/classifier"><i class="fa fa-align-left"></i> Structure</a>
+                                </li>
+                                <li>
+                                    <a href="/setup/data"><i class="fa fa-tags"></i> Tags</a>
                                 </li>
                                 <li class="divider" role="separator"></li>
                                 <li>

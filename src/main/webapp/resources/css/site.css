@@ -171,6 +171,12 @@ ul.nav-tree ul.nav-tree {
     border-radius: 4px;
 }
 
+.dropzone-blue {
+    border: 2px dashed #55acef;
+    overflow-y: scroll;
+    height: 332px;
+}
+
 .dz-message span {
     font-size: 21px;
     color: #646C7F;
@@ -178,6 +184,10 @@ ul.nav-tree ul.nav-tree {
 
 .dz-message {
     margin-top: 83px !important;
+}
+
+.dropzone .dz-message {
+    margin-top: 129px !important;
 }
 
 .dropdown-menu li a {

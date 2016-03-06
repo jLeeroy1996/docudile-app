@@ -11,9 +11,8 @@
     <link rel="stylesheet" href="${"/resources/treeview/bootstrap-treeview.min.css"}">
     <link rel="stylesheet" href="${"/resources/css/bootstrap-treenav.css"}">
     <link rel="stylesheet" href="${"/resources/fonts/font-awesome/css/font-awesome.min.css"}">
+    <link rel="stylesheet" href="${"/resources/css/dropzone.css"}">
     <link rel="stylesheet" href="${"/resources/css/site.css"}">
-    <link rel="stylesheet" href="${"/resources/bootstrap-fileinput/css/fileinput.min.css"}">
-    <link rel="stylesheet" href="${"/resources/select2/css/select2.min.css"}">
 
     <link rel="icon"
           type="image/png"
@@ -55,6 +54,9 @@
                                 <li>
                                     <a href="/setup/classifier"><i class="fa fa-align-left"></i> Structure</a>
                                 </li>
+                                <li>
+                                    <a href="/setup/data"><i class="fa fa-tags"></i> Tags</a>
+                                </li>
                                 <li class="divider" role="separator"></li>
                                 <li>
                                     <a href="/${spring_security_logout}"><i class="fa fa-sign-out"></i> Logout</a>
@@ -75,8 +77,16 @@
                 <h4 class="modal-title" id="uploadModalTitle">Upload Document(s)</h4>
             </div>
             <div class="modal-body">
-                <label class="control-label">Select File(s)</label>
-                <input id="uploadDoc" name="document" type="file" multiple class="file-loading">
+                <div class="form-group">
+                    <form action="/training/category/new?_csrf=${_csrf.token}" id="upload_doc" class="dropzone dropzone-blue">
+                        <div class="fallback">
+                            <input name="file" type="file" multiple>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-group">
+                    <button id="category_upload_new_btn" class="btn btn-primary">Create</button>
+                </div>
             </div>
             <div class="modal-footer"></div>
         </div>
@@ -122,12 +132,27 @@
     </div>
 </main>
 <script rel="script" src="${"/resources/js/jquery-2.1.3.min.js"}"></script>
+<script rel="script" src="${"/resources/js/dropzone.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/treeview/bootstrap-treeview.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap-treenav.js"}"></script>
-<script rel="script" src="${"/resources/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"}"></script>
-<script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
-<script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
 <script rel="script" src="${"/resources/js/custom.js"}"></script>
+
+<script>
+    $('#upload_doc').dropzone({
+        paramName: 'file',
+        clickable: true,
+        autoProcessQueue: false,
+        init: function() {
+            var dropzone = this;
+            $('#classifier_upload_btn').click(function() {
+                dropzone.processQueue();
+            });
+            dropzone.on('sending', function(file, xhr, formData) {
+                formData.append('type_name', $('#classifier_types').val());
+            });
+        }
+    });
+</script>
 </body>
 </html>
