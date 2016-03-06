@@ -36,4 +36,8 @@ public interface DocumentService {
 
     public GeneralMessageResponseDto sampleTrainContent() throws IOException;
 
+    public void createCategory(String categoryName, String username);
+
+    public GeneralMessageResponseDto createCategorySample();
+
 }

@@ -72,6 +72,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
         for (int x = 0; x < categories.size(); x++) {
             //instantiate a Category Class ( new Category(categoryName,fileCount) )
+            category = new CategoryDto();
             category.setName(categories.get(x).getCategoryName());
             category.setFileCount(fileDao.numberOfFiles(categories.get(x).getId()));
             category.setCategoryID(categories.get(x).getId());
@@ -333,7 +334,9 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         Category cat = new Category();
         cat.setCategoryName(categoryName);
         cat.setUser(userDao.getUserDetails(userID));
+        cat.setId(1);
         categoryDao.create(cat);
+        System.out.println(categoryName+"created Category");
     }
 
 }
