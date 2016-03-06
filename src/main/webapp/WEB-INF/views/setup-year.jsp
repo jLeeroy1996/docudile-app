@@ -5,7 +5,7 @@
   Time: 12:11 AM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
@@ -51,7 +51,7 @@
                                     <ul class="nav navbar-nav navbar-right dd-nav-links">
                                         <p class="dd-setup-hello">Hello
                                             <strong>
-                                                <c:out value="${user.firstname}" />
+                                                <c:out value="${user.firstname}"/>
                                             </strong>
                                         </p>
                                     </ul>
@@ -78,7 +78,7 @@
                         <select class="form-control" id="inputStartYear" name="startYear">
                         </select>
                     </div>
-                    <div class="form-group dd-select">
+                    <div class="form-group dd-select" id="dd-end-box">
                         <select class="form-control" id="inputEndYear" name="endYear">
                         </select>
                     </div>
@@ -106,7 +106,6 @@
 <script rel="script" src="${"/resources/js/dropzone.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/js/jquery.fs.selecter.min.js"}"></script>
-<script rel="script" src="${"/resources/js/setup.js"}"></script>
 <script>
     $("#inputStartYear").ready(function () {
         var select = document.getElementById("inputStartYear");
@@ -115,7 +114,22 @@
             option.text = option.value = i;
             select.add(option, 0);
         }
+        $("#inputStartYear").selecter({
+            callback: updateEndYear
+        });
     });
+    function updateEndYear(value, index) {
+        value = parseFloat(value) + 1;
+        var select = $("#inputEndYear");
+        $("#dd-end-box").html(
+                '<select class="form-control" id="inputEndYear" name="endYear"></select>'
+        );
+        for (var i = value; i <= value + 50; ++i) {
+            var option = '<option value="' + i + '">' + i + '</option>';
+            $('#inputEndYear').append(option);
+        }
+        $("#inputEndYear").selecter();
+    }
 </script>
 </body>
 </html>

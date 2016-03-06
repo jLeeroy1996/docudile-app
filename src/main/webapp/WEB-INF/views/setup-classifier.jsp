@@ -15,79 +15,85 @@
     <link rel="stylesheet" href="${"/resources/css/bootstrap.min.css"}">
     <link rel="stylesheet" href="${"/resources/bootflat/css/bootflat.css"}">
     <link rel="stylesheet" href="${"/resources/fonts/font-awesome/css/font-awesome.min.css"}">
-    <link rel="stylesheet" href="${"/resources/css/index.css"}">
     <link rel="stylesheet" href="${"/resources/css/bootstrap-tagsinput.css"}">
     <link rel="stylesheet" href="${"/resources/select2/css/select2.min.css"}">
     <link rel="stylesheet" href="${"/resources/bootstrap-fileinput/css/fileinput.min.css"}">
     <link rel="stylesheet" href="${"/resources/css/dropzone.css"}">
     <link rel="stylesheet" href="${"/resources/css/setup.css"}">
+    <link rel="stylesheet" href="${"/resources/css/site.css"}">
 
     <link rel="icon"
           type="image/png"
           href="${"/resources/img/logo.png"}">
 </head>
 <body style="background: #55acef">
-<header class="dd-frontpage dd-onepage">
-    <div class="dd-border">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <nav class="navbar">
-                        <div class="navbar-inner">
-                            <div class="container-fluid">
-                                <!-- Brand and toggle get grouped for better mobile display -->
-                                <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                                        <span class="sr-only">Toggle navigation</span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-                                    <a href="/" class="dd-navbar-logo pull-left"><img
-                                            src="${"/resources/img/logo-inverted.png"}"></a>
-                                    <a class="navbar-brand dd-brand" href="/"><strong>docudile</strong></a>
-                                </div>
 
-                                <!-- Collect the nav links, forms, and other content for toggling -->
-                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                    <ul class="nav navbar-nav navbar-right dd-nav-links">
-                                        <p class="dd-setup-hello">Hello <strong>Paul Ryan!</strong></p>
-                                    </ul>
-                                </div>
-                                <!-- /.navbar-collapse -->
-                            </div>
-                            <!-- /.container-fluid -->
-                        </div>
-                    </nav>
+<header>
+    <nav class="navbar dd-home-navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-2" aria-expanded="false"><span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                </button>
+                <a href="/home" class="dd-home-navbar-logo pull-left"><img src="${"/resources/img/logo-inverted.png"}"></a>
+                <a class="navbar-brand dd-brand" href="/home">Docudile</a></div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                <form class="navbar-form navbar-left dd-search" role="search">
+                    <div class="form-search search-only">
+                        <i class="search-icon glyphicon glyphicon-search"></i>
+                        <input type="text" class="form-control search-query">
+                    </div>
+                </form>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right dd-nav-links">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <li><button class="btn navbar-btn" data-toggle="modal" data-target="#uploadModal"><i class="fa fa-upload"></i> Upload</button></li>
+                        <li role="presentation" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i><small> Paul Ryan</small></a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-header">Menu</li>
+                                <li>
+                                    <a href="/setup/content"><i class="fa fa-file-text"></i> Content</a>
+                                </li>
+                                <li>
+                                    <a href="/setup/classifier"><i class="fa fa-align-left"></i> Structure</a>
+                                </li>
+                                <li class="divider" role="separator"></li>
+                                <li>
+                                    <a href="/${spring_security_logout}"><i class="fa fa-sign-out"></i> Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </div>
+    </nav>
+</header>
 
-    <div class="container">
-        <div class="row dd-pretrain">
-            <div class="col-sm-6 col-sm-offset-3">
-                <div class="form-group">
-                    <select id="classifier_types" class="form-control">
+<div class="container">
+    <div class="row dd-pretrain">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="form-group dd-select">
+                <select id="classifier_types" class="form-control">
                     <option value="memo">Memo</option>
                     <option value="letter">Letter</option>
                 </select>
-                </div>
-                <div class="form-group">
-                    <form action="/training/classifier?_csrf=${_csrf.token}" id="classifier_upload" class="dropzone">
-                        <div class="fallback">
-                            <input name="file" type="file" multiple>
-                        </div>
-                    </form>
-                </div>
-                <div class="form-group">
-                    <button id="classifier_upload_btn" class="btn btn-primary">Create</button>
-                </div>
+            </div>
+            <div class="form-group">
+                <form action="/training/classifier?_csrf=${_csrf.token}" id="classifier_upload" class="dropzone">
+                    <div class="fallback">
+                        <input name="file" type="file" multiple>
+                    </div>
+                </form>
+            </div>
+            <div class="form-group">
+                <button id="classifier_upload_btn" class="btn btn-primary">Create</button>
             </div>
         </div>
     </div>
-</header>
+</div>
 
 <main>
 
@@ -100,6 +106,10 @@
 <script rel="script" src="${"/resources/select2/js/select2.min.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"}"></script>
 <script rel="script" src="${"/resources/bootstrap-fileinput/js/fileinput.min.js"}"></script>
+<script rel="script" src="${"/resources/bootflat/js/jquery.fs.selecter.min.js"}"></script>
 <script rel="script" src="${"/resources/js/setup.js"}"></script>
+<script>
+    $("#classifier_types").selecter();
+</script>
 </body>
 </html>

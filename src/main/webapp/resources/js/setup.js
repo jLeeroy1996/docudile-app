@@ -18,17 +18,6 @@ $(document).ready(function () {
         $('#inputCategory').val("");
         $('#inputTags').tagsinput("removeAll");
     });
-    $("#inputStartYear").on("change", function () {
-        var value = $(":selected", this).val();
-        value = parseFloat(value) + 1;
-        var select = document.getElementById("inputEndYear");
-        $("#inputEndYear").empty();
-        for (var i = value + 50; i >= value; --i) {
-            var option = document.createElement('option');
-            option.text = option.value = i;
-            select.add(option, 0);
-        }
-    });
     $('#classifier_upload').dropzone({
         paramName: 'file',
         clickable: true,

@@ -32,8 +32,8 @@
                         data-target="#bs-example-navbar-collapse-2" aria-expanded="false"><span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
                 </button>
-                <a href="#" class="dd-home-navbar-logo pull-left"><img src="${"/resources/img/logo-inverted.png"}"></a>
-                <a class="navbar-brand dd-brand" href="#">Docudile</a></div>
+                <a href="/home" class="dd-home-navbar-logo pull-left"><img src="${"/resources/img/logo-inverted.png"}"></a>
+                <a class="navbar-brand dd-brand" href="/home">Docudile</a></div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                 <form class="navbar-form navbar-left dd-search" role="search">
                     <div class="form-search search-only">
@@ -45,8 +45,22 @@
                     <ul class="nav navbar-nav navbar-right dd-nav-links">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <li><button class="btn navbar-btn" data-toggle="modal" data-target="#uploadModal"><i class="fa fa-upload"></i> Upload</button></li>
-                        <li><a href="#"><i class="fa fa-user"></i><small> Paul Ryan</small></a></li>
-                        <li><a href="#"><i class="fa fa-cog"></i></a></li>
+                        <li role="presentation" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i><small> Paul Ryan</small></a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-header">Menu</li>
+                                <li>
+                                    <a href="/setup/content"><i class="fa fa-file-text"></i> Content</a>
+                                </li>
+                                <li>
+                                    <a href="/setup/classifier"><i class="fa fa-align-left"></i> Structure</a>
+                                </li>
+                                <li class="divider" role="separator"></li>
+                                <li>
+                                    <a href="/${spring_security_logout}"><i class="fa fa-sign-out"></i> Logout</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

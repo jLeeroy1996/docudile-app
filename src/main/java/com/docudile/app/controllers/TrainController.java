@@ -31,8 +31,8 @@ public class TrainController {
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping("/training/content")
-    public String goRetrain() {
+    @RequestMapping("/setup/content")
+    public String goContent() {
         return "training-content";
     }
 
