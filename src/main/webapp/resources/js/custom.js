@@ -87,16 +87,25 @@ function createTreeView() {
     });
 }
 
-function findNode(nodeName, parentNodeName, nodes) {
-    var result = null;
-    for (var i in nodes) {
-        if (nodes[i].id == nodeId) {
-            return nodes[i];
-        } else {
-            result = findNode(nodeId, nodes[i].nodes);
+function revealNode(nodeName, parentNodeName) {
+    var result = findNode(nodeName, parentNodeName);
+    window.tree.treeview('revealNode', [result, {silent: true}]);
+    window.tree.treeview('selectNode', [result, {silent: true}]);
+    window.tree.treeview('clearSearch');
+}
+
+function findNode(nodeName, nodeId) {
+    var results = window.tree.treeview('search', [nodeName, {
+        ignoreCase: false,
+        exactMatch: true,
+        revealResults: false,
+        silent: true
+    }]);
+    for (var i in results) {
+        if (results[i].id === nodeId) {
+            return results[i];
         }
     }
-    return result;
 }
 
 function convertToTreeData(data) {
@@ -166,6 +175,7 @@ function updateFilebox(id) {
                 });
                 tablerow.dblclick(function () {
                     updateFilebox(inside.id);
+                    revealNode(inside.name, inside.id);
                 });
             });
             $.each(response.files, function (key, inside) {

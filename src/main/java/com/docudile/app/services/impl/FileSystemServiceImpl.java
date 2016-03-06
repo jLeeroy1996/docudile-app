@@ -198,13 +198,16 @@ public class FileSystemServiceImpl implements FileSystemService {
         for (Folder childFolder : folder.getChildFolders()) {
             date = findLatestDate(childFolder, date);
         }
-        for (File file : folder.getFiles()) {
-            Date currDate = convertStringToDate(file.getDateUploaded());
-            if (currDate != null && currDate.after(date)) {
-                date = currDate;
+        if (folder.getFiles().size() > 0) {
+            for (File file : folder.getFiles()) {
+                Date currDate = convertStringToDate(file.getDateUploaded());
+                if (currDate != null && currDate.after(date)) {
+                    date = currDate;
+                }
             }
+            return date;
         }
-        return date;
+        return null;
     }
 
     private Date convertStringToDate(String date) {
@@ -218,8 +221,11 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     private String convertDateToString(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy, E");
-        return formatter.format(date);
+        if (date != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy, E");
+            return formatter.format(date);
+        }
+        return "Not Yet Modified";
     }
 
 }
