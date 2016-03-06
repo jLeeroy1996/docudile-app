@@ -68,18 +68,11 @@ public class TrainController {
         return documentService.trainClassifier(typeName, file, principal.getName());
     }
     @RequestMapping(value = "/training/category/new", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestParam("category_name") String name,
-                                                                 @RequestPart("file") MultipartFile file,
+    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("file") MultipartFile[] file,
+                                                                 @RequestParam("category_name") String name,
                                                                  Principal principal) throws IOException {
         return documentService.contentTrain(principal.getName(), file, name);
     }
 
-    @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("file") MultipartFile[] file,
-                                                                 @RequestPart("categoryName") String categoryName,
-                                                                 Principal principal) throws IOException {
-        documentService.createCategory(categoryName, principal.getName());
-        return documentService.contentTrain(principal.getName(),file,categoryName);
-    }
 
 }

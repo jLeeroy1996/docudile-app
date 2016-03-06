@@ -20,7 +20,7 @@ public interface DocumentService {
 
     public GeneralMessageResponseDto deleteFile(Integer id, String username);
 
-    public GeneralMessageResponseDto contentTrain(String username, MultipartFile file, String categoryName) throws IOException;
+    public GeneralMessageResponseDto contentTrain(String username, MultipartFile[] file, String categoryName) throws IOException;
 
     public GeneralMessageResponseDto uploadTraining(MultipartFile file, String username, String categoryName);
 

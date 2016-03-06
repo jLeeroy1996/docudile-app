@@ -61,20 +61,21 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     public boolean train(Integer userID) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         WordListDto wordList = null;
-        List<FileContentDto> fileDto = null;
-        List<com.docudile.app.data.entities.File> file = null;
+        List<FileContentDto> fileDto = new ArrayList<>();
+        List<com.docudile.app.data.entities.File> file = new ArrayList<>();
         CategoryDto category = new CategoryDto();
         FileContentDto fileContentDto = new FileContentDto();
         List<CategoryDto> categoriesDto = new ArrayList<>();
 
         //get Categories from DB
         List<Category> categories = categoryDao.getCategories(userID);
+        System.out.println(categories.size() + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
         for (int x = 0; x < categories.size(); x++) {
             //instantiate a Category Class ( new Category(categoryName,fileCount) )
             category = new CategoryDto();
+            System.out.println(categories.get(x).getCategoryName() + " EEEEEEEEE");
             category.setName(categories.get(x).getCategoryName());
-            category.setFileCount(fileDao.numberOfFiles(categories.get(x).getId()));
             category.setCategoryID(categories.get(x).getId());
             //add it into List<Category> categories
             categoriesDto.add(category);
@@ -83,7 +84,8 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         User user = userDao.getUserDetails(userID);
 
         for(int x = 0;x<categoriesDto.size();x++) {
-            java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "/" +environment.getProperty("storage.content_training")+"/"+categoriesDto.get(x).getName());
+            System.out.println(categoriesDto.get(x).getName() + " @@@@@@@@@@@@@@@@@@@ ");
+            java.io.File folder = new java.io.File(environment.getProperty("storage.users") + userDao.show(userID).getUsername() + "//" +environment.getProperty("storage.content_training")+"//"+categoriesDto.get(x).getName());
             for (final java.io.File fileEntry : folder.listFiles()) {
                 fileContentDto = new FileContentDto();
                 fileContentDto.setFileName(fileEntry.getName());
@@ -324,10 +326,15 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
     }
 
-    public void writeToFile(MultipartFile f, String path) throws IOException {
-        File file = new File(path);
-        file.getParentFile().mkdirs();
-        f.transferTo(file);
+    public void writeToFile(MultipartFile[] f, String path) throws IOException {
+
+        System.out.println(f.toString() + " ###########");
+        for(int x = 0;x<f.length;x++){
+            File file = new File(path+"//"+f[x].getOriginalFilename());
+            file.getParentFile().mkdirs();
+            f[x].transferTo(file);
+        }
+
     }
 
     public void createCategory(String categoryName, Integer userID){
