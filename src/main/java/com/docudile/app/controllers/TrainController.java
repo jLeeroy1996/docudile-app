@@ -59,9 +59,10 @@ public class TrainController {
 
     @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
     public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("name") String name,
-                                                                 @RequestPart("content_new") MultipartFile file,
+                                           W                      @RequestPart("content_new") MultipartFile file,
                                                                  @RequestPart("categoryName") String categoryName,
                                                                  Principal principal) throws IOException {
+        documentService.createCategory(categoryName,name);
         return documentService.contentTrain(name,file,categoryName);
     }
 
@@ -69,6 +70,11 @@ public class TrainController {
     public @ResponseBody GeneralMessageResponseDto trainCategorySample() throws IOException {
         return documentService.sampleTrainContent();
 >>>>>>> origin/master
+    }
+
+    @RequestMapping(value = "/createCategory", method = RequestMethod.GET)
+    public @ResponseBody GeneralMessageResponseDto createCategory(){
+        return documentService.createCategorySample();
     }
 
 }

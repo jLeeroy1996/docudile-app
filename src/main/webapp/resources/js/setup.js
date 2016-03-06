@@ -35,7 +35,7 @@ $(document).ready(function () {
         autoProcessQueue: false,
         init: function() {
             var dropzone = this;
-            $('.category_upload_btn').click(function() {
+            $('#category_upload_new_btn').click(function() {
                 dropzone.processQueue();
             });
             dropzone.on('sending', function(file, xhr, formData) {
@@ -49,11 +49,8 @@ $(document).ready(function () {
         autoProcessQueue: false,
         init: function() {
             var dropzone = this;
-            $('.category_upload_btn').click(function() {
+            $('#category_upload_retrain_btn').click(function() {
                 dropzone.processQueue();
-            });
-            dropzone.on('sending', function(file, xhr, formData) {
-                formData.append('category_name', $('#category_name').val());
             });
         }
     });
@@ -63,7 +60,7 @@ $(document).ready(function () {
         autoProcessQueue: false,
         init: function() {
             var dropzone = this;
-            $('.category_upload_btn').click(function() {
+            $('#category_upload_new_btn').click(function() {
                 dropzone.processQueue();
             });
             dropzone.on('sending', function(file, xhr, formData) {

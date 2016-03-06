@@ -187,9 +187,44 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    public void createCategory(String categoryName, String username) {
+        Category cat = new Category();
+
+        cat.setCategoryName(categoryName);
+        System.out.println(userDao.show(username) + " is the username");
+        cat.setUser(userDao.show(username));
+        boolean hasCreated = categoryDao.create(cat);
+        if(hasCreated){
+            System.out.println("no error");
+        }
+        else{
+            System.out.println("error");
+        }
+    }
+
+    @Override
+    public GeneralMessageResponseDto createCategorySample() {
+        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
+        Category cat = new Category();
+
+        cat.setCategoryName("Excuse");
+        cat.setUser(userDao.show("holyjohn00"));
+        boolean hasCreated = categoryDao.create(cat);
+        if(hasCreated){
+            response.setMessage("no error");
+        }
+        else{
+            response.setMessage("error");
+        }
+        return response;
+    }
+
+    @Override
     public GeneralMessageResponseDto contentTrain(String username, MultipartFile file, String categoryName) throws IOException {
+
         contentClassificationService.writeToFile(file, environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.content_training") + "/" + categoryName + "/" + file.getOriginalFilename());
-        contentClassificationService.createCategory(categoryName,userDao.show(username).getId());
+        System.out.println("Im here");
+
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
 
         boolean noError = contentClassificationService.train(userDao.show(username).getId());
@@ -202,6 +237,8 @@ public class DocumentServiceImpl implements DocumentService {
         return response;
 
     }
+
+
 
     @Override
     public GeneralMessageResponseDto uploadTraining(MultipartFile file, String username, String categoryName) {

@@ -18,7 +18,7 @@ public class Category{
     private String categoryName;
 
     @ManyToOne
-    @JoinColumn(name="user_ID")
+    @JoinColumn(name="user_id")
     private User user;
 
     public Integer getId() {
