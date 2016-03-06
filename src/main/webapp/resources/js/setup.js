@@ -56,7 +56,7 @@ $(document).ready(function () {
             $('#category_upload_new_btn').click(function() {
                 dropzone.processQueue();
             });
-            dropzone.on('sending', function(file, xhr, formData) {
+            dropzone.on('sendingmultiple', function(file, xhr, formData) {
                 formData.append('category_name', $('#category_name').val());
             });
         }

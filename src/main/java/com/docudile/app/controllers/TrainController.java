@@ -3,12 +3,14 @@ package com.docudile.app.controllers;
 import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.GeneralMessageResponseDto;
 import com.docudile.app.data.dto.ModTagRequestDto;
+import com.docudile.app.data.dto.TrainingCatNewDto;
 import com.docudile.app.services.DocumentService;
 import com.docudile.app.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,17 +79,10 @@ public class TrainController {
     }
     @RequestMapping(value = "/training/category/new", method = RequestMethod.POST)
     public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestParam("category_name") String name,
-                                                                 @RequestPart("file") MultipartFile file,
+                                                                 @ModelAttribute("file") TrainingCatNewDto file,
                                                                  Principal principal) throws IOException {
-        return documentService.contentTrain(principal.getName(), file, name);
-    }
-
-    @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("file") MultipartFile file,
-                                                                 @RequestPart("categoryName") String categoryName,
-                                                                 Principal principal) throws IOException {
-        documentService.createCategory(categoryName, principal.getName());
-        return documentService.contentTrain(principal.getName(),file,categoryName);
+        System.out.println("Size: " + file.getFile().size() + ", Category Name: " + name);
+        return documentService.contentTrain(principal.getName(), null, name);
     }
 
 }
