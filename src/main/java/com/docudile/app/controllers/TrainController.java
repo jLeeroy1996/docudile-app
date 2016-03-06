@@ -31,9 +31,17 @@ public class TrainController {
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping("/training/content")
-    public String goRetrain() {
+    @RequestMapping("/setup/content")
+    public String goContent() {
         return "training-content";
+    }
+
+    @RequestMapping("/setup/year")
+    public ModelAndView goSetupYear(Principal principal) {
+        ModelAndView mv = new ModelAndView("setup-year");
+        mv.addObject("user", userDao.show(principal.getName()));
+        System.out.println(principal.getName() + "adsfasfkhwer");
+        return mv;
     }
 
     @RequestMapping(value = "/setup/year", method = RequestMethod.POST)
@@ -74,5 +82,15 @@ public class TrainController {
         return documentService.contentTrain(principal.getName(), file, name);
     }
 
+<<<<<<< HEAD
+=======
+    @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
+    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("file") MultipartFile file,
+                                                                 @RequestPart("categoryName") String categoryName,
+                                                                 Principal principal) throws IOException {
+        documentService.createCategory(categoryName, principal.getName());
+        return documentService.contentTrain(principal.getName(),file,categoryName);
+    }
+>>>>>>> origin/master
 
 }

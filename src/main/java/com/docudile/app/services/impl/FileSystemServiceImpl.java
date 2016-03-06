@@ -11,6 +11,7 @@ import com.docudile.app.data.entities.User;
 import com.docudile.app.services.DropboxService;
 import com.docudile.app.services.FileSystemService;
 import com.docudile.app.services.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -177,6 +178,7 @@ public class FileSystemServiceImpl implements FileSystemService {
         }
         dto.setFiles(files);
         dto.setDateModified(convertDateToString(findLatestDate(folder)));
+        dto.setPath(getPath(folder));
         return dto;
     }
 
@@ -191,35 +193,46 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     private Date findLatestDate(Folder folder) {
-        return findLatestDate(folder, new Date(Long.MIN_VALUE));
+        return findLatestDate(folder, null);
     }
 
     private Date findLatestDate(Folder folder, Date date) {
-        for (Folder childFolder : folder.getChildFolders()) {
-            date = findLatestDate(childFolder, date);
-        }
         for (File file : folder.getFiles()) {
             Date currDate = convertStringToDate(file.getDateUploaded());
-            if (currDate != null && currDate.after(date)) {
+            if (currDate != null && date != null) {
+                if (currDate.after(date)) {
+                    date = currDate;
+                }
+            }
+            if (date == null) {
                 date = currDate;
             }
+        }
+        for (Folder childFolder : folder.getChildFolders()) {
+            date = findLatestDate(childFolder, date);
         }
         return date;
     }
 
     private Date convertStringToDate(String date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy, E");
-        try {
-            return formatter.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
+        if (StringUtils.isNotEmpty(date)) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy, E");
+            formatter.setLenient(false);
+            try {
+                return formatter.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
+        return null;
     }
 
     private String convertDateToString(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy, E");
-        return formatter.format(date);
+        if (date != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy, E");
+            return formatter.format(date);
+        }
+        return "Not Yet Modified";
     }
 
 }

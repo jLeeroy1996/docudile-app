@@ -13,6 +13,7 @@ public class FolderShowDto implements Serializable {
     private String parentFolder;
     private List<FolderShowDto> childFolders;
     private List<FileShowDto> files;
+    private String path;
     private UserShowDto user;
     private String dateModified;
 
@@ -54,6 +55,14 @@ public class FolderShowDto implements Serializable {
 
     public void setFiles(List<FileShowDto> files) {
         this.files = files;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public UserShowDto getUser() {

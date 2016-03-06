@@ -9,51 +9,6 @@ $(document).on('ready', function () {
     var doc_url = "./home/upload-documents?_csrf=" + token;
     var type_url = "./new-type?_csrf=" + token;
     window.treeData = $.retrieveTreeData();
-    $("#uploadDoc").fileinput({showCaption: false, uploadUrl: doc_url});
-    $("#uploadSampleStructNew").fileinput({
-        showCaption: false,
-        uploadExtraData: {
-            name: $("input:text #structureName").val()
-        },
-        uploadUrl: doc_url,
-        uploadAsync: false
-    });
-    $("#uploadSampleStructRe").fileinput({
-        showCaption: false,
-        uploadExtraData: {
-            name: $("input:text #structureName").val()
-        },
-        uploadUrl: doc_url,
-        uploadAsync: false
-    });
-    $("#uploadSampleContNew").fileinput({
-        showCaption: false,
-        uploadExtraData: {
-            name: $("input:text #contentName").val()
-        },
-        uploadUrl: doc_url,
-        uploadAsync: false
-    });
-    $("#uploadSampleContRe").fileinput({
-        showCaption: false,
-        uploadExtraData: {
-            name: $("input:text #contentName").val()
-        },
-        uploadUrl: doc_url,
-        uploadAsync: false
-    });
-    $("#train-content").select2({
-        data: [{id: 0, text: "OBE"}, {id: 1, text: "LOL"}, {id: 2, text: "DEAR"}, {id: 3, text: "DEAR"}, {
-            id: 4,
-            text: "DEAR"
-        }, {id: 5, text: "DEAR"}, {id: 6, text: "DEAR"}, {id: 7, text: "DEAR"}]
-    });
-    $("#train-structure").select2({
-        data: [{id: 0, text: "OBE"}, {id: 1, text: "LOL"}, {id: 2, text: "DEAR"}, {id: 3, text: "DEAR"}, {
-            id: 4,
-            text: "DEAR"
-        }, {id: 5, text: "DEAR"}, {id: 6, text: "DEAR"}, {id: 7, text: "DEAR"}]
-    });
     window.tree = createTreeView();
     $(document).keyup(function (e) {
         if (e.keyCode == 27) {
@@ -83,20 +38,30 @@ function createTreeView() {
         levels: 1,
         onNodeSelected: function (event, node) {
             updateFilebox(node.id);
+            updateDetailsBoxFromTreeview(node.id);
         }
     });
 }
 
-function findNode(nodeName, parentNodeName, nodes) {
-    var result = null;
-    for (var i in nodes) {
-        if (nodes[i].id == nodeId) {
-            return nodes[i];
-        } else {
-            result = findNode(nodeId, nodes[i].nodes);
+function revealNode(nodeName, parentNodeName) {
+    var result = findNode(nodeName, parentNodeName);
+    window.tree.treeview('revealNode', [result, {silent: true}]);
+    window.tree.treeview('selectNode', [result, {silent: true}]);
+    window.tree.treeview('clearSearch');
+}
+
+function findNode(nodeName, nodeId) {
+    var results = window.tree.treeview('search', [nodeName, {
+        ignoreCase: false,
+        exactMatch: true,
+        revealResults: false,
+        silent: true
+    }]);
+    for (var i in results) {
+        if (results[i].id === nodeId) {
+            return results[i];
         }
     }
-    return result;
 }
 
 function convertToTreeData(data) {
@@ -137,8 +102,36 @@ function viewDetailsFile(data) {
     $('#fileInfo').append(template);
 }
 
+function viewDetailsFolder(data) {
+    clearDetails();
+    var template = '<h3><small><i class="glyphicon glyphicon-list-alt"></i> Details</small></h3>' +
+        '<ul class="list-group">' +
+        '<li class="list-group-item"><i class="glyphicon glyphicon-user"></i> Owner: ' + data.user.firstname + ' ' + data.user.lastname + '</li>' +
+        '<li class="list-group-item"><i class="glyphicon glyphicon-calendar"></i> Date Modified: ' + data.dateModified + '</li>' +
+        '<li class="list-group-item"><i class="glyphicon glyphicon-folder-close"></i> Path: ' + data.path + '</li>' +
+        '</ul>' +
+        '<h3><small><i class="glyphicon glyphicon-cog"></i> Manage</small></h3>' +
+        '<p><i class="glyphicon glyphicon-info-sign"></i> Info: Deleting the file will result to the permanent loss of that file.</p>';
+    $('#fileInfo').append(template);
+}
+
 function clearDetails() {
     $('#fileInfo').empty();
+}
+
+function updateDetailsBoxFromTreeview(id) {
+    $.ajax({
+        dataType: "json",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: 'GET',
+        url: '/home/folder/' + id,
+        success: function (response) {
+            viewDetailsFolder(response);
+        }
+    });
 }
 
 function updateFilebox(id) {
@@ -163,9 +156,11 @@ function updateFilebox(id) {
                 $('#dd-filebox-id').append(tablerow);
                 tablerow.click(function () {
                     $(this).addClass('active').siblings().removeClass('active');
+                    viewDetailsFolder(inside);
                 });
                 tablerow.dblclick(function () {
                     updateFilebox(inside.id);
+                    revealNode(inside.name, inside.id);
                 });
             });
             $.each(response.files, function (key, inside) {

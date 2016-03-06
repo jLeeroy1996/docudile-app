@@ -1,5 +1,7 @@
 package com.docudile.app.data.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -7,9 +9,17 @@ import java.io.Serializable;
  */
 public class UserShowDto implements Serializable {
 
+    @JsonProperty
     private String username;
+
+    @JsonProperty
     private String firstname;
+
+    @JsonProperty
     private String lastname;
+
+    @JsonProperty
+    private boolean yearSetted;
 
     public String getUsername() {
         return username;

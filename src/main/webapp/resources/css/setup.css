@@ -56,3 +56,10 @@ header {
     background-color: #4fc1e9;
     border-color: #4fc1e9;
 }
+
+.dd-setup {
+    color: #fff;
+    margin-top: 125px;
+}
+
+select { vertical-align: top; }

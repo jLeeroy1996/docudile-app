@@ -29,6 +29,9 @@ public class User implements Serializable {
     @Column(name = "dropbox_access_token")
     private String dropboxAccessToken;
 
+    @Column(name = "year_setted")
+    private boolean yearSetted = false;
+
     public Integer getId() {
         return id;
     }
@@ -75,4 +78,14 @@ public class User implements Serializable {
 
     public void setDropboxAccessToken(String dropboxAccessToken) {
         this.dropboxAccessToken = dropboxAccessToken;
-    }}
+    }
+
+    public boolean isYearSetted() {
+        return yearSetted;
+    }
+
+    public void setYearSetted(boolean yearSetted) {
+        this.yearSetted = yearSetted;
+    }
+
+}
