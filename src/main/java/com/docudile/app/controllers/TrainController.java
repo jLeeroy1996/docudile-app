@@ -36,6 +36,14 @@ public class TrainController {
         return "training-content";
     }
 
+    @RequestMapping("/setup/year")
+    public ModelAndView goSetupYear(Principal principal) {
+        ModelAndView mv = new ModelAndView("setup-year");
+        mv.addObject("user", userDao.show(principal.getName()));
+        System.out.println(principal.getName() + "adsfasfkhwer");
+        return mv;
+    }
+
     @RequestMapping(value = "/setup/year", method = RequestMethod.POST)
     public String doSetupYear(Principal principal, HttpServletRequest request) {
         return registrationService.createFolders(userDao.show(principal.getName()), request);
@@ -75,7 +83,7 @@ public class TrainController {
     }
 
     @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("file") MultipartFile[] file,
+    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("file") MultipartFile file,
                                                                  @RequestPart("categoryName") String categoryName,
                                                                  Principal principal) throws IOException {
         documentService.createCategory(categoryName, principal.getName());

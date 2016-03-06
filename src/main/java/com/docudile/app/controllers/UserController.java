@@ -37,14 +37,6 @@ public class UserController {
         return registrationService.registerStart(user, request);
     }
 
-    @RequestMapping("/setup/year")
-    public ModelAndView goSetupYear(Principal principal) {
-        ModelAndView mv = new ModelAndView("setup-year");
-        mv.addObject("user", userDao.show(principal.getName()));
-        System.out.println(principal.getName() + "adsfasfkhwer");
-        return mv;
-    }
-
     @RequestMapping(value = "/dropbox-auth-finish")
     public String dropboxFinish(HttpServletRequest request) {
         return registrationService.registerFinish(request);

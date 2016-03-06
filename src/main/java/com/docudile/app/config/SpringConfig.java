@@ -20,7 +20,8 @@ import java.io.IOException;
 @Configuration
 @ComponentScan({"com.docudile.app.controllers",
         "com.docudile.app.data",
-        "com.docudile.app.services"})
+        "com.docudile.app.services",
+        "com.docudile.app.config"})
 public class SpringConfig extends WebMvcConfigurerAdapter {
 
     @Override
