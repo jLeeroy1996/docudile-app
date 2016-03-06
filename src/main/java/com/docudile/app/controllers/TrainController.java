@@ -75,7 +75,7 @@ public class TrainController {
     }
 
     @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("content_new") MultipartFile file,
+    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("file") MultipartFile[] file,
                                                                  @RequestPart("categoryName") String categoryName,
                                                                  Principal principal) throws IOException {
         documentService.createCategory(categoryName, principal.getName());

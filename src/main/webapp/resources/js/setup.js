@@ -47,6 +47,8 @@ $(document).ready(function () {
         paramName: 'file',
         clickable: true,
         autoProcessQueue: false,
+        uploadMultiple: true,
+        parallelUploads: 40000,
         init: function() {
             var dropzone = this;
             $('#category_upload_retrain_btn').click(function() {
@@ -58,6 +60,8 @@ $(document).ready(function () {
         paramName: 'file',
         clickable: true,
         autoProcessQueue: false,
+        uploadMultiple: true,
+        parallelUploads: 40000,
         init: function() {
             var dropzone = this;
             $('#category_upload_new_btn').click(function() {
