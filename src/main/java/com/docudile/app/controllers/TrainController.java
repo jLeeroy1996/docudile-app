@@ -77,30 +77,13 @@ public class TrainController {
     public @ResponseBody GeneralMessageResponseDto trainClassifier(@RequestParam("type_name") String typeName, @RequestPart("file") MultipartFile file, Principal principal) {
         return documentService.trainClassifier(typeName, file, principal.getName());
     }
+
     @RequestMapping(value = "/training/category/new", method = RequestMethod.POST)
-<<<<<<< HEAD
     public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestParam("category_name") String name,
                                                                  @ModelAttribute("file") TrainingCatNewDto file,
                                                                  Principal principal) throws IOException {
         System.out.println("Size: " + file.getFile().size() + ", Category Name: " + name);
         return documentService.contentTrain(principal.getName(), null, name);
-=======
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("file") MultipartFile[] file,
-                                                                 @RequestParam("category_name") String name,
-                                                                 Principal principal) throws IOException {
-        return documentService.contentTrain(principal.getName(), file, name);
     }
-
-<<<<<<< HEAD
-=======
-    @RequestMapping(value = "/training/trainCategory", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestPart("file") MultipartFile file,
-                                                                 @RequestPart("categoryName") String categoryName,
-                                                                 Principal principal) throws IOException {
-        documentService.createCategory(categoryName, principal.getName());
-        return documentService.contentTrain(principal.getName(),file,categoryName);
->>>>>>> origin/master
-    }
->>>>>>> origin/master
 
 }
