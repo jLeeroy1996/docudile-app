@@ -237,7 +237,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     }
 
     public Integer categorize( List<String> words, Integer userID, String filename) {
-        List<CategoryDto> categories = null;
+        List<CategoryDto> categories = new ArrayList<>();
         //get data from DB Category
         List<Category> categoryList = categoryDao.getCategories(userID);
         float[] categoryVectors = new float[categories.size()];
@@ -253,11 +253,11 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         //add Categories in List<Category> categories
         int totalFiles = 0;
 
-        WordListDto wordList = null;
+        WordListDto wordList = new WordListDto();
         wordList.setWordList(wordListDao.getWords());
         wordList.setCount(wordListDao.getWords().size());
 
-        FileContentDto fileContentDto = null;
+        FileContentDto fileContentDto = new FileContentDto();
         fileContentDto.setWordList(words);
         fileContentDto.setFileName(filename);
 
