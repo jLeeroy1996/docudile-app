@@ -1,11 +1,13 @@
 package com.docudile.app.services.impl;
 
 import com.docudile.app.data.dao.CategoryDao;
+import com.docudile.app.data.dao.FolderDao;
 import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.FolderShowDto;
 import com.docudile.app.data.dto.GeneralMessageResponseDto;
 import com.docudile.app.data.dto.ModTagRequestDto;
 import com.docudile.app.data.entities.Category;
+import com.docudile.app.data.entities.Folder;
 import com.docudile.app.services.*;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -57,6 +59,12 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    private FolderDao folderDao;
+
+    @Autowired
+    private DropboxService dropboxService;
 
     @Override
     public FileSystemResource showFile(Integer id, String username) {
@@ -168,6 +176,7 @@ public class DocumentServiceImpl implements DocumentService {
             response.setMessage("problem_in_saving");
         } else {
             response.setMessage("training_successfully_saved");
+            fileSystemService.createFolderFromCategory(request.getDisplayName(), userDao.show(username).getId());
         }
         return response;
     }

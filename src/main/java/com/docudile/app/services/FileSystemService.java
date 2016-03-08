@@ -26,4 +26,8 @@ public interface FileSystemService {
 
     public boolean delete(Integer id, Integer userId);
 
+    public void createFolderFromCategory(String displayName, Integer userId);
+
+    public void createCategoryFolders(Folder f, String categoryName, Integer userId);
+
 }

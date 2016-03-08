@@ -3,6 +3,7 @@ package com.docudile.app.services;
 import com.docudile.app.data.dto.FolderShowDto;
 import com.docudile.app.data.dto.GeneralMessageResponseDto;
 import com.docudile.app.data.dto.ModTagRequestDto;
+import com.docudile.app.data.entities.Folder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.multipart.MultipartFile;
 

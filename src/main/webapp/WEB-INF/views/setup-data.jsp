@@ -83,17 +83,17 @@
             </c:if>
             <div class="form-group dd-select">
                 <select class="form-control" id="tagType">
-                    <option>Office or College</option>
-                    <option>Address</option>
-                    <option>Person</option>
-                    <option>Position</option>
+                    <option value="Office" selected>Office or College</option>
+                    <option value="Address">Address</option>
+                    <option value="Person">Person</option>
+                    <option value="Position">Position</option>
                 </select>
             </div>
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Display Name" id="displayName">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Possible Data" id="inputTags" data-role="tagsinput">
+                <select class="form-control" id="inputTags" multiple></select>
             </div>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="row">
@@ -119,5 +119,10 @@
 <script rel="script" src="${"/resources/js/bootstrap-tagsinput.js"}"></script>
 <script rel="script" src="${"/resources/bootflat/js/jquery.fs.selecter.min.js"}"></script>
 <script rel="script" src="${"/resources/js/setup.js"}"></script>
+<script>
+    $('#inputTags').tagsinput({
+        confirmKeys: [13]
+    })
+</script>
 </body>
 </html>

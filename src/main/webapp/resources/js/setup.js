@@ -5,14 +5,19 @@
 $(document).ready(function () {
     Dropzone.autoDiscover = false;
     var token = $("input[name='_csrf']").val();
+    var tagType = $('#tagType :selected').val();
+    $("#tagType").on("change", function () {
+       tagType =  $('#tagType :selected').val();
+    });
     $("#tagAdd").click(function () {
         var data = {};
         var url = "/training/tagger?_csrf=" + token;
-        var categoryName = $('#tagType').val();
+        var displayName = $('#displayName').val();
         var tags = $('#inputTags').tagsinput("items");
-        var tr = "<tr><td>" + categoryName + "</td><td><a href='#!'><i class='fa fa-times'></i></a></td></tr>";
+        var tr = "<tr><td>" + displayName + "</td><td><a href='#!'><i class='fa fa-times'></i></a></td></tr>";
         $('#categoryTable').append(tr);
-        data.name = categoryName;
+        data.tagType = tagType;
+        data.displayName = displayName;
         data.data = tags;
         post(data, url);
         $('#tagType').val("");
@@ -62,7 +67,6 @@ $(document).ready(function () {
         }
     });
     $('#tagType').selecter({
-        label: "Select a Tag Department",
         cover: true
     });
 });

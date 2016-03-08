@@ -19,6 +19,7 @@ public class AspriseOCRServiceImpl implements AspriseOCRService {
 
     @Override
     public List<String> doOCR(File file) {
+        System.out.println(file.getName());
         if (verifyImage(file)) {
             Ocr.setUp();
             Ocr ocr = new Ocr();

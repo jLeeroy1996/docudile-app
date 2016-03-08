@@ -26,7 +26,8 @@
       $tag.hide().fadeIn();
     },
     trimValue: false,
-    allowDuplicates: false
+    allowDuplicates: false,
+    splitOn: ','
   };
 
   /**
@@ -86,7 +87,7 @@
       if (self.isSelect && !self.multiple && self.itemsArray.length > 0)
         self.remove(self.itemsArray[0]);
 
-      if (typeof item === "string" && this.$element[0].tagName === 'INPUT') {
+      if (self.options.splitOn && typeof item === "string" && this.$element[0].tagName === 'INPUT') {
         var delimiter = (self.options.delimiterRegex) ? self.options.delimiterRegex : self.options.delimiter;
         var items = item.split(delimiter);
         if (items.length > 1) {

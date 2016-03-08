@@ -125,6 +125,30 @@ public class FileSystemServiceImpl implements FileSystemService {
         return false;
     }
 
+    @Override
+    public void createFolderFromCategory(String displayName, Integer userId) {
+        List<Folder> listFrom = folderDao.showAllByName("from", userId);
+        List<Folder> listTo = folderDao.showAllByName("to", userId);
+        for(Folder f : listFrom) {
+            createCategoryFolders(f, displayName, userId);
+            System.out.println(getPath(f) + displayName);
+            dropboxService.createFolder("/" + getPath(f) + displayName, userDao.show(userId).getDropboxAccessToken());
+        }
+        for(Folder f : listTo) {
+            createCategoryFolders(f, displayName, userId);
+            dropboxService.createFolder("/" + getPath(f) + displayName, userDao.show(userId).getDropboxAccessToken());
+        }
+    }
+
+    @Override
+    public void createCategoryFolders(Folder f, String categoryName, Integer userId) {
+        Folder cat = new Folder();
+        cat.setName(categoryName);
+        cat.setUser(userDao.show(userId));
+        cat.setParentFolder(f);
+        folderDao.create(cat);
+    }
+
     private String getPath(Folder folder) {
         return getPath(folder, "");
     }

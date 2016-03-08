@@ -105,11 +105,11 @@
             option.text = option.value = i;
             select.add(option, 0);
         }
-    });
-    $("#inputStartYear").selecter({
-        callback: updateEndYear,
-        cover: true,
-        label: "Select starting year"
+        $("#inputStartYear").selecter({
+            callback: updateEndYear,
+            cover: true,
+            label: "Select starting year"
+        });
     });
     function updateEndYear(value, index) {
         value = parseFloat(value) + 1;

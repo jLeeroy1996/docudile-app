@@ -78,7 +78,7 @@ public class FileHandler {
         Map<String, List<String>> files = new HashMap<>();
         
         for (String filename : filenames) {
-            FileReader fr = new FileReader(folder + "/" + filenames);
+            FileReader fr = new FileReader(folder + "/" + filename);
             BufferedReader br = new BufferedReader(fr);
             ArrayList<String> lines = new ArrayList<String>();
             String temp;
@@ -88,7 +88,7 @@ public class FileHandler {
                     lines.add(temp);
                 }
             }
-            files.put(filename, lines);
+            files.put(filename.split("\\.")[0], lines);
             br.close();
             fr.close();
         }
