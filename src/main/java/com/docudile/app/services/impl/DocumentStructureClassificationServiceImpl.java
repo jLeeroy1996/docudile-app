@@ -83,7 +83,9 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
 
     @Override
     public boolean trainClassifier(String path, List<String> tags, String type) {
+        System.out.println("here-1");
         if (writeToFile(tags, path + type + ".txt")) {
+            System.out.println("here");
             return tfIdfService.process(path, path + "processed");
         }
         return false;

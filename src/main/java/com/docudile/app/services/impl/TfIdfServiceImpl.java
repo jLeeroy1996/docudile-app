@@ -23,7 +23,9 @@ public class TfIdfServiceImpl implements TfIdfService {
     @Override
     public boolean process(String dataPath, String savePath) {
         try {
+            System.out.println("asddf");
             Map<String, List<String>> fileTokens = getFileTokens(FileHandler.readAllFiles(dataPath));
+            System.out.println("dafsdf");
             Set<String> distinctTokens = getDistinctTokens(fileTokens);
             Map<String, Integer[]> fileTokenCounts = getFileTokenCounts(fileTokens, distinctTokens);
             Double[] idfWeights = getIdfWeight(fileTokenCounts, distinctTokens.size());
@@ -35,16 +37,19 @@ public class TfIdfServiceImpl implements TfIdfService {
                 lines.add(distinctToken);
             }
             FileHandler.writeToFile(lines, savePath + "/tokens.dat");
+            System.out.println("here1");
             lines = new ArrayList<>();
             for (String key : fileTokens.keySet()) {
                 lines.add(key);
             }
             FileHandler.writeToFile(lines, savePath + "/tags.dat");
+            System.out.println("here2");
             lines = new ArrayList<>();
             for (Double idfWeight : idfWeights) {
                 lines.add(String.valueOf(idfWeight));
             }
             FileHandler.writeToFile(lines, savePath + "/idfWeights.dat");
+            System.out.println("here3");
             lines = new ArrayList<>();
             for (Double[] normalizedValues : normalization) {
                 String temp = "";
@@ -54,13 +59,16 @@ public class TfIdfServiceImpl implements TfIdfService {
                 lines.add(temp);
             }
             FileHandler.writeToFile(lines, savePath + "/normalization.dat");
+            System.out.println("here4");
             lines = new ArrayList<>();
             for (Double docuLength : docuLengths) {
                 lines.add(String.valueOf(docuLength));
             }
             FileHandler.writeToFile(lines, savePath + "/docuLength.dat");
+            System.out.println("here5");
             return true;
         } catch (Exception ex) {
+            System.out.println(ex);
         }
         return false;
     }
@@ -91,10 +99,15 @@ public class TfIdfServiceImpl implements TfIdfService {
             ArrayList<String> tokens = new ArrayList<>();
             for (String line : fileLines.get(path)) {
                 for (String token : StringHandler.tokenizer(line.toLowerCase(), " ")) {
-                    tokens.add(token.split("-")[0]);
+                    System.out.println(token);
+                    if (token.split("-").length > 0) {
+                        tokens.add(token.split("-")[0]);
+                    } else {
+                        tokens.add(token);
+                    }
                 }
             }
-            fileTokens.put(getTagName(path).toUpperCase(), tokens);
+            fileTokens.put(path.toUpperCase(), tokens);
         }
         return fileTokens;
     }
@@ -169,10 +182,6 @@ public class TfIdfServiceImpl implements TfIdfService {
         return count;
     }
 
-    private String getTagName(String path) {
-        return path.substring(path.lastIndexOf("\\") + 1, path.lastIndexOf("."));
-    }
-
     private List<String> loadTokens(String folderPath) {
         return FileHandler.readFile(folderPath + "/tokens.dat");
     }
@@ -211,7 +220,12 @@ public class TfIdfServiceImpl implements TfIdfService {
         Map<Integer, Integer> queryTokens = new LinkedHashMap<>();
 
         for (String token : StringHandler.tokenizer(query, " ")) {
-            String temp = token.toLowerCase().split("-")[0];
+            String temp;
+            if (token.split("-").length > 0) {
+                temp = token.split("-")[0];
+            } else {
+                temp = token;
+            }
             if (tokens.contains(temp)) {
                 if (!queryTokens.containsKey(tokens.indexOf(temp))) {
                     queryTokens.put(tokens.indexOf(temp), 1);
