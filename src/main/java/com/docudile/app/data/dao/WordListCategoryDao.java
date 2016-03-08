@@ -6,5 +6,6 @@ import com.docudile.app.data.entities.WordListCategory;
  * Created by cicct on 3/1/2016.
  */
 public interface WordListCategoryDao extends GenericDao<WordListCategory> {
-    public Float getVector(Integer categoryID, String word);
+    public WordListCategory getVector(Integer categoryID, String word);
+    public boolean isExist(Integer categoryID, String word);
 }

@@ -83,7 +83,11 @@ public class TrainController {
                                                                  @ModelAttribute("file") TrainingCatNewDto file,
                                                                  Principal principal) throws IOException {
         System.out.println("Size: " + file.getFile().size() + ", Category Name: " + name);
-        return documentService.contentTrain(principal.getName(), null, name);
+        MultipartFile f[] = new MultipartFile[file.getFile().size()];
+        for(int x = 0;x<file.getFile().size();x++){
+            f[x] = file.getFile().get(x);
+        }
+        return documentService.contentTrain(principal.getName(), f, name);
     }
 
 }

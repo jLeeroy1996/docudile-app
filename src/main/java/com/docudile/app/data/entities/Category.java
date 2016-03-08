@@ -21,6 +21,17 @@ public class Category{
     @JoinColumn(name="user_id")
     private User user;
 
+    @Column(name = "numberOfFiles")
+    private Integer numberOfFiles;
+
+    public Integer getNumberOfFiles() {
+        return numberOfFiles;
+    }
+
+    public void setNumberOfFiles(Integer numberOfFiles) {
+        this.numberOfFiles = numberOfFiles;
+    }
+
     public Integer getId() {
         return id;
     }

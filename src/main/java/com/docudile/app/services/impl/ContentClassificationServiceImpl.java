@@ -10,6 +10,8 @@ import com.docudile.app.services.ContentClassificationService;
 import com.docudile.app.services.DocxService;
 import com.docudile.app.services.FileSystemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -60,7 +63,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
     public boolean train(Integer userID) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        WordListDto wordList = null;
+        WordListDto wordList = new WordListDto();
         List<FileContentDto> fileDto = new ArrayList<>();
         List<com.docudile.app.data.entities.File> file = new ArrayList<>();
         CategoryDto category = new CategoryDto();
@@ -109,7 +112,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 //                System.out.println(fileEntry);
 //                FileContentDto fileContentDto = new FileContentDto();
 //                fileContentDto.setFileName(fileEntry.getName());
-//                fileContentDto.setCategoryName(categoriesDto.get(x).getName());
+//                fileContentDto.setCa  tegoryName(categoriesDto.get(x).getName());
 //                fileContentDto.setWordList(docxService.readDocx(fileEntry));
 //                fileDto.add(fileContentDto);
 //            }
@@ -137,10 +140,18 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         for(int x = 0;x<wordListVectors.length;x++){
             for(int y = 0;y<wordListVectors[0].length;y++){
                 WordListCategory wordListCategory = new WordListCategory();
-                wordListCategory.setWordList(wordListDao.getID(wordList.getWordList().get(x)));
-                wordListCategory.setCategory(categoryDao.getCategory(categoriesDto.get(y).getCategoryID()));
-                wordListCategory.setCount(wordListVectors[x][y]);
-                wordListCategoryDao.create(wordListCategory);
+
+                if(wordListCategoryDao.isExist(categoriesDto.get(y).getCategoryID(),wordListDao.getID(wordList.getWordList().get(x)).getWord())){
+                    wordListCategory = wordListCategoryDao.getVector(categoriesDto.get(y).getCategoryID(),wordListDao.getID(wordList.getWordList().get(x)).getWord());
+                    wordListCategory.setCount(wordListVectors[x][y]);
+                    wordListCategoryDao.update(wordListCategory);
+                }
+                else {
+                    wordListCategory.setWordList(wordListDao.getID(wordList.getWordList().get(x)));
+                    wordListCategory.setCategory(categoryDao.getCategory(categoriesDto.get(y).getCategoryID()));
+                    wordListCategory.setCount(wordListVectors[x][y]);
+                    wordListCategoryDao.create(wordListCategory);
+                }
             }
         }
         return true;
@@ -153,6 +164,9 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         for (int x = 0; x < files.size(); x++) {
             List<String> words = files.get(x).getWordList();
             for (int y = 0; y < words.size(); y++) {
+                if(isStopWord(words.get(y))){
+                    continue;
+                }
                 for (int z = 0; z < wordListWords.size(); z++) {
                     if ((words.get(y).equalsIgnoreCase(wordListWords.get(z)))) {
                         isExist = true;
@@ -261,7 +275,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
         for(int x = 0;x<words.size();x++){
             for(int y = 0;y<categoryVectors.length;y++) {
-                categoryVectors[y] *= wordListCategoryDao.getVector(categoryList.get(y).getId(), words.get(x));
+                categoryVectors[y] *= wordListCategoryDao.getVector(categoryList.get(y).getId(), words.get(x)).getCount();
             }
         }
 
@@ -346,5 +360,15 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         categoryDao.create(cat);
         System.out.println(categoryName+"created Category");
     }
+
+    public boolean isStopWord(String word){
+        String[] stopwords = {"a", "as", "able", "about", "above", "according", "accordingly", "across", "actually", "after", "afterwards", "again", "against", "aint", "all", "allow", "allows", "almost", "alone", "along", "already", "also", "although", "always", "am", "among", "amongst", "an", "and", "another", "any", "anybody", "anyhow", "anyone", "anything", "anyway", "anyways", "anywhere", "apart", "appear", "appreciate", "appropriate", "are", "arent", "around", "as", "aside", "ask", "asking", "associated", "at", "available", "away", "awfully", "be", "became", "because", "become", "becomes", "becoming", "been", "before", "beforehand", "behind", "being", "believe", "below", "beside", "besides", "best", "better", "between", "beyond", "both", "brief", "but", "by", "cmon", "cs", "came", "can", "cant", "cannot", "cant", "cause", "causes", "certain", "certainly", "changes", "clearly", "co", "com", "come", "comes", "concerning", "consequently", "consider", "considering", "contain", "containing", "contains", "corresponding", "could", "couldnt", "course", "currently", "definitely", "described", "despite", "did", "didnt", "different", "do", "does", "doesnt", "doing", "dont", "done", "down", "downwards", "during", "each", "edu", "eg", "eight", "either", "else", "elsewhere", "enough", "entirely", "especially", "et", "etc", "even", "ever", "every", "everybody", "everyone", "everything", "everywhere", "ex", "exactly", "example", "except", "far", "few", "ff", "fifth", "first", "five", "followed", "following", "follows", "for", "former", "formerly", "forth", "four", "from", "further", "furthermore", "get", "gets", "getting", "given", "gives", "go", "goes", "going", "gone", "got", "gotten", "greetings", "had", "hadnt", "happens", "hardly", "has", "hasnt", "have", "havent", "having", "he", "hes", "hello", "help", "hence", "her", "here", "heres", "hereafter", "hereby", "herein", "hereupon", "hers", "herself", "hi", "him", "himself", "his", "hither", "hopefully", "how", "howbeit", "however", "i", "id", "ill", "im", "ive", "ie", "if", "ignored", "immediate", "in", "inasmuch", "inc", "indeed", "indicate", "indicated", "indicates", "inner", "insofar", "instead", "into", "inward", "is", "isnt", "it", "itd", "itll", "its", "its", "itself", "just", "keep", "keeps", "kept", "know", "knows", "known", "last", "lately", "later", "latter", "latterly", "least", "less", "lest", "let", "lets", "like", "liked", "likely", "little", "look", "looking", "looks", "ltd", "mainly", "many", "may", "maybe", "me", "mean", "meanwhile", "merely", "might", "more", "moreover", "most", "mostly", "much", "must", "my", "myself", "name", "namely", "nd", "near", "nearly", "necessary", "need", "needs", "neither", "never", "nevertheless", "new", "next", "nine", "no", "nobody", "non", "none", "noone", "nor", "normally", "not", "nothing", "novel", "now", "nowhere", "obviously", "of", "off", "often", "oh", "ok", "okay", "old", "on", "once", "one", "ones", "only", "onto", "or", "other", "others", "otherwise", "ought", "our", "ours", "ourselves", "out", "outside", "over", "overall", "own", "particular", "particularly", "per", "perhaps", "placed", "please", "plus", "possible", "presumably", "probably", "provides", "que", "quite", "qv", "rather", "rd", "re", "really", "reasonably", "regarding", "regardless", "regards", "relatively", "respectively", "right", "said", "same", "saw", "say", "saying", "says", "second", "secondly", "see", "seeing", "seem", "seemed", "seeming", "seems", "seen", "self", "selves", "sensible", "sent", "serious", "seriously", "seven", "several", "shall", "she", "should", "shouldnt", "since", "six", "so", "some", "somebody", "somehow", "someone", "something", "sometime", "sometimes", "somewhat", "somewhere", "soon", "sorry", "specified", "specify", "specifying", "still", "sub", "such", "sup", "sure", "ts", "take", "taken", "tell", "tends", "th", "than", "thank", "thanks", "thanx", "that", "thats", "thats", "the", "their", "theirs", "them", "themselves", "then", "thence", "there", "theres", "thereafter", "thereby", "therefore", "therein", "theres", "thereupon", "these", "they", "theyd", "theyll", "theyre", "theyve", "think", "third", "this", "thorough", "thoroughly", "those", "though", "three", "through", "throughout", "thru", "thus", "to", "together", "too", "took", "toward", "towards", "tried", "tries", "truly", "try", "trying", "twice", "two", "un", "under", "unfortunately", "unless", "unlikely", "until", "unto", "up", "upon", "us", "use", "used", "useful", "uses", "using", "usually", "value", "various", "very", "via", "viz", "vs", "want", "wants", "was", "wasnt", "way", "we", "wed", "well", "were", "weve", "welcome", "well", "went", "were", "werent", "what", "whats", "whatever", "when", "whence", "whenever", "where", "wheres", "whereafter", "whereas", "whereby", "wherein", "whereupon", "wherever", "whether", "which", "while", "whither", "who", "whos", "whoever", "whole", "whom", "whose", "why", "will", "willing", "wish", "with", "within", "without", "wont", "wonder", "would", "would", "wouldnt", "yes", "yet", "you", "youd", "youll", "youre", "youve", "your", "yours", "yourself", "yourselves", "zero"};
+        List<String> stopWords = Arrays.asList(stopwords);
+        if(stopWords.contains(word)){
+            return true;
+        }
+        return false;
+    }
+
 
 }

@@ -228,10 +228,10 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public GeneralMessageResponseDto contentTrain(String username, MultipartFile[] file, String categoryName) throws IOException {
         Category cat = new Category();
-        System.out.println(categoryName + "eeeeeeeeeeeeeeeee");
         System.out.println(file.length);
         cat.setCategoryName(categoryName);
         cat.setUser(userDao.show(username));
+        cat.setNumberOfFiles(file.length);
         categoryDao.create(cat);
 
         contentClassificationService.writeToFile(file, environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.content_training") + "/" + categoryName);
