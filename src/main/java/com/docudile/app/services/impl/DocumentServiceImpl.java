@@ -140,7 +140,8 @@ public class DocumentServiceImpl implements DocumentService {
             } else {
                 path = "uncategorized";
             }
-            fileSystemService.storeFile(file, path, userDao.show(username).getId());
+            System.out.println(path + "XXXXXXXXXXX");
+            fileSystemService.storeFile(file, path, userDao.show(username).getId(),contentResult);
             responseDto.setMessage("file_upload_success");
         } else {
             responseDto.setMessage("error_reading_file");
@@ -250,8 +251,6 @@ public class DocumentServiceImpl implements DocumentService {
 
     }
 
-
-
     @Override
     public GeneralMessageResponseDto uploadTraining(MultipartFile file, String username, String categoryName) {
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
@@ -327,7 +326,7 @@ public class DocumentServiceImpl implements DocumentService {
         Pattern pattern = Pattern.compile("\\d{4}");
         Matcher matcher = pattern.matcher(line);
         if (matcher.find()) {
-            return matcher.group(1);
+            return matcher.group(0);
         }
         return null;
     }

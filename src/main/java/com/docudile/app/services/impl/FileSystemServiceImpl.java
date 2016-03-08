@@ -1,10 +1,12 @@
 package com.docudile.app.services.impl;
 
+import com.docudile.app.data.dao.CategoryDao;
 import com.docudile.app.data.dao.FileDao;
 import com.docudile.app.data.dao.FolderDao;
 import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.FileShowDto;
 import com.docudile.app.data.dto.FolderShowDto;
+import com.docudile.app.data.entities.Category;
 import com.docudile.app.data.entities.File;
 import com.docudile.app.data.entities.Folder;
 import com.docudile.app.data.entities.User;
@@ -44,6 +46,9 @@ public class FileSystemServiceImpl implements FileSystemService {
     private DropboxService dropboxService;
 
     @Autowired
+    private CategoryDao categoryDao;
+
+    @Autowired
     private UserService userService;
 
     public boolean createFolder(String name, Integer parentId, Integer userId) {
@@ -59,18 +64,21 @@ public class FileSystemServiceImpl implements FileSystemService {
         return false;
     }
 
-    public boolean storeFile(MultipartFile mfile, String path, Integer userId) {
+    public boolean storeFile(MultipartFile mfile, String path, Integer userId, Integer contentID) {
         Folder folder = getFolderFromPath(path);
         User user = userDao.show(userId);
+        Category cat = categoryDao.getCategory(contentID);
         String filename = mfile.getOriginalFilename();
         String filepath = path + "/" + filename;
         System.err.println("File path: " + filepath);
         File file = new File();
         file.setFilename(filename);
         file.setUser(user);
+        file.setCategory(cat);
         file.setFolder(folder);
         file.setDateUploaded(convertDateToString(new Date()));
-        if (fileDao.create(file)) {
+        file.setId(fileDao.getFileID(filename,user.getId()).getId());
+        if (fileDao.update(file)) {
             try {
                 return dropboxService.uploadFile(filepath, mfile.getInputStream(), user.getDropboxAccessToken());
             } catch (IOException e) {

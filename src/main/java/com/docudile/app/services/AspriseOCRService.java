@@ -10,4 +10,5 @@ public interface AspriseOCRService {
 
     public List<String> doOCR(File file);
 
+    public List<String> doOCRContent(File file);
 }

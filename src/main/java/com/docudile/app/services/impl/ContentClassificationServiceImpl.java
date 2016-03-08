@@ -30,7 +30,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by cicct on 2/15/2016.
@@ -66,6 +68,9 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
     @Autowired
     private WordListCategoryDao wordListCategoryDao;
+
+    @Autowired
+    private WordListDocumentDao wordListDocumentDao;
 
     public boolean train(Integer userID) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -105,7 +110,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                 }
                 else{
                     ImageIO.read(fileEntry.getAbsoluteFile()).toString();
-                    fileContentDto.setWordList(aspriseOCRService.doOCR(fileEntry));
+                    fileContentDto.setWordList(aspriseOCRService.doOCRContent(fileEntry));
                 }
 
                 fileDto.add(fileContentDto);
@@ -254,12 +259,12 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         List<CategoryDto> categories = new ArrayList<>();
         //get data from DB Category
         List<Category> categoryList = categoryDao.getCategories(userID);
-        float[] categoryVectors = new float[categories.size()];
+
 
         CategoryDto categoryDto = new CategoryDto();
         for(int x = 0;x<categoryList.size();x++){
             categoryDto.setName(categoryList.get(x).getCategoryName());
-            categoryDto.setFileCount(fileDao.numberOfFiles(categoryList.get(x).getId()));
+            categoryDto.setFileCount(categoryList.get(x).getNumberOfFiles());
             categoryDto.setCategoryID(categoryList.get(x).getId());
             categories.add(categoryDto);
         }
@@ -274,10 +279,11 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         FileContentDto fileContentDto = new FileContentDto();
         fileContentDto.setWordList(words);
         fileContentDto.setFileName(filename);
+        List<FileContentDto> fileList = new ArrayList<>();
+        fileList.add(fileContentDto);
+        wordList = getDistinctWords(fileList, wordList);
 
-        wordList = getDistinctWords((List<FileContentDto>) fileContentDto,wordList);
-
-
+        float[] categoryVectors = new float[categoryList.size()];
 
         for (int x = 0; x < categories.size(); x++) {
             totalFiles += categories.get(x).getFileCount();
@@ -289,7 +295,12 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
         for(int x = 0;x<words.size();x++){
             for(int y = 0;y<categoryVectors.length;y++) {
-                categoryVectors[y] *= wordListCategoryDao.getVector(categoryList.get(y).getId(), words.get(x)).getCount();
+                float temp = 1;
+                if(wordListCategoryDao.getVector(categoryList.get(y).getId(), words.get(x)) != null){
+                    temp = wordListCategoryDao.getVector(categoryList.get(y).getId(), words.get(x)).getCount();
+                }
+                categoryVectors[y] *= temp;
+
             }
         }
 
@@ -302,6 +313,12 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                 temp = categoryVectors[x];
             }
         }
+        com.docudile.app.data.entities.File f = new com.docudile.app.data.entities.File();
+        f.setFilename(filename);
+        f.setUser(userDao.show(userID));
+        fileDao.create(f);
+
+        getCount(fileList,wordList,fileDao.getFileID(filename,userID).getId());
 
         return categoryDto.getCategoryID();
     }
@@ -330,8 +347,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
     private void getCount(List<FileContentDto> files, WordListDto wordList, Integer fileID){
         String[][] wordCount = new String[wordList.getWordList().size()][2];
-        WordListDocument wordListDocument = null;
-        WordListDocumentDaoImpl wordListDocumentDao = null;
+        WordListDocument wordListDocument = new WordListDocument();
 
         for(int x = 0;x<wordList.getWordList().size();x++){
             wordCount[x][0] = wordList.getWordList().get(x);

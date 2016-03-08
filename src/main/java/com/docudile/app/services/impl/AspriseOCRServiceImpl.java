@@ -31,6 +31,20 @@ public class AspriseOCRServiceImpl implements AspriseOCRService {
         return null;
     }
 
+    @Override
+    public List<String> doOCRContent(File file) {
+        System.out.println(file.getName());
+        if (verifyImage(file)) {
+            Ocr.setUp();
+            Ocr ocr = new Ocr();
+            ocr.startEngine("eng", Ocr.SPEED_SLOW);
+            String result = ocr.recognize(new File[]{file}, Ocr.RECOGNIZE_TYPE_TEXT, Ocr.OUTPUT_FORMAT_PLAINTEXT);
+            ocr.stopEngine();
+            return Arrays.asList(result.split(" "));
+        }
+        return null;
+    }
+
     private boolean verifyImage(File file) {
         String mimeType = new MimetypesFileTypeMap().getContentType(file);
         String type = mimeType.split("/")[0];

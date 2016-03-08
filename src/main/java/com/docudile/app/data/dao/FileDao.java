@@ -9,8 +9,9 @@ import java.util.List;
  */
 public interface FileDao extends GenericDao<File> {
 
-    public Integer numberOfFiles(Integer categoryID);
+    public File numberOfFiles(Integer categoryID);
 
     public List<File> getSpecificFiles(Integer userID);
 
+    public File getFileID(String filename, Integer userID);
 }

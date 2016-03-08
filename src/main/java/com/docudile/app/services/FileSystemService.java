@@ -14,7 +14,7 @@ public interface FileSystemService {
 
     public boolean createFolder(String name, Integer parentId, Integer userId);
 
-    public boolean storeFile(MultipartFile file, String path, Integer userId);
+    public boolean storeFile(MultipartFile file, String path, Integer userId, Integer contentID);
 
     public boolean storeFileNotMapped(MultipartFile file, String path, Integer userId);
 

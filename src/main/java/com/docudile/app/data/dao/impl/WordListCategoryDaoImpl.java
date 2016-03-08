@@ -28,6 +28,7 @@ public class WordListCategoryDaoImpl extends GenericDaoImpl<WordListCategory> im
         Query query = getCurrentSession().createQuery("from WordListCategory w where w.category.id = :categoryID and w.wordList.id = :wordListID");
         query.setParameter("categoryID", categoryID);
         query.setParameter("wordListID", wordListDao.getID(word).getId());
+
         return (WordListCategory) query.uniqueResult();
     }
 
