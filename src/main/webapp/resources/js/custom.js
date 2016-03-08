@@ -25,6 +25,25 @@ $(document).on('ready', function () {
             type: 'GET',
             url: '/home/search/' + queryString,
             success: function (response) {
+                if(response.length === 0) {
+                    $("#filebox").append('<h3>No result found</h3>');
+                }
+                else {
+                    appendTableForSearch();
+                    $.each(response, function (key, inside) {
+                        var image = '<img src="/resources/img/file-icon.png" class="dd-search-icon" />';
+                        var filename = '<p class="searchFilename">' + inside.filename + '</p>';
+                        var path = '<p class="searchPath">' + inside.path + '</p>';
+                        var tr = '<tr><td class="col-sm-1">' + image + ' </td><td>' + filename + path + '</td></tr>';
+                        var tablerow = $(tr);
+                        console.log(tr);
+                        $('#searchResult').append(tr);
+                        tablerow.click(function () {
+                            $(this).addClass('active').siblings().removeClass('active');
+                            viewDetailsFile(inside);
+                        });
+                    });
+                }
                 console.log(response);
             }
         });
@@ -35,8 +54,17 @@ $(document).on('ready', function () {
 function readyFileboxBeforeSearch(queryString) {
     var filebox = $("#filebox");
     filebox.empty();
-    var header = '<h4 class="search-header">Search result for ' + queryString + '</h4>'
+    var header = '<h4 class="search-header">Search result for "' + queryString + '"</h4>'
     filebox.append(header);
+}
+
+function appendTableForSearch() {
+    var filebox = $("#filebox");
+    var table = '<table class="table table-hover">' +
+            '<tbody id="searchResult">' +
+            '</tbody>' +
+            '</table>';
+    filebox.append(table);
 }
 
 function readyFileboxAfterSearch() {

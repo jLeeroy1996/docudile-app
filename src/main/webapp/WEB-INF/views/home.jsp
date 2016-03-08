@@ -98,12 +98,7 @@
             <div class="col-sm-2">
             </div>
             <div class="col-sm-7">
-                <ol class="breadcrumb">
-                    <li><a href="#">Docudile</a></li>
-                    <li><a href="#">Memo</a></li>
-                    <li class="active"><a href="#">2016</a></li>
-                    <li class="active">MOA</li>
-                </ol>
+                <p></p>
             </div>
             <div class="col-sm-3">
             </div>

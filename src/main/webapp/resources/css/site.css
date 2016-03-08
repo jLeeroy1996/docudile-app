@@ -203,3 +203,17 @@ ul.nav-tree ul.nav-tree {
     font-weight: normal;
     margin: 15px;
 }
+
+.dd-search-icon {
+    height: 48px;
+    margin-right: 9px;
+}
+
+.searchFilename {
+    margin: 0;
+    font-weight: bold;
+}
+
+.searchPath {
+    font-size: 14px;
+}
