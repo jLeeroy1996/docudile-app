@@ -6,12 +6,14 @@ import com.docudile.app.data.dto.CategoryDto;
 import com.docudile.app.data.dto.FileContentDto;
 import com.docudile.app.data.dto.WordListDto;
 import com.docudile.app.data.entities.*;
+import com.docudile.app.services.AspriseOCRService;
 import com.docudile.app.services.ContentClassificationService;
 import com.docudile.app.services.DocxService;
 import com.docudile.app.services.FileSystemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import java.io.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,6 +62,9 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     private WordListDao wordListDao;
 
     @Autowired
+    private AspriseOCRService aspriseOCRService;
+
+    @Autowired
     private WordListCategoryDao wordListCategoryDao;
 
     public boolean train(Integer userID) throws IOException {
@@ -93,7 +99,15 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                 fileContentDto = new FileContentDto();
                 fileContentDto.setFileName(fileEntry.getName());
                 fileContentDto.setCategoryName(categoriesDto.get(x).getName());
-                fileContentDto.setWordList(docxService.readDocx(fileEntry));
+                String extension = FilenameUtils.getExtension(fileEntry.getName());
+                if (extension.equals(".docx")) {
+                    fileContentDto.setWordList(docxService.readDocx(fileEntry));
+                }
+                else{
+                    ImageIO.read(fileEntry.getAbsoluteFile()).toString();
+                    fileContentDto.setWordList(aspriseOCRService.doOCR(fileEntry));
+                }
+
                 fileDto.add(fileContentDto);
             }
         }
