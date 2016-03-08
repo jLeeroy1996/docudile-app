@@ -6,10 +6,7 @@ import com.docudile.app.data.dao.FolderDao;
 import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.FileShowDto;
 import com.docudile.app.data.dto.FolderShowDto;
-import com.docudile.app.data.entities.Category;
-import com.docudile.app.data.entities.File;
-import com.docudile.app.data.entities.Folder;
-import com.docudile.app.data.entities.User;
+import com.docudile.app.data.entities.*;
 import com.docudile.app.services.DropboxService;
 import com.docudile.app.services.FileSystemService;
 import com.docudile.app.services.UserService;
@@ -155,6 +152,15 @@ public class FileSystemServiceImpl implements FileSystemService {
         cat.setUser(userDao.show(userId));
         cat.setParentFolder(f);
         folderDao.create(cat);
+    }
+
+    @Override
+    public List<FileShowDto> getFilesFromId(Set<WordListDocument> documentId, Integer userId) {
+        List<FileShowDto> files = new ArrayList<>();
+        for(WordListDocument id : documentId) {
+            files.add(convertToDto(fileDao.show(id.getId())));
+        }
+        return files;
     }
 
     private String getPath(Folder folder) {

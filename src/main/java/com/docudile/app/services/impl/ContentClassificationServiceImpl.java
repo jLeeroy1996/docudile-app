@@ -317,7 +317,6 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         f.setFilename(filename);
         f.setUser(userDao.show(userID));
         fileDao.create(f);
-
         getCount(fileList,wordList,fileDao.getFileID(filename,userID).getId());
 
         return categoryDto.getCategoryID();
@@ -349,6 +348,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         String[][] wordCount = new String[wordList.getWordList().size()][2];
         WordListDocument wordListDocument = new WordListDocument();
 
+
         for(int x = 0;x<wordList.getWordList().size();x++){
             wordCount[x][0] = wordList.getWordList().get(x);
             wordCount[x][1] = "0";
@@ -363,6 +363,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             }
         }
         for(int x = 0;x<wordCount.length;x++){
+            wordListDocument = new WordListDocument();
             wordListDocument.setWordList(wordListDao.show(wordListDao.getID(wordCount[x][0]).getId()));
             wordListDocument.setFile(fileDao.show(fileID));
             wordListDocument.setVectorCount(Integer.parseInt(wordCount[x][1]));

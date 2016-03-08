@@ -1,7 +1,10 @@
 package com.docudile.app.services;
 
+import com.docudile.app.data.dto.FileShowDto;
 import com.docudile.app.data.dto.FolderShowDto;
+import com.docudile.app.data.entities.File;
 import com.docudile.app.data.entities.Folder;
+import com.docudile.app.data.entities.WordListDocument;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -29,5 +32,7 @@ public interface FileSystemService {
     public void createFolderFromCategory(String displayName, Integer userId);
 
     public void createCategoryFolders(Folder f, String categoryName, Integer userId);
+
+    public List<FileShowDto> getFilesFromId(Set<WordListDocument> documentId, Integer userId);
 
 }

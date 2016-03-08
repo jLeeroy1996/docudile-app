@@ -79,7 +79,7 @@ public class DocumentServiceImpl implements DocumentService {
         if (text != null) {
             Map<Integer, String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
             String type = docStructureClassification.classify(StringUtils.join(tags, " "), environment.getProperty("storage.classifier"));
-            Integer contentResult = contentClassificationService.categorize(text, userDao.show(username).getId(), file.getOriginalFilename());
+            Integer contentResult = contentClassificationService.categorize(getLinesContent(file), userDao.show(username).getId(), file.getOriginalFilename());
             String path;
             String year = "";
             String from = "";
@@ -317,6 +317,20 @@ public class DocumentServiceImpl implements DocumentService {
             ImageIO.setUseCache(false);
             ImageIO.read(mfile.getInputStream()).toString();
             text = aspriseOCRService.doOCR(multipartToFile(mfile));
+        } catch (IOException e) {
+        }
+        return text;
+    }
+
+    private List<String> getLinesContent(MultipartFile mfile) {
+        List<String> text = null;
+        String extension = FilenameUtils.getExtension(mfile.getOriginalFilename());
+        if (extension.equals(".docx")) {
+            text = docxService.readDocx(multipartToFile(mfile));
+        } else try {
+            ImageIO.setUseCache(false);
+            ImageIO.read(mfile.getInputStream()).toString();
+            text = aspriseOCRService.doOCRContent(multipartToFile(mfile));
         } catch (IOException e) {
         }
         return text;

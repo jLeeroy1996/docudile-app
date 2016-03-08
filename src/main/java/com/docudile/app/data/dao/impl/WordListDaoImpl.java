@@ -33,6 +33,7 @@ public class WordListDaoImpl extends GenericDaoImpl<WordList> implements WordLis
             String word = wlWords.get(x).getWord();
             words.add(word);
         }
+        System.out.println(words.size()+"aaaaaaaa");
 
         return words;
     }
