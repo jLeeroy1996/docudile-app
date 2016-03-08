@@ -125,6 +125,12 @@
                     </div>
                     <div role="tabpanel" class="tab-pane" id="new">
                         <div class="form-group">
+                            <select id="dd-select-new" class="form-control">
+                                <option value="memo">Memo</option>
+                                <option value="letter">Letter</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <input type="text" class="form-control" placeholder="Category name..." id="category_name"/>
                         </div>
                         <div class="form-group">
@@ -154,6 +160,7 @@
 <script rel="script" src="${"/resources/js/setup.js"}"></script>
 <script>
     $("#dd-select-train").selecter();
+    $("#dd-select-new").selecter();
 </script>
 </body>
 </html>
