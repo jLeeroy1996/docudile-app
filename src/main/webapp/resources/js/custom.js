@@ -6,8 +6,6 @@ window.tree = null;
 $(document).on('ready', function () {
     $.fn.modal.Constructor.prototype.enforceFocus = $.noop;
     var token = $("input[name='_csrf']").val();
-    var doc_url = "./home/upload-documents?_csrf=" + token;
-    var type_url = "./new-type?_csrf=" + token;
     window.treeData = $.retrieveTreeData();
     window.tree = createTreeView();
     $(document).keyup(function (e) {

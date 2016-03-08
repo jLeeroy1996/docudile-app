@@ -80,7 +80,7 @@
                 <div class="form-group">
                     <form action="/home/upload-documents?_csrf=${_csrf.token}" id="upload_doc" class="dropzone dropzone-blue">
                         <div class="fallback">
-                            <input name="file" type="file" multiple>
+                            <input name="document">
                         </div>
                     </form>
                 </div>
@@ -140,16 +140,13 @@
 
 <script>
     $('#upload_doc').dropzone({
-        paramName: 'file',
+        paramName: 'document',
         clickable: true,
         autoProcessQueue: false,
         init: function() {
             var dropzone = this;
             $('#upload_doc_btn').click(function() {
                 dropzone.processQueue();
-            });
-            dropzone.on('sending', function(file, xhr, formData) {
-                formData.append('type_name', $('#classifier_types').val());
             });
         }
     });
