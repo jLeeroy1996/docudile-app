@@ -79,7 +79,7 @@ public class DocumentServiceImpl implements DocumentService {
         if (text != null) {
             Map<Integer, String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
             String type = docStructureClassification.classify(StringUtils.join(tags.values(), " "), environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.classifier") + "/processed");
-            //Integer contentResult = contentClassificationService.categorize(getLinesContent(file), userDao.show(username).getId(), file.getOriginalFilename());
+            Integer contentResult = contentClassificationService.categorize(getLinesContent(file), userDao.show(username).getId(), file.getOriginalFilename());
             String path;
             String year = "";
             String from = "";
@@ -126,11 +126,11 @@ public class DocumentServiceImpl implements DocumentService {
                 path = year;
                 if (StringUtils.isNotEmpty(type)) {
                     path += "/" + type;
-                    //String category = categoryDao.show(contentResult).getCategoryName();
+                    String category = categoryDao.show(contentResult).getCategoryName();
                     if (fromHome) {
-                        path += "/to/" + to + "/";
+                        path += "/to/" + to + "/" + category;
                     } else if (fromOthers) {
-                        path += "/from/" + from + "/";
+                        path += "/from/" + from + "/" + category;
                     } else {
                         path += "/uncategorized";
                     }
