@@ -78,8 +78,8 @@ public class DocumentServiceImpl implements DocumentService {
         List<String> text = getLines(file);
         if (text != null) {
             Map<Integer, String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
-            String type = docStructureClassification.classify(StringUtils.join(tags, " "), environment.getProperty("storage.classifier"));
-            Integer contentResult = contentClassificationService.categorize(getLinesContent(file), userDao.show(username).getId(), file.getOriginalFilename());
+            String type = docStructureClassification.classify(StringUtils.join(tags.values(), " "), environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.classifier") + "/processed");
+            //Integer contentResult = contentClassificationService.categorize(getLinesContent(file), userDao.show(username).getId(), file.getOriginalFilename());
             String path;
             String year = "";
             String from = "";
@@ -126,11 +126,11 @@ public class DocumentServiceImpl implements DocumentService {
                 path = year;
                 if (StringUtils.isNotEmpty(type)) {
                     path += "/" + type;
-                    String category = categoryDao.show(contentResult).getCategoryName();
+                    //String category = categoryDao.show(contentResult).getCategoryName();
                     if (fromHome) {
-                        path += "/to/" + to + "/" + category;
+                        path += "/to/" + to + "/";
                     } else if (fromOthers) {
-                        path += "/from/" + from + "/" + category;
+                        path += "/from/" + from + "/";
                     } else {
                         path += "/uncategorized";
                     }
@@ -141,7 +141,7 @@ public class DocumentServiceImpl implements DocumentService {
                 path = "uncategorized";
             }
             System.out.println(path + "XXXXXXXXXXX");
-            fileSystemService.storeFile(file, path, userDao.show(username).getId(),contentResult);
+            //fileSystemService.storeFile(file, path, userDao.show(username).getId(),contentResult);
             responseDto.setMessage("file_upload_success");
         } else {
             responseDto.setMessage("error_reading_file");

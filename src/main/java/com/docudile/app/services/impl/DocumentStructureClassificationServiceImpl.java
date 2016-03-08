@@ -52,6 +52,7 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
             }
             if (!found) {
                 String tag = tagWithFallback(line, fallbackTags);
+                System.out.println(tag);
                 if (StringUtils.isNotEmpty(tag)) {
                     found = true;
                     tagged.put(i, tag);

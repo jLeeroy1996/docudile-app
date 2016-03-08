@@ -77,17 +77,27 @@ public class TfIdfServiceImpl implements TfIdfService {
     public String search(String query, String dataPath) {
         try {
             List<String> tokens = loadTokens(dataPath);
+            System.out.println("lol1");
             List<String> titles = loadTitles(dataPath);
+            System.out.println("lol2");
             List<Double> idfWeights = loadIdfWeights(dataPath);
+            System.out.println("lol3");
             List<List<Double>> normalization = loadNormalization(dataPath);
+            System.out.println("lol4");
             List<Double> docuLength = loadDocuLengths(dataPath);
+            System.out.println("lol5");
 
             List<Double> queryTfIdf = getTfIdf(getQueryCounts(query, tokens), idfWeights);
+            System.out.println("lol6");
             List<Double> vSearch = getVSearch(normalization, queryTfIdf);
+            System.out.println("lol7");
             Double queryLength = getQueryLength(queryTfIdf);
+            System.out.println("lol8");
             List<Double> result = getDegreeValues(getSimilarityValues(vSearch, queryLength, docuLength));
+            System.out.println("lol9");
             return getSearchResult(titles, result);
         } catch (Exception ex) {
+            System.out.println(ex);
         }
         return null;
     }
@@ -218,6 +228,7 @@ public class TfIdfServiceImpl implements TfIdfService {
 
     private Map<Integer, Integer> getQueryCounts(String query, List<String> tokens) throws IOException {
         Map<Integer, Integer> queryTokens = new LinkedHashMap<>();
+        System.out.println(tokens);
 
         for (String token : StringHandler.tokenizer(query, " ")) {
             String temp;
@@ -226,6 +237,7 @@ public class TfIdfServiceImpl implements TfIdfService {
             } else {
                 temp = token;
             }
+            temp = temp.toLowerCase();
             if (tokens.contains(temp)) {
                 if (!queryTokens.containsKey(tokens.indexOf(temp))) {
                     queryTokens.put(tokens.indexOf(temp), 1);
@@ -234,13 +246,14 @@ public class TfIdfServiceImpl implements TfIdfService {
                 }
             }
         }
+        System.out.println("Query: " + queryTokens);
         return queryTokens;
     }
 
     private List<Double> getTfIdf(Map<Integer, Integer> queryTokens, List<Double> idfWeight) {
         List<Double> tfIdf = new ArrayList<>();
         double max = MathCalculations.getMax(queryTokens);
-
+        System.out.println("herez");
         for (int key = 0; key < idfWeight.size(); key++) {
             if (queryTokens.containsKey(key)) {
                 tfIdf.add(((double) queryTokens.get(key) / max) * idfWeight.get(key));
@@ -248,6 +261,7 @@ public class TfIdfServiceImpl implements TfIdfService {
                 tfIdf.add(0.0);
             }
         }
+        System.out.println("herez1");
         return tfIdf;
     }
 

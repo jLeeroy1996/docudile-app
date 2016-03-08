@@ -69,6 +69,7 @@ public class FileHandler {
                 lines.add(temp);
             }
         } catch (Exception ex) {
+            System.out.println(ex);
         }
         return lines;
     }
