@@ -104,8 +104,9 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                 fileContentDto = new FileContentDto();
                 fileContentDto.setFileName(fileEntry.getName());
                 fileContentDto.setCategoryName(categoriesDto.get(x).getName());
-                String extension = FilenameUtils.getExtension(fileEntry.getName());
-                if (extension.equals(".docx")) {
+                String extension = FilenameUtils.getExtension(fileEntry.getAbsoluteFile().toString());
+                System.out.println(extension + " sssssssssss");
+                if (extension.equals("docx")) {
                     fileContentDto.setWordList(docxService.readDocx(fileEntry));
                 }
                 else{
