@@ -72,7 +72,7 @@ public class DocumentServiceImpl implements DocumentService {
             Map<Integer, String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
             String type = docStructureClassification.classify(StringUtils.join(tags, " "), environment.getProperty("storage.classifier"));
             Integer contentResult = contentClassificationService.categorize(text, userDao.show(username).getId(), file.getOriginalFilename());
-            String path = "";
+            String path;
             String year = "";
             String from = "";
             String to = "";
@@ -120,9 +120,9 @@ public class DocumentServiceImpl implements DocumentService {
                     path += "/" + type;
                     String category = categoryDao.show(contentResult).getCategoryName();
                     if (fromHome) {
-                        path += "/" + to + "/" + category;
+                        path += "/to/" + to + "/" + category;
                     } else if (fromOthers) {
-                        path += "/" + from + "/" + category;
+                        path += "/from/" + from + "/" + category;
                     } else {
                         path += "/uncategorized";
                     }
@@ -164,7 +164,7 @@ public class DocumentServiceImpl implements DocumentService {
     public GeneralMessageResponseDto trainTag(ModTagRequestDto request, String username) {
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
         String path = environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags");
-        if (!docStructureClassification.trainTagger(path, request.getName(), request.getData())) {
+        if (!docStructureClassification.trainTagger(path, request.getTagType(), request.getDisplayName(), request.getData())) {
             response.setMessage("problem_in_saving");
         } else {
             response.setMessage("training_successfully_saved");

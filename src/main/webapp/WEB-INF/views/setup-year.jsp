@@ -69,9 +69,6 @@
     <div class="row dd-register">
         <div class="col-sm-4 col-sm-offset-4">
             <h4>Year bracket</h4>
-            <c:if test="${not empty error}">
-                <p>${error}</p>
-            </c:if>
             <form action="/setup/year" method="post">
                 <div class="form-group dd-select">
                     <select class="form-control" id="inputStartYear" name="startYear">
@@ -108,11 +105,11 @@
             option.text = option.value = i;
             select.add(option, 0);
         }
-        $("#inputStartYear").selecter({
-            callback: updateEndYear,
-            cover: true,
-            label: "Select starting year"
-        });
+    });
+    $("#inputStartYear").selecter({
+        callback: updateEndYear,
+        cover: true,
+        label: "Select starting year"
     });
     function updateEndYear(value, index) {
         value = parseFloat(value) + 1;

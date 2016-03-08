@@ -10,17 +10,28 @@ import java.util.List;
 public class ModTagRequestDto {
 
     @JsonProperty
-    private String name;
+    private String tagType;
+
+    @JsonProperty
+    private String displayName;
 
     @JsonProperty
     private List<String> data;
 
-    public String getName() {
-        return name;
+    public String getTagType() {
+        return tagType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTagType(String tagType) {
+        this.tagType = tagType;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public List<String> getData() {

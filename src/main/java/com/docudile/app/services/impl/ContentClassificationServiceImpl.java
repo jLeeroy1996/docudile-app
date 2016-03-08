@@ -116,6 +116,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 //        }
 
         //get wordList in DB
+
         wordList.setWordList(wordListDao.getWords());
         wordList.setCount(wordListDao.getWords().size());
 

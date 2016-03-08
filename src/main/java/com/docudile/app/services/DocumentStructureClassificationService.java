@@ -14,7 +14,7 @@ public interface DocumentStructureClassificationService {
 
     public String classify(String query, String dataPath);
 
-    public boolean trainTagger(String path, String tagName, List<String> line);
+    public boolean trainTagger(String path, String tagType, String displayName, List<String> lines);
 
     public boolean trainClassifier(String path, List<String> tags, String type);
 

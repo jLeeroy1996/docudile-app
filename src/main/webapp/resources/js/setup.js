@@ -8,14 +8,14 @@ $(document).ready(function () {
     $("#tagAdd").click(function () {
         var data = {};
         var url = "/training/tagger?_csrf=" + token;
-        var categoryName = $('#inputCategory').val();
+        var categoryName = $('#tagType').val();
         var tags = $('#inputTags').tagsinput("items");
         var tr = "<tr><td>" + categoryName + "</td><td><a href='#!'><i class='fa fa-times'></i></a></td></tr>";
         $('#categoryTable').append(tr);
         data.name = categoryName;
         data.data = tags;
         post(data, url);
-        $('#inputCategory').val("");
+        $('#tagType').val("");
         $('#inputTags').tagsinput("removeAll");
     });
     $('#classifier_upload').dropzone({
@@ -60,6 +60,10 @@ $(document).ready(function () {
                 formData.append('category_name', $('#category_name').val());
             });
         }
+    });
+    $('#tagType').selecter({
+        label: "Select a Tag Department",
+        cover: true
     });
 });
 

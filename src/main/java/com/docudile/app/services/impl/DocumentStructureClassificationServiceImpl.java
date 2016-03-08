@@ -2,6 +2,7 @@ package com.docudile.app.services.impl;
 
 import com.docudile.app.services.DocumentStructureClassificationService;
 import com.docudile.app.services.TfIdfService;
+import com.docudile.app.services.utils.FileHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -34,6 +35,7 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
     public Map<Integer, String> tag(String path, List<String> lines) {
         Map<Integer, String> tagged = new HashMap<>();
         Map<String, List<String>> tags = getTags(environment.getProperty("storage.base_tags"));
+        Map<String, Map<String, List<String>>> fallbackTags = getFallbackTags(path);
         int i = 0;
         for (String line : lines) {
             System.out.println(line);
@@ -49,10 +51,10 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
                 }
             }
             if (!found) {
-                String tag = tfIdfService.search(line, path + "processed");
+                String tag = tagWithFallback(line, fallbackTags);
                 if (StringUtils.isNotEmpty(tag)) {
-                    tagged.put(i, tag);
                     found = true;
+                    tagged.put(i, tag);
                 }
             }
             if (found) {
@@ -71,11 +73,12 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
     }
 
     @Override
-    public boolean trainTagger(String path, String tagName, List<String> line) {
-        if (writeToFile(line, path + tagName + ".txt")) {
-            return tfIdfService.process(path, path + "processed");
+    public boolean trainTagger(String path, String tagType, String displayName, List<String> lines) {
+        String temp = displayName + ":=";
+        for (String line : lines) {
+            temp += line + "|";
         }
-        return false;
+        return writeToFile(temp, path + tagType + ".txt");
     }
 
     @Override
@@ -89,6 +92,26 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
     @Override
     public boolean delete(String path) {
         return new File(path).delete();
+    }
+
+    private boolean writeToFile(String line, String path) {
+        List<String> temp = new ArrayList<>();
+        temp.add(line);
+        return writeToFile(temp, path);
+    }
+
+    private String tagWithFallback(String line, Map<String, Map<String, List<String>>> fallbackTags) {
+        for (String filename : fallbackTags.keySet()) {
+            Map<String, List<String>> fileTags = fallbackTags.get(filename);
+            for (String displayName : fileTags.keySet()) {
+                for (String data : fileTags.get(displayName)) {
+                    if (line.trim().equalsIgnoreCase(data)) {
+                        return filename;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     private boolean writeToFile(List<String> lines, String path) {
@@ -134,6 +157,32 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
                 }
             }
             return tags;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Map<String, Map<String, List<String>>> getFallbackTags(String folderPath) {
+        Map<String, Map<String, List<String>>> fallbackTags = new HashMap<>();
+        try {
+            Map<String, List<String>> filenames = FileHandler.readAllFiles(folderPath);
+            for (String filename : filenames.keySet()) {
+                Map<String, List<String>> fileTags = new HashMap<>();
+                for (String line : filenames.get(filename)) {
+                    String[] temp = line.split(":=");
+                    String displayName = temp[0];
+                    List<String> datas = new ArrayList<>();
+                    for (String tempData : temp[1].split("|")) {
+                        datas.add(tempData);
+                    }
+                    fileTags.put(displayName, datas);
+                }
+                fallbackTags.put(filename, fileTags);
+            }
+            return fallbackTags;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

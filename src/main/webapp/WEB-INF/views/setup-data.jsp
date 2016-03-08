@@ -81,11 +81,19 @@
             <c:if test="${not empty error}">
                 <p>${error}</p>
             </c:if>
-            <div class="form-group">
-                <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Category name"/>
+            <div class="form-group dd-select">
+                <select class="form-control" id="tagType">
+                    <option>Office or College</option>
+                    <option>Address</option>
+                    <option>Person</option>
+                    <option>Position</option>
+                </select>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="tags" id="inputTags" data-role="tagsinput"/>
+                <input type="text" class="form-control" placeholder="Display Name" id="displayName">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Possible Data" id="inputTags" data-role="tagsinput">
             </div>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="row">
@@ -109,6 +117,7 @@
 <script rel="script" src="${"/resources/js/dropzone.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap.min.js"}"></script>
 <script rel="script" src="${"/resources/js/bootstrap-tagsinput.js"}"></script>
+<script rel="script" src="${"/resources/bootflat/js/jquery.fs.selecter.min.js"}"></script>
 <script rel="script" src="${"/resources/js/setup.js"}"></script>
 </body>
 </html>

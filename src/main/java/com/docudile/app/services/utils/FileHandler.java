@@ -74,11 +74,11 @@ public class FileHandler {
     }
     
     public static Map<String, List<String>> readAllFiles(String folder) throws IOException {
-        ArrayList<String> filePaths = getFilePaths(folder);
+        ArrayList<String> filenames = getFilePaths(folder);
         Map<String, List<String>> files = new HashMap<>();
         
-        for (String filePath : filePaths) {
-            FileReader fr = new FileReader(filePath);
+        for (String filename : filenames) {
+            FileReader fr = new FileReader(folder + "/" + filenames);
             BufferedReader br = new BufferedReader(fr);
             ArrayList<String> lines = new ArrayList<String>();
             String temp;
@@ -88,23 +88,23 @@ public class FileHandler {
                     lines.add(temp);
                 }
             }
-            files.put(filePath, lines);
+            files.put(filename, lines);
             br.close();
             fr.close();
         }
         return files;
     }
     
-    private static ArrayList<String> getFilePaths(String folder) {
-        ArrayList<String> filePaths = new ArrayList<>();
-        File file = new File(folder);
+    private static ArrayList<String> getFilePaths(String folderPath) {
+        ArrayList<String> filenames = new ArrayList<>();
+        File folder = new File(folderPath);
 
-        for (File filename : file.listFiles()) {
+        for (File filename : folder.listFiles()) {
             if (filename.isFile()) {
-                filePaths.add(filename.getAbsolutePath());
+                filenames.add(filename.getName());
             }
         }
-        return filePaths;
+        return filenames;
     }
 
 }
