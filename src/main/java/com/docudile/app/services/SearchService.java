@@ -2,6 +2,7 @@ package com.docudile.app.services;
 
 import com.docudile.app.data.entities.WordListDocument;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -9,6 +10,6 @@ import java.util.Set;
  */
 public interface SearchService {
 
-    public Set<WordListDocument> search(Integer userId, String searchString);
+    public List<WordListDocument> search(Integer userId, String searchString);
 
 }

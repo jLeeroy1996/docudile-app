@@ -155,10 +155,10 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     @Override
-    public List<FileShowDto> getFilesFromId(Set<WordListDocument> documentId, Integer userId) {
+    public List<FileShowDto> getFilesFromId(List<WordListDocument> documentId, Integer userId) {
         List<FileShowDto> files = new ArrayList<>();
         for(WordListDocument id : documentId) {
-            files.add(convertToDto(fileDao.show(id.getId())));
+            files.add(convertToDto(fileDao.show(id.getFile().getId())));
         }
         return files;
     }

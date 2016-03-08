@@ -21,13 +21,13 @@ $(document).on('ready', function () {
         }
         var filebox = $("#filebox");
         readyFileboxBeforeSearch(queryString);
-        //$.ajax({
-        //    type: 'GET',
-        //    url: '/search?quertString=' + queryString,
-        //    success: function (response) {
-        //
-        //    }
-        //});
+        $.ajax({
+            type: 'GET',
+            url: '/home/search/' + queryString,
+            success: function (response) {
+                console.log(response);
+            }
+        });
         e.preventDefault();
     });
 });
