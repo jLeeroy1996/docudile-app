@@ -106,7 +106,7 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
             for (String displayName : fileTags.keySet()) {
                 for (String data : fileTags.get(displayName)) {
                     if (line.trim().equalsIgnoreCase(data)) {
-                        return filename;
+                        return filename + "-" + displayName;
                     }
                 }
             }

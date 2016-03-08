@@ -78,14 +78,14 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <form action="/training/category/new?_csrf=${_csrf.token}" id="upload_doc" class="dropzone dropzone-blue">
+                    <form action="/home/upload-documents?_csrf=${_csrf.token}" id="upload_doc" class="dropzone dropzone-blue">
                         <div class="fallback">
                             <input name="file" type="file" multiple>
                         </div>
                     </form>
                 </div>
                 <div class="form-group">
-                    <button id="category_upload_new_btn" class="btn btn-primary">Create</button>
+                    <button id="upload_doc_btn" class="btn btn-primary">Create</button>
                 </div>
             </div>
             <div class="modal-footer"></div>
@@ -145,7 +145,7 @@
         autoProcessQueue: false,
         init: function() {
             var dropzone = this;
-            $('#classifier_upload_btn').click(function() {
+            $('#upload_doc_btn').click(function() {
                 dropzone.processQueue();
             });
             dropzone.on('sending', function(file, xhr, formData) {

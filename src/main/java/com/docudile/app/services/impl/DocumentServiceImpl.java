@@ -83,7 +83,7 @@ public class DocumentServiceImpl implements DocumentService {
                 if (curr.equals("DATE") || curr.equals("TO_DATE")) {
                     year = getYear(text.get(key));
                 } else if (!fromHome && !fromOthers) {
-                    if (curr.equals("COLLEGE")) {
+                    if (curr.equals("Office")) {
                         String line = text.get(key);
                         if (line.equalsIgnoreCase("College of Information, Computer, and Communications Technology") || line.equalsIgnoreCase("CICCT")) {
                             fromHome = true;
@@ -98,8 +98,8 @@ public class DocumentServiceImpl implements DocumentService {
                             to = getToMemo(text.get(key));
                         }
                     } else if (type.equalsIgnoreCase("letter")) {
-                        if (tags.get(key).equals("Person") && (tags.get(key + 1).equals("Office") || tags.get(key + 1).equals("Position"))) {
-                            to = text.get(key);
+                        if (tags.get(key - 1).startsWith("Person") && tags.get(key).startsWith("Office")) {
+                            to = tags.get(key).split("-")[0];
                         }
                     }
                 } else if (fromOthers) {
@@ -108,8 +108,8 @@ public class DocumentServiceImpl implements DocumentService {
                             from = getFromMemo(text.get(key));
                         }
                     } else if (type.equalsIgnoreCase("letter")) {
-                        if (tags.get(key).equals("Office")) {
-                            from = text.get(key);
+                        if (tags.get(key - 1).startsWith("Person") && tags.get(key).startsWith("Office")) {
+                            from = tags.get(key).split("-")[0];
                         }
                     }
                 }

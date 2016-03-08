@@ -25,9 +25,6 @@ public class HomeController {
     UserDao userDao;
 
     @Autowired
-    FileSystemService fileSystemService;
-
-    @Autowired
     DocumentService documentService;
 
     @RequestMapping()
@@ -42,12 +39,12 @@ public class HomeController {
 
     @RequestMapping(value = "/folder")
     public @ResponseBody List<FolderShowDto> showRoot(Principal principal) {
-        return fileSystemService.getRootFolders(userDao.show(principal.getName()).getId());
+        return documentService.showRoot(principal.getName());
     }
 
     @RequestMapping(value = "/folder/{id}")
     public @ResponseBody FolderShowDto showFolder(@PathVariable("id") Integer folderId, Principal principal) {
-        return fileSystemService.getFolder(folderId, userDao.show(principal.getName()).getId());
+        return documentService.showFolder(folderId, principal.getName());
     }
 
 }

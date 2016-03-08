@@ -90,7 +90,9 @@ public class TfIdfServiceImpl implements TfIdfService {
         for (String path : fileLines.keySet()) {
             ArrayList<String> tokens = new ArrayList<>();
             for (String line : fileLines.get(path)) {
-                tokens.addAll(StringHandler.tokenizer(line.toLowerCase(), Defaults.DELIMETER));
+                for (String token : StringHandler.tokenizer(line.toLowerCase(), " ")) {
+                    tokens.add(token.split("-")[0]);
+                }
             }
             fileTokens.put(getTagName(path).toUpperCase(), tokens);
         }
@@ -208,8 +210,8 @@ public class TfIdfServiceImpl implements TfIdfService {
     private Map<Integer, Integer> getQueryCounts(String query, List<String> tokens) throws IOException {
         Map<Integer, Integer> queryTokens = new LinkedHashMap<>();
 
-        for (String token : StringHandler.tokenizer(query, Defaults.DELIMETER)) {
-            String temp = token.toLowerCase();
+        for (String token : StringHandler.tokenizer(query, " ")) {
+            String temp = token.toLowerCase().split("-")[0];
             if (tokens.contains(temp)) {
                 if (!queryTokens.containsKey(tokens.indexOf(temp))) {
                     queryTokens.put(tokens.indexOf(temp), 1);
