@@ -39,8 +39,20 @@ public class SearchServiceImpl implements SearchService {
             String word = st.nextToken();
             wordList = wordListDao.getID(word);
             List<WordListDocument> documents = wordListDocumentDao.getID(files, wordList.getId());
-            documentID.add(documents.get(0));
-            System.out.println(documents.get(0).getId() + " paulryanluceroboob");
+            for(int x = 0; x < documents.size(); x++) {
+                for(int y = 0; y < documentID.size(); y++) {
+                    if(documents.get(x).getFile().getId() == documentID.get(y).getFile().getId()){
+                        isExist = true;
+                        break;
+                    }
+                }
+                if(!isExist) {
+                    if(documents.get(x).getCount() > 0)
+                        documentID.add(documents.get(x));
+                }
+                isExist = false;
+            }
+//            System.out.println(documents.get(0).getId() + " paulryanluceroboob");
         }
         return documentID;
     }

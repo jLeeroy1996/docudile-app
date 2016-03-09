@@ -86,9 +86,11 @@ public class DocumentServiceImpl implements DocumentService {
             String to = "";
             boolean fromHome = false;
             boolean fromOthers = false;
+            System.out.println(tags);
             for (Integer key : tags.keySet()) {
                 String curr = tags.get(key);
                 if (curr.equals("DATE") || curr.equals("TO_DATE")) {
+                    System.out.println("heeerrree!");
                     year = getYear(text.get(key));
                 } else if (!fromHome && !fromOthers) {
                     if (curr.equals("Office")) {
@@ -141,7 +143,7 @@ public class DocumentServiceImpl implements DocumentService {
                 path = "uncategorized";
             }
             System.out.println(path + "XXXXXXXXXXX");
-            //fileSystemService.storeFile(file, path, userDao.show(username).getId(),contentResult);
+            fileSystemService.storeFile(file, path, userDao.show(username).getId(),contentResult);
             responseDto.setMessage("file_upload_success");
         } else {
             responseDto.setMessage("error_reading_file");
