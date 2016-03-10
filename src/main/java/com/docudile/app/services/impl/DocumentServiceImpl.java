@@ -89,53 +89,60 @@ public class DocumentServiceImpl implements DocumentService {
         User user = userDao.show(username);
         List<String> text = getLines(file);
         if (text != null) {
-            Map<Integer, String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
-            String type = docStructureClassification.classify(StringUtils.join(tags.values(), " "), environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.classifier") + "/processed");
+            Map<Integer, String> tags = docStructureClassification.tag(text);
+            String type = docStructureClassification.classify(StringUtils.join(tags.values(), " "));
             Integer contentResult = contentClassificationService.categorize(getLinesContent(file), userDao.show(username).getId(), file.getOriginalFilename());
             String path;
             String year = "";
             String to = "";
             boolean fromHome = (text.indexOf(user.getOffice()) != -1);
+            System.out.println("Tags: " + tags);
+            System.out.println("Type: " + type);
             for (Integer key : tags.keySet()) {
                 String curr = tags.get(key);
-                if (type.equalsIgnoreCase("memo")) {
-                    if (curr.equals("TO") && fromHome) {
+                if (curr.equals("DATE") || curr.equals("TO_DATE")) {
+                    year = getYear(text.get(key));
+                }
+                if (type.equals("MEMO")) {
+                    if (curr.equals("TO") || curr.equals("TO_DATE") && fromHome) {
                         to = getToMemo(text.get(key));
                     }
-                } else if (type.equalsIgnoreCase("letter")) {
+                } else if (type.equals("LETTER")) {
                     if (tags.get(key).equals("SALUTATION")) {
-                        to = getToLetter(tags.get(key));
+                        to = getToLetter(text.get(key));
                     }
                 }
             }
+            System.out.println("fromHome: " + fromHome);
+            System.out.println("to: " + to);
             if (StringUtils.isNotEmpty(year)) {
                 path = year;
-                if (StringUtils.isNotEmpty(type)) {
-                    path += "/" + type;
-                    String category = categoryDao.show(contentResult).getCategoryName();
-                    if (type.equals("memo")) {
-                        if (fromHome) {
-                            path += "/to/" + to + "/" + category;
-                        } else if (!fromHome) {
-                            path += "/to/me/"+ category;
-                        } else {
-                            path += "/uncategorized";
-                        }
-                    } else {
-                        if (to.equalsIgnoreCase(user.getLastname()) || to.equals(user.getFirstname() + " " + user.getLastname())) {
-                            path += "/to/me/" + category;
-                        } else {
-                            path += "/to/" + to + "/" + category;
-                        }
-                    }
-                } else {
-                    path += "/uncategorized";
-                }
             } else {
                 path = "uncategorized";
             }
+            if (StringUtils.isNotEmpty(type)) {
+                path += "/" + type;
+                String category = categoryDao.show(contentResult).getCategoryName();
+                if (type.equals("MEMO")) {
+                    if (fromHome) {
+                        path += "/to/" + to + "/" + category;
+                    } else if (!fromHome) {
+                        path += "/to/me/"+ category;
+                    } else {
+                        path += "/uncategorized";
+                    }
+                } else {
+                    if (to.equalsIgnoreCase(user.getLastname()) || to.equals(user.getFirstname() + " " + user.getLastname())) {
+                        path += "/to/me/" + category;
+                    } else {
+                        path += "/to/" + to + "/" + category;
+                    }
+                }
+            } else {
+                path += "/uncategorized";
+            }
             System.out.println("Save Path: " + path);
-            //fileSystemService.storeFile(file, path, userDao.show(username).getId(), contentResult);
+            fileSystemService.storeFile(file, path, userDao.show(username).getId(), contentResult);
             responseDto.setMessage("file_upload_success");
         } else {
             responseDto.setMessage("error_reading_file");
@@ -164,61 +171,6 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public GeneralMessageResponseDto trainTag(ModTagRequestDto request, String username) {
-        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
-        String path = environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags");
-        if (!docStructureClassification.trainTagger(path, request.getTagType(), request.getDisplayName(), request.getData())) {
-            response.setMessage("problem_in_saving");
-        } else {
-            response.setMessage("training_successfully_saved");
-            fileSystemService.createFolderFromCategory(request.getDisplayName(), userDao.show(username).getId());
-        }
-        return response;
-    }
-
-    public GeneralMessageResponseDto sampleTrainContent() throws IOException {
-        boolean ifError = contentClassificationService.train(1);
-        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
-        if (!ifError) {
-            response.setMessage("Error");
-        } else {
-            response.setMessage("Success!");
-        }
-        return response;
-    }
-
-    @Override
-    public void createCategory(String categoryName, String username) {
-        Category cat = new Category();
-
-        cat.setCategoryName(categoryName);
-        System.out.println(userDao.show(username) + " is the username");
-        cat.setUser(userDao.show(username));
-        boolean hasCreated = categoryDao.create(cat);
-        if (hasCreated) {
-            System.out.println("no error");
-        } else {
-            System.out.println("error");
-        }
-    }
-
-    @Override
-    public GeneralMessageResponseDto createCategorySample() {
-        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
-        Category cat = new Category();
-
-        cat.setCategoryName("Excuse");
-        cat.setUser(userDao.show("holyjohn00"));
-        boolean hasCreated = categoryDao.create(cat);
-        if (hasCreated) {
-            response.setMessage("no error");
-        } else {
-            response.setMessage("error");
-        }
-        return response;
-    }
-
-    @Override
     public GeneralMessageResponseDto contentTrain(String username, MultipartFile[] file, String categoryName) throws IOException {
         Category cat = new Category();
         System.out.println(file.length);
@@ -242,52 +194,6 @@ public class DocumentServiceImpl implements DocumentService {
         return response;
 
     }
-
-    @Override
-    public GeneralMessageResponseDto uploadTraining(MultipartFile file, String username, String categoryName) {
-        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
-
-        Category cat = null;
-
-        cat.setCategoryName(categoryName);
-        cat.setUser(userDao.show(username));
-        categoryDao.create(cat);
-
-        if (fileSystemService.storeFileNotMapped(file, environment.getProperty("storage.content_training") + "/categoryName", userDao.show(username).getId())) {
-            response.setMessage("upload_training_data_success");
-        } else {
-            response.setMessage("upload_failed");
-        }
-        return response;
-    }
-
-    @Override
-    public GeneralMessageResponseDto deleteTag(String tagName, String username) {
-        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
-        String path = environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags") + tagName;
-        if (docStructureClassification.delete(path)) {
-            response.setMessage("tag_deleted");
-        } else {
-            response.setMessage("tag_delete_failed");
-        }
-        return response;
-    }
-
-    @Override
-    public GeneralMessageResponseDto trainClassifier(String name, MultipartFile file, String username) {
-        GeneralMessageResponseDto response = new GeneralMessageResponseDto();
-        String path = environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.classifier");
-        List<String> text = getLines(file);
-        List<String> tags = new ArrayList<>(docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text).values());
-        boolean noError = docStructureClassification.trainClassifier(path, tags, name);
-        if (!noError) {
-            response.setMessage("problem_in_saving");
-        } else {
-            response.setMessage("training_successfully_saved");
-        }
-        return response;
-    }
-
 
     private File multipartToFile(MultipartFile mFile) {
         File file = new File(mFile.getOriginalFilename());
@@ -337,17 +243,8 @@ public class DocumentServiceImpl implements DocumentService {
         return null;
     }
 
-    private String getFromMemo(String line) {
-        Pattern pattern = Pattern.compile("(i?)From: (.+)");
-        Matcher matcher = pattern.matcher(line);
-        if (matcher.find()) {
-            return matcher.group(2);
-        }
-        return null;
-    }
-
     private String getToMemo(String line) {
-        Pattern pattern = Pattern.compile("(i?)To: (.+)");
+        Pattern pattern = Pattern.compile("(?i)To\\s*\\:\\s*(.+)(\\s+(Date\\s*\\:\\s*)?(((January|February|March|April|May|June|July|August|September|October|November|December)\\s+(\\d{1,2}),\\s+(\\d{4}))|([0-9]{2}\\/[0-9]{2}\\/[0-9]{2,4})))?");
         Matcher matcher = pattern.matcher(line);
         if (matcher.find()) {
             return matcher.group(2);

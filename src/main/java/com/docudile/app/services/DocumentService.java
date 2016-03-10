@@ -25,22 +25,8 @@ public interface DocumentService {
 
     public GeneralMessageResponseDto contentTrain(String username, MultipartFile[] file, String categoryName) throws IOException;
 
-    public GeneralMessageResponseDto uploadTraining(MultipartFile file, String username, String categoryName);
-
     public List<FolderShowDto> showRoot(String username);
 
     public FolderShowDto showFolder(Integer id, String username);
-
-    public GeneralMessageResponseDto trainTag(ModTagRequestDto requests, String username);
-
-    public GeneralMessageResponseDto deleteTag(String tagName, String username);
-
-    public GeneralMessageResponseDto trainClassifier(String name, MultipartFile file, String username);
-
-    public GeneralMessageResponseDto sampleTrainContent() throws IOException;
-
-    public void createCategory(String categoryName, String username);
-
-    public GeneralMessageResponseDto createCategorySample();
 
 }

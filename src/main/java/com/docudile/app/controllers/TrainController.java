@@ -63,21 +63,6 @@ public class TrainController {
         return "setup-classifier";
     }
 
-    @RequestMapping(value = "/training/tagger", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainTag(@RequestBody ModTagRequestDto request, Principal principal) {
-        return documentService.trainTag((ModTagRequestDto) request, principal.getName());
-    }
-
-    @RequestMapping(value = "/deleteTag", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto deleteTag(@RequestParam("tagName") String tagName, Principal principal) {
-        return documentService.deleteTag(tagName, principal.getName());
-    }
-
-    @RequestMapping(value = "/training/classifier", method = RequestMethod.POST)
-    public @ResponseBody GeneralMessageResponseDto trainClassifier(@RequestParam("type_name") String typeName, @RequestPart("file") MultipartFile file, Principal principal) {
-        return documentService.trainClassifier(typeName, file, principal.getName());
-    }
-
     @RequestMapping(value = "/training/category/new", method = RequestMethod.POST)
     public @ResponseBody GeneralMessageResponseDto trainCategory(@RequestParam("category_name") String name,
                                                                  @ModelAttribute("file") TrainingCatNewDto file,

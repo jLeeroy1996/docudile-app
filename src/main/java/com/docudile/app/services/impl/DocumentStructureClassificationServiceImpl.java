@@ -32,10 +32,9 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
     private Environment environment;
 
     @Override
-    public Map<Integer, String> tag(String path, List<String> lines) {
+    public Map<Integer, String> tag(List<String> lines) {
         Map<Integer, String> tagged = new HashMap<>();
         Map<String, List<String>> tags = getTags(environment.getProperty("storage.base_tags"));
-        Map<String, Map<String, List<String>>> fallbackTags = getFallbackTags(path);
         int i = 0;
         for (String line : lines) {
             System.out.println(line);
@@ -53,14 +52,6 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
                     break;
                 }
             }
-            if (!found) {
-                String tag = tagWithFallback(line, fallbackTags);
-                System.out.println(tag);
-                if (StringUtils.isNotEmpty(tag)) {
-                    found = true;
-                    tagged.put(i, tag);
-                }
-            }
             if (found) {
                 if (tagged.get(i).equals("SALUTATION") || tagged.get(i).equals("SUBJECT")) {
                     break;
@@ -72,73 +63,13 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
     }
 
     @Override
-    public String classify(String query, String dataPath) {
-        return tfIdfService.search(query, dataPath);
-    }
-
-    @Override
-    public boolean trainTagger(String path, String tagType, String displayName, List<String> lines) {
-        String temp = displayName + ":=";
-        for (String line : lines) {
-            temp += line + "|";
-        }
-        return writeToFile(temp, path + tagType + ".txt");
-    }
-
-    @Override
-    public boolean trainClassifier(String path, List<String> tags, String type) {
-        if (writeToFile(tags, path + type + ".txt")) {
-            return tfIdfService.process(path, path + "processed");
-        }
-        return false;
+    public String classify(String query) {
+        return tfIdfService.search(query, environment.getProperty("storage.classifier") + "/processed");
     }
 
     @Override
     public boolean delete(String path) {
         return new File(path).delete();
-    }
-
-    private boolean writeToFile(String line, String path) {
-        List<String> temp = new ArrayList<>();
-        temp.add(line);
-        return writeToFile(temp, path);
-    }
-
-    private String tagWithFallback(String line, Map<String, Map<String, List<String>>> fallbackTags) {
-        for (String filename : fallbackTags.keySet()) {
-            Map<String, List<String>> fileTags = fallbackTags.get(filename);
-            for (String displayName : fileTags.keySet()) {
-                for (String data : fileTags.get(displayName)) {
-                    if (line.trim().equalsIgnoreCase(data)) {
-                        return filename + "-" + displayName;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private boolean writeToFile(List<String> lines, String path) {
-        File file = new File(path);
-        file.getParentFile().mkdirs();
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            FileWriter fileWriter = new FileWriter(file, true);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            for (String line : lines) {
-                bufferedWriter.write(line);
-                bufferedWriter.newLine();
-            }
-            bufferedWriter.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     private Map<String, List<String>> getTags(String location) {
@@ -161,32 +92,6 @@ public class DocumentStructureClassificationServiceImpl implements DocumentStruc
                 }
             }
             return tags;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private Map<String, Map<String, List<String>>> getFallbackTags(String folderPath) {
-        Map<String, Map<String, List<String>>> fallbackTags = new HashMap<>();
-        try {
-            Map<String, List<String>> filenames = FileHandler.readAllFiles(folderPath);
-            for (String filename : filenames.keySet()) {
-                Map<String, List<String>> fileTags = new HashMap<>();
-                for (String line : filenames.get(filename)) {
-                    String[] temp = line.split(":=");
-                    String displayName = temp[0];
-                    List<String> datas = new ArrayList<>();
-                    for (String tempData : temp[1].split("|")) {
-                        datas.add(tempData);
-                    }
-                    fileTags.put(displayName, datas);
-                }
-                fallbackTags.put(filename, fileTags);
-            }
-            return fallbackTags;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

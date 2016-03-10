@@ -36,7 +36,6 @@ public class StemmerServiceImpl implements StemmerService{
 =======
         try {
             Dictionary dictionary = Dictionary.getDefaultResourceInstance();
-            System.out.println("Dictionary : " + dictionary != null);
             for (POS pos : POS.getAllPOS()) {
                 IndexWord index = dictionary.getIndexWord(pos, word);
                 if (index != null) {

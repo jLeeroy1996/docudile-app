@@ -38,26 +38,6 @@ public class FileHandler {
         return false;
     }
 
-    public static boolean writeToFile(Map<String, List<String>> filesToWrite, String path) {
-        try {
-            new File(path).getParentFile().mkdirs();
-            for (String filename : filesToWrite.keySet()) {
-                FileWriter fw = new FileWriter(path + "/" + filename);
-                BufferedWriter bw = new BufferedWriter(fw);
-                for (String line : filesToWrite.get(filename)) {
-                    bw.append(line);
-                    bw.newLine();
-                }
-                bw.flush();
-                bw.close();
-                fw.close();
-            }
-            return true;
-        } catch (Exception ex) {
-        }
-        return false;
-    }
-
     public static List<String> readFile(String path) {
         List<String> lines = new ArrayList<>();
         try {

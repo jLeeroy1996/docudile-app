@@ -421,7 +421,6 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         List<String> finalList = new ArrayList<>();
         for (int x = 0; x < wordList.size(); x++) {
             if (stemmerService.checkIfInDictionary(wordList.get(x).trim())) {
-                System.out.println("here in checkwords");
                 finalList.add(wordList.get(x).toLowerCase().trim());
             }
         }
