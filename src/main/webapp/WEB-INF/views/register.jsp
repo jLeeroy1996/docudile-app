@@ -77,6 +77,9 @@
                     <div class="form-group">
                         <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
                     </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="inputOffice" name="office" placeholder="Office">
+                    </div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="row">
 

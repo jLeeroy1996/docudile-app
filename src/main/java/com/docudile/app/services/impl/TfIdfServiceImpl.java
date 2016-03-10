@@ -23,9 +23,7 @@ public class TfIdfServiceImpl implements TfIdfService {
     @Override
     public boolean process(String dataPath, String savePath) {
         try {
-            System.out.println("asddf");
             Map<String, List<String>> fileTokens = getFileTokens(FileHandler.readAllFiles(dataPath));
-            System.out.println("dafsdf");
             Set<String> distinctTokens = getDistinctTokens(fileTokens);
             Map<String, Integer[]> fileTokenCounts = getFileTokenCounts(fileTokens, distinctTokens);
             Double[] idfWeights = getIdfWeight(fileTokenCounts, distinctTokens.size());
@@ -37,19 +35,16 @@ public class TfIdfServiceImpl implements TfIdfService {
                 lines.add(distinctToken);
             }
             FileHandler.writeToFile(lines, savePath + "/tokens.dat");
-            System.out.println("here1");
             lines = new ArrayList<>();
             for (String key : fileTokens.keySet()) {
                 lines.add(key);
             }
             FileHandler.writeToFile(lines, savePath + "/tags.dat");
-            System.out.println("here2");
             lines = new ArrayList<>();
             for (Double idfWeight : idfWeights) {
                 lines.add(String.valueOf(idfWeight));
             }
             FileHandler.writeToFile(lines, savePath + "/idfWeights.dat");
-            System.out.println("here3");
             lines = new ArrayList<>();
             for (Double[] normalizedValues : normalization) {
                 String temp = "";
@@ -59,7 +54,6 @@ public class TfIdfServiceImpl implements TfIdfService {
                 lines.add(temp);
             }
             FileHandler.writeToFile(lines, savePath + "/normalization.dat");
-            System.out.println("here4");
             lines = new ArrayList<>();
             for (Double docuLength : docuLengths) {
                 lines.add(String.valueOf(docuLength));

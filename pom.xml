@@ -191,18 +191,15 @@
             <version>3.9</version>
         </dependency>
         <dependency>
-            <groupId>edu.stanford.nlp</groupId>
-            <artifactId>stanford-corenlp</artifactId>
-            <version>3.6.0</version>
+            <groupId>net.sf.extjwnl</groupId>
+            <artifactId>extjwnl</artifactId>
+            <version>1.9.1</version>
         </dependency>
-
         <dependency>
-            <groupId>edu.stanford.nlp</groupId>
-            <artifactId>stanford-corenlp</artifactId>
-            <version>3.6.0</version>
-            <classifier>models</classifier>
+            <groupId>net.sf.extjwnl</groupId>
+            <artifactId>extjwnl-data-wn31</artifactId>
+            <version>1.2</version>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>

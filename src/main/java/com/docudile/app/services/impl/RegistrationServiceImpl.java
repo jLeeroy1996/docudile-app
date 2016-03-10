@@ -54,6 +54,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         userEntity.setFirstname(user.getFirstname());
         userEntity.setUsername(user.getUsername());
         userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+        userEntity.setOffice(user.getOffice());
         if (userDao.create(userEntity)) {
             session.setAttribute("username", user.getUsername());
             List<GrantedAuthority> authorities = new ArrayList<>();

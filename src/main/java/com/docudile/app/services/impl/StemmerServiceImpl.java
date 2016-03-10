@@ -1,44 +1,41 @@
 package com.docudile.app.services.impl;
 
 import com.docudile.app.services.StemmerService;
-import edu.smu.tspell.wordnet.Synset;
-import edu.smu.tspell.wordnet.WordNetDatabase;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
+import net.sf.extjwnl.JWNLException;
+import net.sf.extjwnl.data.IndexWord;
+import net.sf.extjwnl.data.POS;
+import net.sf.extjwnl.data.Synset;
+import net.sf.extjwnl.dictionary.Dictionary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import edu.stanford.nlp.ling.Word;
+
+import java.util.List;
 
 /**
  * Created by cicct on 3/10/2016.
  */
 
-@Service("contentClassificationService")
+@Service("stemmerService")
 @Transactional
-@PropertySource({"classpath:/storage.properties"})
 public class StemmerServiceImpl implements StemmerService{
-
-    @Autowired
-    private Environment environment;
 
     @Override
     public boolean checkIfInDictionary(String word) {
-
-        WordNetDatabase database = WordNetDatabase.getFileInstance();
-
-        Synset[] synsets = database.getSynsets(word);
-
-        if(synsets.length > 0){
-            return false;
+        try {
+            Dictionary dictionary = Dictionary.getDefaultResourceInstance();
+            System.out.println("Dictionary : " + dictionary != null);
+            for (POS pos : POS.getAllPOS()) {
+                IndexWord index = dictionary.getIndexWord(pos, word);
+                if (index != null) {
+                    if (!index.getSenses().isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+        }  catch (JWNLException e) {
+            e.printStackTrace();
         }
-        return true;
-
-    }
-
-    @Override
-    public void startStemmer() {
-        System.setProperty("wordnet.database.dir", environment.getProperty("storage.wordnet"));
+        return false;
     }
 
 }

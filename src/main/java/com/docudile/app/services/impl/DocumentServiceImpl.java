@@ -8,6 +8,7 @@ import com.docudile.app.data.dto.GeneralMessageResponseDto;
 import com.docudile.app.data.dto.ModTagRequestDto;
 import com.docudile.app.data.entities.Category;
 import com.docudile.app.data.entities.Folder;
+import com.docudile.app.data.entities.User;
 import com.docudile.app.services.*;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -75,6 +76,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public GeneralMessageResponseDto classifyThenUpload(MultipartFile file, String username) {
         GeneralMessageResponseDto responseDto = new GeneralMessageResponseDto();
+        User user = userDao.show(username);
         List<String> text = getLines(file);
         if (text != null) {
             Map<Integer, String> tags = docStructureClassification.tag(environment.getProperty("storage.users") + username + "/" + environment.getProperty("storage.structure_tags"), text);
@@ -82,45 +84,17 @@ public class DocumentServiceImpl implements DocumentService {
             Integer contentResult = contentClassificationService.categorize(getLinesContent(file), userDao.show(username).getId(), file.getOriginalFilename());
             String path;
             String year = "";
-            String from = "";
             String to = "";
-            boolean fromHome = false;
-            boolean fromOthers = false;
-            System.out.println(tags);
+            boolean fromHome = (text.indexOf(user.getOffice()) != -1);
             for (Integer key : tags.keySet()) {
                 String curr = tags.get(key);
-                if (curr.equals("DATE") || curr.equals("TO_DATE")) {
-                    System.out.println("heeerrree!");
-                    year = getYear(text.get(key));
-                } else if (!fromHome && !fromOthers) {
-                    if (curr.equals("Office")) {
-                        String line = text.get(key);
-                        if (line.equalsIgnoreCase("College of Information, Computer, and Communications Technology") || line.equalsIgnoreCase("CICCT")) {
-                            fromHome = true;
-                        } else {
-                            fromOthers = true;
-                        }
+                if (type.equalsIgnoreCase("memo")) {
+                    if (curr.equals("TO") && fromHome) {
+                        to = getToMemo(text.get(key));
                     }
-                }
-                if (fromHome) {
-                    if (type.equalsIgnoreCase("memo")) {
-                        if (curr.equals("TO")) {
-                            to = getToMemo(text.get(key));
-                        }
-                    } else if (type.equalsIgnoreCase("letter")) {
-                        if (tags.get(key - 1).startsWith("Person") && tags.get(key).startsWith("Office")) {
-                            to = tags.get(key).split("-")[0];
-                        }
-                    }
-                } else if (fromOthers) {
-                    if (type.equalsIgnoreCase("memo")) {
-                        if (curr.equals("FROM")) {
-                            from = getFromMemo(text.get(key));
-                        }
-                    } else if (type.equalsIgnoreCase("letter")) {
-                        if (tags.get(key - 1).startsWith("Person") && tags.get(key).startsWith("Office")) {
-                            from = tags.get(key).split("-")[0];
-                        }
+                } else if (type.equalsIgnoreCase("letter")) {
+                    if (tags.get(key).equals("SALUTATION")) {
+                        to = getToLetter(tags.get(key));
                     }
                 }
             }
@@ -129,12 +103,20 @@ public class DocumentServiceImpl implements DocumentService {
                 if (StringUtils.isNotEmpty(type)) {
                     path += "/" + type;
                     String category = categoryDao.show(contentResult).getCategoryName();
-                    if (fromHome) {
-                        path += "/to/" + to + "/" + category;
-                    } else if (fromOthers) {
-                        path += "/from/" + from + "/" + category;
+                    if (type.equals("memo")) {
+                        if (fromHome) {
+                            path += "/to/" + to + "/" + category;
+                        } else if (!fromHome) {
+                            path += "/to/me/"+ category;
+                        } else {
+                            path += "/uncategorized";
+                        }
                     } else {
-                        path += "/uncategorized";
+                        if (to.equalsIgnoreCase(user.getLastname()) || to.equals(user.getFirstname() + " " + user.getLastname())) {
+                            path += "/to/me/" + category;
+                        } else {
+                            path += "/to/" + to + "/" + category;
+                        }
                     }
                 } else {
                     path += "/uncategorized";
@@ -142,8 +124,8 @@ public class DocumentServiceImpl implements DocumentService {
             } else {
                 path = "uncategorized";
             }
-            System.out.println(path + "XXXXXXXXXXX");
-            fileSystemService.storeFile(file, path, userDao.show(username).getId(),contentResult);
+            System.out.println("Save Path: " + path);
+            //fileSystemService.storeFile(file, path, userDao.show(username).getId(), contentResult);
             responseDto.setMessage("file_upload_success");
         } else {
             responseDto.setMessage("error_reading_file");
@@ -187,9 +169,9 @@ public class DocumentServiceImpl implements DocumentService {
     public GeneralMessageResponseDto sampleTrainContent() throws IOException {
         boolean ifError = contentClassificationService.train(1);
         GeneralMessageResponseDto response = new GeneralMessageResponseDto();
-        if(!ifError){
+        if (!ifError) {
             response.setMessage("Error");
-        }else{
+        } else {
             response.setMessage("Success!");
         }
         return response;
@@ -203,10 +185,9 @@ public class DocumentServiceImpl implements DocumentService {
         System.out.println(userDao.show(username) + " is the username");
         cat.setUser(userDao.show(username));
         boolean hasCreated = categoryDao.create(cat);
-        if(hasCreated){
+        if (hasCreated) {
             System.out.println("no error");
-        }
-        else{
+        } else {
             System.out.println("error");
         }
     }
@@ -219,10 +200,9 @@ public class DocumentServiceImpl implements DocumentService {
         cat.setCategoryName("Excuse");
         cat.setUser(userDao.show("holyjohn00"));
         boolean hasCreated = categoryDao.create(cat);
-        if(hasCreated){
+        if (hasCreated) {
             response.setMessage("no error");
-        }
-        else{
+        } else {
             response.setMessage("error");
         }
         return response;
@@ -361,6 +341,15 @@ public class DocumentServiceImpl implements DocumentService {
         Matcher matcher = pattern.matcher(line);
         if (matcher.find()) {
             return matcher.group(2);
+        }
+        return null;
+    }
+
+    private String getToLetter(String line) {
+        Pattern pattern = Pattern.compile("(?i)Dear\\s+(.+)[\\:\\,]");
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+            return matcher.group(1);
         }
         return null;
     }
