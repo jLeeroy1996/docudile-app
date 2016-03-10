@@ -281,9 +281,14 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     public boolean createFoldersFromPath(Folder base, LinkedList<String> folders, Integer userId) {
+        Folder isExist = null;
         if(!folders.isEmpty()) {
             String folderName = folders.removeFirst();
-            Folder isExist = folderDao.show(folderName, base.getId());
+            if(base == null) {
+                isExist = folderDao.show(folderName);
+            } else {
+                isExist = folderDao.show(folderName, base.getId());
+            }
             if(isExist != null) {
                 base = isExist;
                 createFoldersFromPath(base, folders, userId);
