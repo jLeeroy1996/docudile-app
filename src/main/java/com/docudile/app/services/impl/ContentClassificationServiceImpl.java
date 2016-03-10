@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by cicct on 2/15/2016.
@@ -68,9 +69,12 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     private StemmerService stemmerService;
 
     public boolean train(Integer userID) throws IOException {
+<<<<<<< HEAD
 
         //stemmerService.startStemmer();
 
+=======
+>>>>>>> origin/master
         ObjectMapper mapper = new ObjectMapper();
         WordListDto wordList = new WordListDto();
         List<FileContentDto> fileDto = new ArrayList<>();
@@ -115,7 +119,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                 //String[] temporary = FilenameUtils.getBaseName(fileEntry.getAbsoluteFile().toString()).split(" ");
                 //List<String> temp = fileContentDto.getWordList();
                 //temp.addAll(Arrays.asList(temporary));
-                //fileContentDto.setWordList(checkWords(fileContentDto.getWordList()));
+                fileContentDto.setWordList(checkWords(fileContentDto.getWordList()));
                 fileDto.add(fileContentDto);
             }
         }
@@ -269,9 +273,10 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         List<String> finalWords = new ArrayList<>();
         List<Category> categoryList = categoryDao.getCategories(userID);
         for(int x = 0;x<words.size();x++){
-            String[] t = words.get(x).split(" ");
-            List<String> tt = Arrays.asList(t);
-            finalWords.addAll(tt);
+            StringTokenizer st = new StringTokenizer(words.get(x)," ~`!@#$%^&*()-=_+[]{};'\\\\:|,./<>?");
+            while(st.hasMoreTokens()){
+                finalWords.add(st.nextToken());
+            }
         }
         words = finalWords;
 

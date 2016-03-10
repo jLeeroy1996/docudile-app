@@ -8,6 +8,7 @@ import com.docudile.app.services.DocumentService;
 import com.docudile.app.services.FileSystemService;
 import com.docudile.app.services.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,13 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/upload-documents", method = RequestMethod.POST)
-    public @ResponseBody ResponseEntity<GeneralMessageResponseDto> uploadDoc(@RequestParam("document") MultipartFile document, Principal principal) {
-        return ResponseEntity.ok(documentService.sampleClassify(document, principal.getName()));
+    public @ResponseBody GeneralMessageResponseDto uploadDoc(@RequestParam("document") MultipartFile document, Principal principal) {
+        return documentService.classifyThenUpload(document, principal.getName());
+    }
+
+    @RequestMapping(value = "/file/download/{id}")
+    public FileSystemResource downloadFile(@PathVariable("id") Integer id, Principal principal) {
+        return documentService.showFile(id, principal.getName());
     }
 
     @RequestMapping(value = "/folder")

@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by PaulRyan on 2/16/2016.
@@ -63,15 +64,12 @@ public class DocxServiceImpl implements DocxService {
             FileInputStream fis = new FileInputStream(file.getAbsolutePath());
             XWPFDocument document = new XWPFDocument(fis);
             extractor = new XWPFWordExtractor(document);
-            String words = extractor.getText();
-            String[] wordArray = words.split("\n");
-            List<String> wordList = Arrays.asList(wordArray);
-            List<String> finalList = new ArrayList<>();
-            for(int x = 0;x<wordList.size();x++){
-                List<String> temp = Arrays.asList(wordList.get(x).split(" "));
-                finalList.addAll(temp);
+            List<String> words = new ArrayList<>();
+            StringTokenizer st = new StringTokenizer(extractor.getText()," ~`!@#$%^&*()-=_+[]{};'\\:|,./<>?");
+            while(st.hasMoreTokens()){
+                words.add(st.nextToken());
             }
-            return finalList;
+            return words;
         }
         catch (Exception e) {
             e.printStackTrace();

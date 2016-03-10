@@ -160,7 +160,7 @@ function viewDetailsFile(data) {
         '<p><i class="glyphicon glyphicon-info-sign"></i> Info: Deleting the file will result to the permanent loss of that file.</p>' +
         '<div class="row">' +
         '<div class="col-sm-6">' +
-        '<button class="btn btn-success btn-block"><i class="glyphicon glyphicon-floppy-disk"></i> Download</button>' +
+        '<a class="btn btn-success btn-block" href="/file/download/' + data.id + '"><i class="glyphicon glyphicon-floppy-disk"></i> Download</a>' +
         '</div>' +
         '<div class="col-sm-6">' +
         '<button class="btn btn-danger btn-block"><i class="glyphicon glyphicon-remove"></i> Delete</button>' +

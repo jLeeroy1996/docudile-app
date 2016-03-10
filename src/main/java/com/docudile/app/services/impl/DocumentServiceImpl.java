@@ -58,17 +58,12 @@ public class DocumentServiceImpl implements DocumentService {
     @Autowired
     private CategoryDao categoryDao;
 
-    @Autowired
-    private FolderDao folderDao;
-
-    @Autowired
-    private DropboxService dropboxService;
-
     @Override
     public FileSystemResource showFile(Integer id, String username) {
         String filePath = fileSystemService.download(id, userDao.show(username).getId());
         return new FileSystemResource(filePath);
     }
+
     @Override
     public GeneralMessageResponseDto sampleClassify(MultipartFile file,String username){
         GeneralMessageResponseDto responseDto = new GeneralMessageResponseDto();
