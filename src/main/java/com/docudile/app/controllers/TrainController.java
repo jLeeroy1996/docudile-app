@@ -32,7 +32,7 @@ public class TrainController {
 
     @RequestMapping("/setup/content")
     public ModelAndView goContent(Principal principal) {
-        ModelAndView mav = new ModelAndView("trainig-content");
+        ModelAndView mav = new ModelAndView("training-content");
         mav.addObject("user", userDao.show(principal.getName()));
         return mav;
     }

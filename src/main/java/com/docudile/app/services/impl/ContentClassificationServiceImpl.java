@@ -68,10 +68,9 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     private StemmerService stemmerService;
 
     public boolean train(Integer userID) throws IOException {
-<<<<<<< HEAD
+
         //stemmerService.startStemmer();
-=======
->>>>>>> origin/master
+
         ObjectMapper mapper = new ObjectMapper();
         WordListDto wordList = new WordListDto();
         List<FileContentDto> fileDto = new ArrayList<>();

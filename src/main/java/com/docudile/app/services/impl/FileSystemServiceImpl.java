@@ -273,4 +273,39 @@ public class FileSystemServiceImpl implements FileSystemService {
         return "Not Yet Modified";
     }
 
+    public boolean createFoldersFromPath(String path, Integer userId) {
+        if(createFoldersFromPath(null, new LinkedList<String>(Arrays.asList(path.split("/"))), userId)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean createFoldersFromPath(Folder base, LinkedList<String> folders, Integer userId) {
+        if(!folders.isEmpty()) {
+            String folderName = folders.removeFirst();
+            Folder isExist = folderDao.show(folderName, base.getId());
+            if(isExist != null) {
+                base = isExist;
+                createFoldersFromPath(base, folders, userId);
+                return true;
+            } else {
+                Folder newFolder = createFolder(base, folderName, userId);
+                base = newFolder;
+                createFoldersFromPath(base, folders, userId);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Folder createFolder(Folder parent, String folderName, Integer userId) {
+        Folder f = new Folder();
+        f.setUser(userDao.show(userId));
+        f.setName(folderName);
+        f.setParentFolder(parent);
+        if(folderDao.create(f))
+            return f;
+        return null;
+    }
+
 }

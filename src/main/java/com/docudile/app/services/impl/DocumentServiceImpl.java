@@ -138,6 +138,7 @@ public class DocumentServiceImpl implements DocumentService {
                 path += "/uncategorized";
             }
             System.out.println("Save Path: " + path);
+            fileSystemService.createFoldersFromPath(path, userDao.show(username).getId());
             fileSystemService.storeFile(file, path, userDao.show(username).getId(), contentResult);
             responseDto.setMessage("file_upload_success");
         } else {

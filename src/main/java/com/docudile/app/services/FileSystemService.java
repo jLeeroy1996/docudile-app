@@ -7,6 +7,7 @@ import com.docudile.app.data.entities.Folder;
 import com.docudile.app.data.entities.WordListDocument;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -34,5 +35,9 @@ public interface FileSystemService {
     public void createCategoryFolders(Folder f, String categoryName, Integer userId);
 
     public List<FileShowDto> getFilesFromId(List<WordListDocument> documentId, Integer userId);
+
+    public boolean createFoldersFromPath(Folder base, LinkedList<String> folders, Integer userId);
+
+    public boolean createFoldersFromPath(String path, Integer userId);
 
 }

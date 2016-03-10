@@ -15,25 +15,12 @@ import java.util.List;
  * Created by cicct on 3/10/2016.
  */
 
-<<<<<<< HEAD
-@Service("stemmerServiceImpl")
-=======
 @Service("stemmerService")
->>>>>>> origin/master
 @Transactional
 public class StemmerServiceImpl implements StemmerService{
 
     @Override
     public boolean checkIfInDictionary(String word) {
-<<<<<<< HEAD
-
-        WordNetDatabase database = WordNetDatabase.getFileInstance();
-
-        Synset[] synsets = database.getSynsets(word);
-        System.out.println(synsets.length);
-        if(synsets.length > 0){
-            return false;
-=======
         try {
             Dictionary dictionary = Dictionary.getDefaultResourceInstance();
             for (POS pos : POS.getAllPOS()) {
@@ -46,7 +33,6 @@ public class StemmerServiceImpl implements StemmerService{
             }
         }  catch (JWNLException e) {
             e.printStackTrace();
->>>>>>> origin/master
         }
         return false;
     }

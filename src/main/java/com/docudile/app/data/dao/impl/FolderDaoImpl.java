@@ -31,6 +31,14 @@ public class FolderDaoImpl extends GenericDaoImpl<Folder> implements FolderDao {
     }
 
     @Override
+    public Folder show(String name, Integer parentId) {
+        Query query = getCurrentSession().createQuery("from Folder f where f.name = :name and f.parent.id = :parentId");
+        query.setParameter("name", name);
+        query.setParameter("parentId", parentId);
+        return (Folder) query.uniqueResult();
+    }
+
+    @Override
     public List<Folder> showAllByName(String name, Integer userId) {
         Query query = getCurrentSession().createQuery("from Folder f where f.name = :name and f.user.id = :userId");
         query.setParameter("name", name);
