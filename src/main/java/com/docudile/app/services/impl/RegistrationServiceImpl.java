@@ -75,7 +75,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             User user = userDao.show(username);
             user.setDropboxAccessToken(token);
             if (userDao.update(user)) {
-                return "redirect:/setup/year";
+                return "redirect:/setup/content";
             }
         }
         return "redirect:/register?error=true";

@@ -28,39 +28,13 @@ public class TrainController {
     DocumentService documentService;
 
     @Autowired
-    private RegistrationService registrationService;
-
-    @Autowired
     private UserDao userDao;
 
     @RequestMapping("/setup/content")
-    public String goContent() {
-        return "training-content";
-    }
-
-    @RequestMapping("/setup/year")
-    public ModelAndView goSetupYear(Principal principal) {
-        ModelAndView mv = new ModelAndView("setup-year");
-        mv.addObject("user", userDao.show(principal.getName()));
-        System.out.println(principal.getName() + "adsfasfkhwer");
-        return mv;
-    }
-
-    @RequestMapping(value = "/setup/year", method = RequestMethod.POST)
-    public String doSetupYear(Principal principal, HttpServletRequest request) {
-        return registrationService.createFolders(userDao.show(principal.getName()), request);
-    }
-
-    @RequestMapping("/setup/data")
-    public ModelAndView goSetupData(Principal principal) {
-        ModelAndView mv = new ModelAndView("setup-data");
-        mv.addObject("user", userDao.show(principal.getName()));
-        return mv;
-    }
-
-    @RequestMapping("/setup/classifier")
-    public String goPreTrain() {
-        return "setup-classifier";
+    public ModelAndView goContent(Principal principal) {
+        ModelAndView mav = new ModelAndView("trainig-content");
+        mav.addObject("user", userDao.show(principal.getName()));
+        return mav;
     }
 
     @RequestMapping(value = "/training/category/new", method = RequestMethod.POST)
