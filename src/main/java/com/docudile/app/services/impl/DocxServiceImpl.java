@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,9 +48,30 @@ public class DocxServiceImpl implements DocxService {
             XWPFDocument document = new XWPFDocument(fis);
             extractor = new XWPFWordExtractor(document);
             String words = extractor.getText();
-            String[] wordArray = words.split(" ");
+            String[] wordArray = words.split("\n");
             List<String> wordList = Arrays.asList(wordArray);
             return wordList;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public List<String> readDocxContent(File file) {
+        XWPFWordExtractor extractor = null;
+        try {
+            FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+            XWPFDocument document = new XWPFDocument(fis);
+            extractor = new XWPFWordExtractor(document);
+            String words = extractor.getText();
+            String[] wordArray = words.split("\n");
+            List<String> wordList = Arrays.asList(wordArray);
+            List<String> finalList = new ArrayList<>();
+            for(int x = 0;x<wordList.size();x++){
+                List<String> temp = Arrays.asList(wordList.get(x).split(" "));
+                finalList.addAll(temp);
+            }
+            return finalList;
         }
         catch (Exception e) {
             e.printStackTrace();

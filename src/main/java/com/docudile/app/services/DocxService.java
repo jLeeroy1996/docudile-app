@@ -11,4 +11,6 @@ public interface DocxService {
     public File createDocx(String input, String filename);
 
     public List<String> readDocx(File file);
+
+    public List<String> readDocxContent(File file);
 }

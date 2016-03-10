@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +41,14 @@ public class AspriseOCRServiceImpl implements AspriseOCRService {
             ocr.startEngine("eng", Ocr.SPEED_SLOW);
             String result = ocr.recognize(new File[]{file}, Ocr.RECOGNIZE_TYPE_TEXT, Ocr.OUTPUT_FORMAT_PLAINTEXT);
             ocr.stopEngine();
-            return Arrays.asList(result.split(" "));
+            List<String> results = Arrays.asList(result.split("\n"));
+            List<String> finalList = new ArrayList<>();
+            for(int x = 0;x<results.size();x++){
+                List<String> temp = Arrays.asList(results.get(x).split(" "));
+                finalList.addAll(temp);
+            }
+
+            return finalList;
         }
         return null;
     }

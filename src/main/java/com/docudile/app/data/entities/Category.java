@@ -24,6 +24,9 @@ public class Category{
     @Column(name = "numberOfFiles")
     private Integer numberOfFiles;
 
+    @Column(name = "structure")
+    private String structureType;
+
     public Integer getNumberOfFiles() {
         return numberOfFiles;
     }
