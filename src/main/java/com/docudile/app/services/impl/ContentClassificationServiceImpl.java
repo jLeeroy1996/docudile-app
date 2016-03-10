@@ -1,15 +1,12 @@
 package com.docudile.app.services.impl;
 
 import com.docudile.app.data.dao.*;
-import com.docudile.app.data.dao.impl.WordListDocumentDaoImpl;
 import com.docudile.app.data.dto.CategoryDto;
 import com.docudile.app.data.dto.FileContentDto;
 import com.docudile.app.data.dto.WordListDto;
 import com.docudile.app.data.entities.*;
 import com.docudile.app.services.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -22,15 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.imageio.ImageIO;
-import java.io.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by cicct on 2/15/2016.
@@ -74,7 +68,10 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     private StemmerService stemmerService;
 
     public boolean train(Integer userID) throws IOException {
+<<<<<<< HEAD
         //stemmerService.startStemmer();
+=======
+>>>>>>> origin/master
         ObjectMapper mapper = new ObjectMapper();
         WordListDto wordList = new WordListDto();
         List<FileContentDto> fileDto = new ArrayList<>();
@@ -424,6 +421,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         List<String> finalList = new ArrayList<>();
         for (int x = 0; x < wordList.size(); x++) {
             if (stemmerService.checkIfInDictionary(wordList.get(x).trim())) {
+                System.out.println("here in checkwords");
                 finalList.add(wordList.get(x).toLowerCase().trim());
             }
         }

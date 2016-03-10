@@ -7,6 +7,4 @@ public interface StemmerService {
 
     public boolean checkIfInDictionary(String word);
 
-    public void startStemmer();
-
 }

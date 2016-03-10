@@ -11,6 +11,7 @@ public class UserRegistrationDto implements Serializable {
     private String password;
     private String firstname;
     private String lastname;
+    private String office;
 
     public String getUsername() {
         return username;
@@ -42,6 +43,14 @@ public class UserRegistrationDto implements Serializable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getOffice() {
+        return office;
+    }
+
+    public void setOffice(String office) {
+        this.office = office;
     }
 
 }
