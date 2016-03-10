@@ -67,7 +67,9 @@ public class DocxServiceImpl implements DocxService {
             List<String> words = new ArrayList<>();
             StringTokenizer st = new StringTokenizer(extractor.getText()," ~`!@#$%^&*()-=_+[]{};'\\:|,./<>?");
             while(st.hasMoreTokens()){
-                words.add(st.nextToken());
+                if(st.nextToken().length()>1) {
+                    words.add(st.nextToken());
+                }
             }
             return words;
         }

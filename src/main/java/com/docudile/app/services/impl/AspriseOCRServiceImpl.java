@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by franc on 3/6/2016.
@@ -41,14 +42,14 @@ public class AspriseOCRServiceImpl implements AspriseOCRService {
             ocr.startEngine("eng", Ocr.SPEED_SLOW);
             String result = ocr.recognize(new File[]{file}, Ocr.RECOGNIZE_TYPE_TEXT, Ocr.OUTPUT_FORMAT_PLAINTEXT);
             ocr.stopEngine();
-            List<String> results = Arrays.asList(result.split(" "));
             List<String> finalList = new ArrayList<>();
-            for(int x = 0;x<results.size();x++){
-            List<String> temp = Arrays.asList(results.get(x).split("\n"));
-            finalList.addAll(temp);
+            StringTokenizer st = new StringTokenizer(result," ~`!@#$%^&*()-=_+[]{};'\\:|,./<>?");
+            while(st.hasMoreTokens()){
+                if(st.nextToken().length()>1) {
+                    finalList.add(st.nextToken());
+                }
             }
-
-            return results;
+            return finalList;
         }
         return null;
     }
