@@ -42,7 +42,7 @@ public class HomeController {
 
     @RequestMapping(value = "/upload-documents", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<GeneralMessageResponseDto> uploadDoc(@RequestParam("document") MultipartFile document, Principal principal) {
-        return ResponseEntity.ok(documentService.classifyThenUpload(document, principal.getName()));
+        return ResponseEntity.ok(documentService.sampleClassify(document, principal.getName()));
     }
 
     @RequestMapping(value = "/folder")

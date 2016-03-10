@@ -41,17 +41,18 @@ public class AspriseOCRServiceImpl implements AspriseOCRService {
             ocr.startEngine("eng", Ocr.SPEED_SLOW);
             String result = ocr.recognize(new File[]{file}, Ocr.RECOGNIZE_TYPE_TEXT, Ocr.OUTPUT_FORMAT_PLAINTEXT);
             ocr.stopEngine();
-            List<String> results = Arrays.asList(result.split("\n"));
+            List<String> results = Arrays.asList(result.split(" "));
             List<String> finalList = new ArrayList<>();
             for(int x = 0;x<results.size();x++){
-                List<String> temp = Arrays.asList(results.get(x).split(" "));
-                finalList.addAll(temp);
+            List<String> temp = Arrays.asList(results.get(x).split("\n"));
+            finalList.addAll(temp);
             }
 
-            return finalList;
+            return results;
         }
         return null;
     }
+
 
     private boolean verifyImage(File file) {
         String mimeType = new MimetypesFileTypeMap().getContentType(file);

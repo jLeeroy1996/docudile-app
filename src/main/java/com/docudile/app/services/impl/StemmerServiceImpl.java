@@ -14,7 +14,7 @@ import edu.stanford.nlp.ling.Word;
  * Created by cicct on 3/10/2016.
  */
 
-@Service("contentClassificationService")
+@Service("stemmerServiceImpl")
 @Transactional
 @PropertySource({"classpath:/storage.properties"})
 public class StemmerServiceImpl implements StemmerService{
@@ -28,7 +28,7 @@ public class StemmerServiceImpl implements StemmerService{
         WordNetDatabase database = WordNetDatabase.getFileInstance();
 
         Synset[] synsets = database.getSynsets(word);
-
+        System.out.println(synsets.length);
         if(synsets.length > 0){
             return false;
         }

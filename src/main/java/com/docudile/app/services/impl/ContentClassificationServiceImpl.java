@@ -74,7 +74,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     private StemmerService stemmerService;
 
     public boolean train(Integer userID) throws IOException {
-        stemmerService.startStemmer();
+        //stemmerService.startStemmer();
         ObjectMapper mapper = new ObjectMapper();
         WordListDto wordList = new WordListDto();
         List<FileContentDto> fileDto = new ArrayList<>();
@@ -113,13 +113,13 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                 } else {
                     ImageIO.read(fileEntry.getAbsoluteFile()).toString();
                     fileContentDto.setWordList(aspriseOCRService.doOCRContent(fileEntry));
-                    System.out.println(fileContentDto.getWordList().size() + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                    System.out.println(fileContentDto.getWordList());
                 }
 
-                String[] temporary = FilenameUtils.getBaseName(fileEntry.getAbsoluteFile().toString()).split(" ");
-                List<String> temp = fileContentDto.getWordList();
-                temp.addAll(Arrays.asList(temporary));
-                fileContentDto.setWordList(checkWords(temp));
+                //String[] temporary = FilenameUtils.getBaseName(fileEntry.getAbsoluteFile().toString()).split(" ");
+                //List<String> temp = fileContentDto.getWordList();
+                //temp.addAll(Arrays.asList(temporary));
+                //fileContentDto.setWordList(checkWords(fileContentDto.getWordList()));
                 fileDto.add(fileContentDto);
             }
         }
@@ -221,7 +221,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
         String[][] countWords = new String[wordList.getWordList().size()][2];
         List<String> wordListWords = wordList.getWordList();
-        List<String> filesWordList = new ArrayList<>();
+        List<String> filesWordList;
         int counter = 0;
         for (int x = 0; x < wordListWords.size(); x++) {
             countWords[x][0] = wordListWords.get(x);
@@ -270,7 +270,14 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     public Integer categorize(List<String> words, Integer userID, String filename) {
         List<CategoryDto> categories = new ArrayList<>();
         //get data from DB Category
+        List<String> finalWords = new ArrayList<>();
         List<Category> categoryList = categoryDao.getCategories(userID);
+        for(int x = 0;x<words.size();x++){
+            String[] t = words.get(x).split(" ");
+            List<String> tt = Arrays.asList(t);
+            finalWords.addAll(tt);
+        }
+        words = finalWords;
 
 
         CategoryDto categoryDto = new CategoryDto();

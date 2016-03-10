@@ -11,6 +11,7 @@ import com.docudile.app.data.entities.Folder;
 import com.docudile.app.services.*;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.xpath.operations.Mult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -70,6 +71,15 @@ public class DocumentServiceImpl implements DocumentService {
     public FileSystemResource showFile(Integer id, String username) {
         String filePath = fileSystemService.download(id, userDao.show(username).getId());
         return new FileSystemResource(filePath);
+    }
+    @Override
+    public GeneralMessageResponseDto sampleClassify(MultipartFile file,String username){
+        GeneralMessageResponseDto responseDto = new GeneralMessageResponseDto();
+        List<String> text = getLines(file);
+        Integer contentResult = contentClassificationService.categorize(getLinesContent(file), userDao.show(username).getId(), file.getOriginalFilename());
+        responseDto.setMessage(contentResult+" ");
+        System.out.println(contentResult + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        return responseDto;
     }
 
     @Override
