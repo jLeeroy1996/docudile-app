@@ -109,7 +109,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                 String extension = FilenameUtils.getExtension(fileEntry.getAbsoluteFile().toString());
                 System.out.println(extension + " sssssssssss");
                 if (extension.equals("docx")) {
-                    fileContentDto.setWordList(docxService.readDocx(fileEntry));
+                    fileContentDto.setWordList(docxService.readDocxContent(fileEntry));
                 } else {
                     ImageIO.read(fileEntry.getAbsoluteFile()).toString();
                     fileContentDto.setWordList(aspriseOCRService.doOCRContent(fileEntry));
