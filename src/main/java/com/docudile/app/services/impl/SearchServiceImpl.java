@@ -52,7 +52,6 @@ public class SearchServiceImpl implements SearchService {
                 }
                 isExist = false;
             }
-//            System.out.println(documents.get(0).getId() + " paulryanluceroboob");
         }
         return documentID;
     }

@@ -11,6 +11,7 @@ import com.docudile.app.services.DropboxService;
 import com.docudile.app.services.FileSystemService;
 import com.docudile.app.services.UserService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.record.chart.SeriesRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +63,9 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     public boolean storeFile(MultipartFile mfile, String path, Integer userId, Integer contentID) {
+        System.err.println("BOOBS " + path);
         Folder folder = getFolderFromPath(path);
+        System.err.println("ANOTHER BOOBS " + folder.getName());
         User user = userDao.show(userId);
         Category cat = categoryDao.getCategory(contentID);
         String filename = mfile.getOriginalFilename();
@@ -185,12 +188,16 @@ public class FileSystemServiceImpl implements FileSystemService {
                 base = folderDao.show(folderName);
                 return getFolderFromPath(base, path);
             } else {
-                if (base.getChildFolders() != null) {
-                    for (Folder currFolder : base.getChildFolders()) {
-                        if (currFolder.getName().equalsIgnoreCase(folderName)) {
-                            return getFolderFromPath(currFolder, path);
-                        }
-                    }
+//                if (base.getChildFolders() != null) {
+//                    for (Folder currFolder : base.getChildFolders()) {
+//                        if (currFolder.getName().equalsIgnoreCase(folderName)) {
+//                            return getFolderFromPath(currFolder, path);
+//                        }
+//                    }
+//                }
+                Folder f = folderDao.show(folderName, base.getId());
+                if(f != null) {
+                    return getFolderFromPath(f, path);
                 }
             }
         }
@@ -284,6 +291,7 @@ public class FileSystemServiceImpl implements FileSystemService {
         Folder isExist = null;
         if(!folders.isEmpty()) {
             String folderName = folders.removeFirst();
+            System.err.println("createFolderFromPath: " + folderName);
             if(base == null) {
                 isExist = folderDao.show(folderName);
             } else {
