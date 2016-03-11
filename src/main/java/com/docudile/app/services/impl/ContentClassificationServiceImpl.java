@@ -269,9 +269,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         for(int x = 0;x<words.size();x++){
             StringTokenizer st = new StringTokenizer(words.get(x)," ~`!@#$%^&*()-=_+[]{};'\\\\:|,./<>?");
             while(st.hasMoreTokens()){
-                while(st.nextToken().length()>1) {
-                    finalWords.add(st.nextToken());
-                }
+                finalWords.add(st.nextToken());
             }
         }
         words = finalWords;
