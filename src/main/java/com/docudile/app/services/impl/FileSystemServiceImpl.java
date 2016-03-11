@@ -74,8 +74,7 @@ public class FileSystemServiceImpl implements FileSystemService {
         file.setCategory(cat);
         file.setFolder(folder);
         file.setDateUploaded(convertDateToString(new Date()));
-        file.setId(fileDao.getFileID(filename,user.getId()).getId());
-        if (fileDao.update(file)) {
+        if (fileDao.create(file)) {
             try {
                 return dropboxService.uploadFile(filepath, mfile.getInputStream(), user.getDropboxAccessToken());
             } catch (IOException e) {
@@ -155,9 +154,9 @@ public class FileSystemServiceImpl implements FileSystemService {
     }
 
     @Override
-    public List<FileShowDto> getFilesFromId(List<WordListDocument> documentId, Integer userId) {
+    public List<FileShowDto> getFilesFromId(List<DocumentIndex> documentId, Integer userId) {
         List<FileShowDto> files = new ArrayList<>();
-        for(WordListDocument id : documentId) {
+        for(DocumentIndex id : documentId) {
             files.add(convertToDto(fileDao.show(id.getFile().getId())));
         }
         return files;

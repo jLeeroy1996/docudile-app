@@ -1,6 +1,7 @@
 package com.docudile.app.services.impl;
 
 import com.docudile.app.data.dao.CategoryDao;
+import com.docudile.app.data.dao.FileDao;
 import com.docudile.app.data.dao.FolderDao;
 import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.FolderShowDto;
@@ -44,7 +45,13 @@ public class DocumentServiceImpl implements DocumentService {
     private DocumentStructureClassificationService docStructureClassification;
 
     @Autowired
+    private FileDao fileDao;
+
+    @Autowired
     private ContentClassificationService contentClassificationService;
+
+    @Autowired
+    private SearchService searchService;
 
     @Autowired
     private DocxService docxService;
@@ -82,7 +89,7 @@ public class DocumentServiceImpl implements DocumentService {
         if (text != null) {
             Map<Integer, String> tags = docStructureClassification.tag(text);
             String type = docStructureClassification.classify(StringUtils.join(tags.values(), " "));
-            Integer contentResult = contentClassificationService.categorize(getLinesContent(file), userDao.show(username).getId(), file.getOriginalFilename());
+
             String path;
             String year = "";
             String to = "";
@@ -113,20 +120,20 @@ public class DocumentServiceImpl implements DocumentService {
             }
             if (StringUtils.isNotEmpty(type)) {
                 path += "/" + type;
-                String category = categoryDao.show(contentResult).getCategoryName();
+
                 if (type.equals("MEMO")) {
                     if (fromHome) {
-                        path += "/to/" + to + "/" + category;
+                        path += "/to/" + to + "/";
                     } else if (!fromHome) {
-                        path += "/to/me/"+ category;
+                        path += "/to/me/";
                     } else {
                         path += "/uncategorized";
                     }
                 } else {
                     if (to.equalsIgnoreCase(user.getLastname()) || to.equals(user.getFirstname() + " " + user.getLastname())) {
-                        path += "/to/me/" + category;
+                        path += "/to/me/";
                     } else {
-                        path += "/to/" + to + "/" + category;
+                        path += "/to/" + to + "/";
                     }
                 }
             } else {
@@ -134,7 +141,13 @@ public class DocumentServiceImpl implements DocumentService {
             }
             System.out.println("Save Path: " + path);
             fileSystemService.createFoldersFromPath(path, userDao.show(username).getId());
-            fileSystemService.storeFile(file, path, userDao.show(username).getId(), contentResult);
+            fileSystemService.storeFile(file, path, userDao.show(username).getId(), null);
+            String filename = file.getOriginalFilename();
+            String filepath = path + "/" + filename;
+            searchService.generateWordList(text,fileDao.getFileID(filepath,userDao.show(username).getId()).getId());
+            searchService.generateDocIndex(text,fileDao.getFileID(filepath,userDao.show(username).getId()).getId());
+
+
             responseDto.setMessage("file_upload_success");
         } else {
             responseDto.setMessage("error_reading_file");
@@ -201,7 +214,8 @@ public class DocumentServiceImpl implements DocumentService {
     private List<String> getLines(MultipartFile mfile) {
         List<String> text = null;
         String extension = FilenameUtils.getExtension(mfile.getOriginalFilename());
-        if (extension.equals(".docx")) {
+        System.out.println(extension+" aaaaaaaaaaaaaaaaa");
+        if (extension.equals("docx")) {
             text = docxService.readDocx(multipartToFile(mfile));
         } else try {
             ImageIO.setUseCache(false);

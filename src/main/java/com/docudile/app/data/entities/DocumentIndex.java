@@ -6,8 +6,8 @@ import javax.persistence.*;
  * Created by cicct on 2/24/2016.
  */
 @Entity
-@Table(name="wordListDocuments")
-public class WordListDocument {
+@Table(name="documentIndex")
+public class DocumentIndex {
 
 
     @Id

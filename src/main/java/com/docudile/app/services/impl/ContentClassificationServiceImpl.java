@@ -1,3 +1,4 @@
+
 package com.docudile.app.services.impl;
 
 import com.docudile.app.data.dao.*;
@@ -27,9 +28,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
+
 /**
  * Created by cicct on 2/15/2016.
  */
+
 @Service("contentClassificationService")
 @Transactional
 @PropertySource({"classpath:/storage.properties"})
@@ -63,7 +66,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
     private WordListCategoryDao wordListCategoryDao;
 
     @Autowired
-    private WordListDocumentDao wordListDocumentDao;
+    private DocumentIndexDao documentIndexDao;
 
     @Autowired
     private StemmerService stemmerService;
@@ -113,7 +116,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
                 //String[] temporary = FilenameUtils.getBaseName(fileEntry.getAbsoluteFile().toString()).split(" ");
                 //List<String> temp = fileContentDto.getWordList();
                 //temp.addAll(Arrays.asList(temporary));
-                fileContentDto.setWordList(checkWords(fileContentDto.getWordList()));
+                //fileContentDto.setWordList(checkWords(fileContentDto.getWordList()));
                 fileDto.add(fileContentDto);
             }
         }
@@ -362,7 +365,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
 
     private void getCount(List<FileContentDto> files, WordListDto wordList, Integer fileID) {
         String[][] wordCount = new String[wordList.getWordList().size()][2];
-        WordListDocument wordListDocument = new WordListDocument();
+        DocumentIndex documentIndex = new DocumentIndex();
 
 
         for (int x = 0; x < wordList.getWordList().size(); x++) {
@@ -379,11 +382,11 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
             }
         }
         for (int x = 0; x < wordCount.length; x++) {
-            wordListDocument = new WordListDocument();
-            wordListDocument.setWordList(wordListDao.show(wordListDao.getID(wordCount[x][0]).getId()));
-            wordListDocument.setFile(fileDao.show(fileID));
-            wordListDocument.setVectorCount(Integer.parseInt(wordCount[x][1]));
-            wordListDocumentDao.create(wordListDocument);
+            documentIndex = new DocumentIndex();
+            documentIndex.setWordList(wordListDao.show(wordListDao.getID(wordCount[x][0]).getId()));
+            documentIndex.setFile(fileDao.show(fileID));
+            documentIndex.setVectorCount(Integer.parseInt(wordCount[x][1]));
+            documentIndexDao.create(documentIndex);
         }
 
     }
@@ -417,15 +420,7 @@ public class ContentClassificationServiceImpl implements ContentClassificationSe
         return false;
     }
 
-    public List<String> checkWords(List<String> wordList) {
-        List<String> finalList = new ArrayList<>();
-        for (int x = 0; x < wordList.size(); x++) {
-            if (stemmerService.checkIfInDictionary(wordList.get(x).trim())) {
-                finalList.add(wordList.get(x).toLowerCase().trim());
-            }
-        }
-        return finalList;
-    }
 
 
 }
+
