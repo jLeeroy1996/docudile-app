@@ -65,16 +65,6 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public GeneralMessageResponseDto sampleClassify(MultipartFile file,String username){
-        GeneralMessageResponseDto responseDto = new GeneralMessageResponseDto();
-        List<String> text = getLines(file);
-        Integer contentResult = contentClassificationService.categorize(getLinesContent(file), userDao.show(username).getId(), file.getOriginalFilename());
-        responseDto.setMessage(contentResult+" ");
-        System.out.println(contentResult + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        return responseDto;
-    }
-
-    @Override
     public GeneralMessageResponseDto classifyThenUpload(MultipartFile file, String username) {
         GeneralMessageResponseDto responseDto = new GeneralMessageResponseDto();
         User user = userDao.show(username);
@@ -86,6 +76,7 @@ public class DocumentServiceImpl implements DocumentService {
             String path;
             String year = "";
             String to = "";
+            String from = "";
             boolean fromHome = (text.indexOf(user.getOffice()) != -1);
             System.out.println("Tags: " + tags);
             System.out.println("Type: " + type);
@@ -97,6 +88,9 @@ public class DocumentServiceImpl implements DocumentService {
                 if (type.equals("MEMO")) {
                     if (curr.equals("TO") || curr.equals("TO_DATE") && fromHome) {
                         to = getToMemo(text.get(key));
+                    }
+                    if (curr.equals("FROM") && !fromHome) {
+
                     }
                 } else if (type.equals("LETTER")) {
                     if (tags.get(key).equals("SALUTATION")) {

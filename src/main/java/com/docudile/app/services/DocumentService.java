@@ -19,8 +19,6 @@ public interface DocumentService {
 
     public GeneralMessageResponseDto classifyThenUpload(MultipartFile file, String username);
 
-    public GeneralMessageResponseDto sampleClassify(MultipartFile file,String username);
-
     public GeneralMessageResponseDto deleteFile(Integer id, String username);
 
     public GeneralMessageResponseDto contentTrain(String username, MultipartFile[] file, String categoryName) throws IOException;
