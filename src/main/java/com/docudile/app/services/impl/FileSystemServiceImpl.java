@@ -188,13 +188,6 @@ public class FileSystemServiceImpl implements FileSystemService {
                 base = folderDao.show(folderName);
                 return getFolderFromPath(base, path);
             } else {
-//                if (base.getChildFolders() != null) {
-//                    for (Folder currFolder : base.getChildFolders()) {
-//                        if (currFolder.getName().equalsIgnoreCase(folderName)) {
-//                            return getFolderFromPath(currFolder, path);
-//                        }
-//                    }
-//                }
                 Folder f = folderDao.show(folderName, base.getId());
                 if(f != null) {
                     return getFolderFromPath(f, path);
@@ -293,6 +286,7 @@ public class FileSystemServiceImpl implements FileSystemService {
             String folderName = folders.removeFirst();
             System.err.println("createFolderFromPath: " + folderName);
             if(base == null) {
+                System.err.println("createFolderFromPath base == null " + folderName);
                 isExist = folderDao.show(folderName);
             } else {
                 isExist = folderDao.show(folderName, base.getId());

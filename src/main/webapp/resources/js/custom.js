@@ -34,10 +34,10 @@ $(document).on('ready', function () {
                         var image = '<img src="/resources/img/file-icon.png" class="dd-search-icon" />';
                         var filename = '<p class="searchFilename">' + inside.filename + '</p>';
                         var path = '<p class="searchPath">' + inside.path + '</p>';
-                        var tr = '<tr><td class="col-sm-1">' + image + ' </td><td>' + filename + path + '</td></tr>';
+                        var tr = '<tr class="dd-file-row clickable-row"><td class="col-sm-1">' + image + ' </td><td>' + filename + path + '</td></tr>';
                         var tablerow = $(tr);
                         console.log(tr);
-                        $('#searchResult').append(tr);
+                        $('#searchResult').append(tablerow);
                         tablerow.click(function () {
                             $(this).addClass('active').siblings().removeClass('active');
                             viewDetailsFile(inside);
