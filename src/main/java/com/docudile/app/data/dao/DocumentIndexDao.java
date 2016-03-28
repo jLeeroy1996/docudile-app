@@ -10,4 +10,7 @@ import java.util.List;
  */
 public interface DocumentIndexDao extends GenericDao<DocumentIndex> {
     public List<DocumentIndex> getID(List<File> documentID, Integer wordListID);
+    public List<DocumentIndex> getIDwithCount(List<File> documentID, Integer wordListID);
+    public List<DocumentIndex> getID(List<File> documentID);
+    public List<Integer[]> getID(List<File> documentID, List<Integer> wordListID);
 }

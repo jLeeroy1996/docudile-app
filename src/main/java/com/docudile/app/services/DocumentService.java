@@ -27,6 +27,8 @@ public interface DocumentService {
 
     public List<FolderShowDto> showRoot(String username);
 
+    public List<String> getLines(MultipartFile mfile);
+
     public FolderShowDto showFolder(Integer id, String username);
 
 }

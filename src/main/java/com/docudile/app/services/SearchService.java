@@ -1,7 +1,8 @@
 package com.docudile.app.services;
 
-import com.docudile.app.data.entities.DocumentIndex;
+import com.docudile.app.data.entities.File;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -9,10 +10,10 @@ import java.util.List;
  */
 public interface SearchService {
 
-    public List<DocumentIndex> search(Integer userId, String searchString);
+    public List<File> search(Integer userId, String searchString);
 
     public void generateWordList(List<String> words, Integer userId);
 
-    public void generateDocIndex(List<String> words, Integer fileID);
+    public void generateDocIndex(List<String> words, Integer fileID) throws IOException;
 
 }

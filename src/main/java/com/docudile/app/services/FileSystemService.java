@@ -34,7 +34,7 @@ public interface FileSystemService {
 
     public void createCategoryFolders(Folder f, String categoryName, Integer userId);
 
-    public List<FileShowDto> getFilesFromId(List<DocumentIndex> documentId, Integer userId);
+    public List<FileShowDto> getFilesFromId(List<File> documentId, Integer userId);
 
     public boolean createFoldersFromPath(Folder base, LinkedList<String> folders, Integer userId);
 

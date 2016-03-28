@@ -144,8 +144,7 @@ public class DocumentServiceImpl implements DocumentService {
             fileSystemService.storeFile(file, path, userDao.show(username).getId(), null);
             String filename = file.getOriginalFilename();
             String filepath = path + "/" + filename;
-            searchService.generateWordList(text,fileDao.getFileID(filepath,userDao.show(username).getId()).getId());
-            searchService.generateDocIndex(text,fileDao.getFileID(filepath,userDao.show(username).getId()).getId());
+
 
 
             responseDto.setMessage("file_upload_success");
@@ -211,7 +210,9 @@ public class DocumentServiceImpl implements DocumentService {
         return null;
     }
 
-    private List<String> getLines(MultipartFile mfile) {
+
+    @Override
+    public List<String> getLines(MultipartFile mfile) {
         List<String> text = null;
         String extension = FilenameUtils.getExtension(mfile.getOriginalFilename());
         System.out.println(extension+" aaaaaaaaaaaaaaaaa");

@@ -37,7 +37,7 @@ $(document).on('ready', function () {
                         var tr = '<tr><td class="col-sm-1">' + image + ' </td><td>' + filename + path + '</td></tr>';
                         var tablerow = $(tr);
                         console.log(tr);
-                        $('#searchResult').append(tr);
+                        $('#searchResult').append(tablerow);
                         tablerow.click(function () {
                             $(this).addClass('active').siblings().removeClass('active');
                             viewDetailsFile(inside);

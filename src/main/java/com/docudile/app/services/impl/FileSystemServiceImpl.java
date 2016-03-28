@@ -7,9 +7,7 @@ import com.docudile.app.data.dao.UserDao;
 import com.docudile.app.data.dto.FileShowDto;
 import com.docudile.app.data.dto.FolderShowDto;
 import com.docudile.app.data.entities.*;
-import com.docudile.app.services.DropboxService;
-import com.docudile.app.services.FileSystemService;
-import com.docudile.app.services.UserService;
+import com.docudile.app.services.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,10 +38,16 @@ public class FileSystemServiceImpl implements FileSystemService {
     private UserDao userDao;
 
     @Autowired
+    private DocumentService documentService;
+
+    @Autowired
     private DropboxService dropboxService;
 
     @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    private SearchService searchService;
 
     @Autowired
     private UserService userService;
@@ -76,7 +80,13 @@ public class FileSystemServiceImpl implements FileSystemService {
         file.setDateUploaded(convertDateToString(new Date()));
         if (fileDao.create(file)) {
             try {
-                return dropboxService.uploadFile(filepath, mfile.getInputStream(), user.getDropboxAccessToken());
+                dropboxService.uploadFile(filepath, mfile.getInputStream(), user.getDropboxAccessToken());
+                System.out.println("docu service:" +documentService.getLines(mfile) );
+                System.out.println("User Id:" + userId);
+                System.out.println("filePath:" + filepath);
+                searchService.generateWordList(documentService.getLines(mfile),fileDao.getFileID(filename,userId).getId());
+                searchService.generateDocIndex(documentService.getLines(mfile),fileDao.getFileID(filename,userId).getId());
+                return true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -153,11 +163,12 @@ public class FileSystemServiceImpl implements FileSystemService {
         folderDao.create(cat);
     }
 
+
     @Override
-    public List<FileShowDto> getFilesFromId(List<DocumentIndex> documentId, Integer userId) {
+    public List<FileShowDto> getFilesFromId(List<File> documentId, Integer userId) {
         List<FileShowDto> files = new ArrayList<>();
-        for(DocumentIndex id : documentId) {
-            files.add(convertToDto(fileDao.show(id.getFile().getId())));
+        for(File id : documentId) {
+            files.add(convertToDto(fileDao.show(id.getId())));
         }
         return files;
     }
@@ -184,12 +195,9 @@ public class FileSystemServiceImpl implements FileSystemService {
                 base = folderDao.show(folderName);
                 return getFolderFromPath(base, path);
             } else {
-                if (base.getChildFolders() != null) {
-                    for (Folder currFolder : base.getChildFolders()) {
-                        if (currFolder.getName().equalsIgnoreCase(folderName)) {
-                            return getFolderFromPath(currFolder, path);
-                        }
-                    }
+                Folder f = folderDao.show(folderName,base.getId());
+                if(f != null){
+                    return getFolderFromPath(f,path);
                 }
             }
         }

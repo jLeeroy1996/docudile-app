@@ -154,6 +154,10 @@ ul.nav-tree ul.nav-tree {
     background: #AAB2BD !important;
 }
 
+#searchResult > tr.active {
+    background: #AAB2BD !important;
+}
+
 .dd-retrain-box {
     padding-top: 50px;
 }
